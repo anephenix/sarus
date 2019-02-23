@@ -1,0 +1,2 @@
+# sarus
+A WebSocket library
