@@ -1,0 +1,28 @@
+{
+  "name": "sarus",
+  "version": "0.0.1",
+  "description": "A WebSocket JavaScript library",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^24.1.0",
+    "jest-websocket-mock": "^1.1.1",
+    "mock-socket": "^8.0.5"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anephenix/sarus.git"
+  },
+  "keywords": [
+    "websocket"
+  ],
+  "author": "Paul Jensen <paul@anephenix.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anephenix/sarus/issues"
+  },
+  "homepage": "https://github.com/anephenix/sarus#readme"
+}

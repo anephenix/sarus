@@ -1,0 +1,26 @@
+# TODO
+
+- [x] Support `reconnectAutomatically` option in `Sarus` initialization
+- [x] Pass eventListeners into `Sarus` at initialization
+- [x] Find a way to test the onopen event in the tests
+- [x] Make sure that the right event listeners are provided at initialization
+- [x] Add an event listener after initialization
+- [x] Prevent the same function being added multiple times to an event listener
+- [x] Remove an event listener function by passing the function
+- [x] Remove an event listener function by passing the name
+- [x] Throw an error when removing an event listener does not find it
+- [x] Support `doNotThrowError: true` when removing an event listener
+- [x] Test sending a WebSocket message
+- [x] Make sure that adding/removing event listeners after initialization is bound on WebSocket as well
+- [x] Implement message queue with in-memory as default
+- [x] Make sure test assertion guarantees order of messages being extracted from queue
+- [x] Make retryProcessTimePeriod configurable
+- [ ] Implement message queue with session storage as an option
+- [ ] Implement message queue with local storage as an option
+- [ ] Work out what to do when the message storage limit is reached
+- [ ] Implement a way to retrieve messages from a server, based on a key indicator
+- [ ] Implement a way to configure WebSocket client options
+- [ ] Make the storageKey configurable
+- [ ] Test loading messages stored in sessionStorage
+- [ ] Test sessionStorage messages get wiped when a session is finished
+- [ ] Test loading messages stored in localStorage
