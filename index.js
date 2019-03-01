@@ -9,7 +9,8 @@ class Sarus {
       eventListeners,
       reconnectAutomatically,
       retryProcessTimePeriod,
-      storageType
+      storageType,
+      storageKey
     } = props;
     this.url = url;
     this.retryProcessTimePeriod =
@@ -19,8 +20,8 @@ class Sarus {
     this.reconnectAutomatically = !(reconnectAutomatically === false);
     this.connect();
     this.storageType = storageType || 'memory';
-    this.storageKey = 'sarus';
-    this.messages = [];
+    this.storageKey = storageKey || 'sarus';
+    this.messages = []; // TODO - if using session or local storage, retrieve existing state
     this.process = this.process.bind(this);
   }
 

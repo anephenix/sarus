@@ -17,10 +17,10 @@
 - [x] Make retryProcessTimePeriod configurable
 - [x] Implement message queue with session storage as an option
 - [x] Implement message queue with local storage as an option
-- [ ] Work out what to do when the message storage limit is reached
-- [ ] Implement a way to retrieve messages from a server, based on a key indicator
-- [ ] Implement a way to configure WebSocket client options
-- [ ] Make the storageKey configurable
+- [x] Make the storageKey configurable
 - [ ] Test loading messages stored in sessionStorage
 - [ ] Test sessionStorage messages get wiped when a session is finished
 - [ ] Test loading messages stored in localStorage
+- [ ] Implement a way to configure WebSocket client options
+- [ ] Implement a way to retrieve messages from a server, based on a key indicator
+- [ ] Work out what to do when the message storage limit is reached (technically it should throw an error)

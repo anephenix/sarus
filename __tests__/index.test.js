@@ -294,7 +294,7 @@ it('should allow the developer to use sessionStorage for storing messages', asyn
   newServer.close();
 });
 
-it('should allow the developer to use sessionStorage for storing messages', async () => {
+it('should allow the developer to use localStorage for storing messages', async () => {
   localStorage.clear();
   const server = new WS(url);
   const sarus = new Sarus({ url, storageType: 'local' });
@@ -313,4 +313,9 @@ it('should allow the developer to use sessionStorage for storing messages', asyn
   expect(messageOne).toBe('Hello again');
   expect(messageTwo).toBe('Here is another message');
   newServer.close();
+});
+
+it('should allow the developer to use a custom storageKey', () => {
+  const sarus = new Sarus({ url, storageType: 'local', storageKey: 'sarusWS' });
+  expect(sarus.storageKey).toBe('sarusWS');
 });
