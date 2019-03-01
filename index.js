@@ -1,4 +1,6 @@
 const eventNames = ['open', 'close', 'message', 'error'];
+const serialize = data => JSON.stringify(data);
+const deserialize = data => JSON.parse(data);
 
 class Sarus {
   constructor(props) {
@@ -24,18 +26,17 @@ class Sarus {
 
   get messages() {
     const { storageType, storageKey, messageStore } = this;
-    if (storageType === 'session') {
-      const rawData = sessionStorage.getItem(storageKey);
-      const data = JSON.parse(rawData);
-      return data;
+    if (['session', 'local'].indexOf(storageType) !== -1) {
+      const rawData = window[`${storageType}Storage`].getItem(storageKey);
+      return deserialize(rawData);
     }
     return messageStore;
   }
 
   set messages(data) {
     const { storageType, storageKey } = this;
-    if (storageType === 'session') {
-      sessionStorage.setItem(storageKey, JSON.stringify(data));
+    if (['session', 'local'].indexOf(storageType) !== -1) {
+      window[`${storageType}Storage`].setItem(storageKey, serialize(data));
     }
     if (storageType === 'memory') {
       this.messageStore = data;
@@ -45,7 +46,7 @@ class Sarus {
 
   addMessage(data) {
     const { messages, storageType } = this;
-    if (storageType === 'session') {
+    if (['session', 'local'].indexOf(storageType) !== -1) {
       this.messages = [...messages, data];
     } else {
       messages.push(data);
@@ -54,7 +55,7 @@ class Sarus {
 
   removeMessage() {
     const { messages, storageType } = this;
-    if (storageType === 'session') {
+    if (['session', 'local'].indexOf(storageType) !== -1) {
       const newArray = [...messages];
       newArray.shift();
       this.messages = newArray;

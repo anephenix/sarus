@@ -15,8 +15,8 @@
 - [x] Implement message queue with in-memory as default
 - [x] Make sure test assertion guarantees order of messages being extracted from queue
 - [x] Make retryProcessTimePeriod configurable
-- [ ] Implement message queue with session storage as an option
-- [ ] Implement message queue with local storage as an option
+- [x] Implement message queue with session storage as an option
+- [x] Implement message queue with local storage as an option
 - [ ] Work out what to do when the message storage limit is reached
 - [ ] Implement a way to retrieve messages from a server, based on a key indicator
 - [ ] Implement a way to configure WebSocket client options

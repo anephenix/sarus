@@ -293,3 +293,24 @@ it('should allow the developer to use sessionStorage for storing messages', asyn
   expect(messageTwo).toBe('Here is another message');
   newServer.close();
 });
+
+it('should allow the developer to use sessionStorage for storing messages', async () => {
+  localStorage.clear();
+  const server = new WS(url);
+  const sarus = new Sarus({ url, storageType: 'local' });
+  expect(sarus.storageType).toBe('local');
+  await server.connected;
+  sarus.send('Hello server');
+  await expect(server).toReceiveMessage('Hello server');
+  server.close();
+  sarus.send('Hello again');
+  sarus.send('Here is another message');
+  expect(sarus.messages).toEqual(['Hello again', 'Here is another message']);
+  const newServer = new WS(url);
+  const messageOne = await server.nextMessage;
+  const messageTwo = await server.nextMessage;
+  expect(sarus.messages).toEqual([]);
+  expect(messageOne).toBe('Hello again');
+  expect(messageTwo).toBe('Here is another message');
+  newServer.close();
+});
