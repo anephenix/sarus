@@ -21,7 +21,7 @@ class Sarus {
     this.connect();
     this.storageType = storageType || 'memory';
     this.storageKey = storageKey || 'sarus';
-    this.messages = []; // TODO - if using session or local storage, retrieve existing state
+    this.messages = this.messages || [];
     this.process = this.process.bind(this);
   }
 

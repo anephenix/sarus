@@ -319,3 +319,23 @@ it('should allow the developer to use a custom storageKey', () => {
   const sarus = new Sarus({ url, storageType: 'local', storageKey: 'sarusWS' });
   expect(sarus.storageKey).toBe('sarusWS');
 });
+
+it('should load any existing messages from previous sessionStorage on initialization', () => {
+  let sarusOne = new Sarus({ url, storageType: 'session' });
+  sarusOne.send('Hello world');
+  sarusOne.send('Hello again');
+  sarusOne.__proto__ = null;
+  sarusOne = null;
+  const sarusTwo = new Sarus({ url, storageType: 'session' });
+  expect(sarusTwo.messages).toEqual(['Hello world', 'Hello again']);
+});
+
+it('should load any existing messages from previous localStorage on initialization', () => {
+  let sarusOne = new Sarus({ url, storageType: 'local' });
+  sarusOne.send('Hello world');
+  sarusOne.send('Hello again');
+  sarusOne.__proto__ = null;
+  sarusOne = null;
+  const sarusTwo = new Sarus({ url, storageType: 'local' });
+  expect(sarusTwo.messages).toEqual(['Hello world', 'Hello again']);
+});
