@@ -7,6 +7,7 @@
   "devDependencies": {
     "jest": "^24.1.0",
     "jest-websocket-mock": "^1.1.1",
+    "jsdoc": "^3.5.5",
     "mock-socket": "^8.0.5"
   },
   "scripts": {
