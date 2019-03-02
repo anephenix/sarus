@@ -298,6 +298,37 @@ class Sarus {
   }
 
   /**
+   * Finds a function in a eventListener's event list, by functon or by function name
+   * @param {string} eventName - The name of the event in the eventListeners object
+   * @param {function|string} eventFuncOrName - Either the function to remove, or the name of the function to remove
+   * @returns {function|undefined} The existing function, or nothing
+   */
+  findFunction(eventName, eventFuncOrName) {
+    if (typeof eventFuncOrName === 'string') {
+      const byName = f => f.name === eventFuncOrName;
+      return this.eventListeners[eventName].find(byName);
+    } else {
+      if (this.eventListeners[eventName].indexOf(eventFuncOrName) !== -1) {
+        return eventFuncOrName;
+      }
+    }
+  }
+
+  /**
+   * Raises an error if the existing function is not present, and if the client is configured to throw an error
+   * @param {function|undefined} existingFunc
+   * @param {object} opts - An optional object to pass that contains extra configuration options
+   * @param {boolean} opts.doNotThrowError - A boolean flag that indicates whether to not throw an error if the function to remove is not found in the list
+   */
+  raiseErrorIfFunctionIsMissing(existingFunc, opts) {
+    if (!existingFunc) {
+      if (!(opts && opts.doNotThrowError)) {
+        throw new Error('Function does not exist in eventListener list');
+      }
+    }
+  }
+
+  /**
    * Removes a function from an eventListener events list for that event
    * @param {string} eventName - The name of the event in the eventListeners object
    * @param {function|string} eventFuncOrName - Either the function to remove, or the name of the function to remove
@@ -305,23 +336,10 @@ class Sarus {
    * @param {boolean} opts.doNotThrowError - A boolean flag that indicates whether to not throw an error if the function to remove is not found in the list
    */
   off(eventName, eventFuncOrName, opts) {
-    let existingFunc;
-    if (typeof eventFuncOrName === 'string') {
-      const byName = f => f.name === eventFuncOrName;
-      existingFunc = this.eventListeners[eventName].find(byName);
-    } else {
-      if (this.eventListeners[eventName].indexOf(eventFuncOrName) !== -1) {
-        existingFunc = eventFuncOrName;
-      }
-    }
-    if (!existingFunc) {
-      if (!(opts && opts.doNotThrowError)) {
-        throw new Error('Function does not exist in eventListener list');
-      }
-    } else {
-      const index = this.eventListeners[eventName].indexOf(existingFunc);
-      this.eventListeners[eventName].splice(index, 1);
-    }
+    const existingFunc = this.findFunction(eventName, eventFuncOrName);
+    this.raiseErrorIfFunctionIsMissing(existingFunc, opts);
+    const index = this.eventListeners[eventName].indexOf(existingFunc);
+    this.eventListeners[eventName].splice(index, 1);
   }
 
   /**
