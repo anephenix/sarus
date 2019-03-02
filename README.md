@@ -13,10 +13,8 @@ handling cases where:
 - You want to send messages to the WebSocket connection, but if the connection
   is closed then the messages will not be received by the server.
 
-- You have created a new WebSocket connection, but some time has passed
-  between when the previous WebSocket connection closed and the new WebSocket
-  connection was opened. You want to retrieve any messages that might have been
-  sent by the server during that time.
+- The messages that would be sent from the client to the server get lost on a
+  when the user refreshes the page in the browser.
 
 To handle these cases, you will have to write some JavaScript that essentially
 wraps access to the WebSocket protocol and handles those cases.
@@ -30,10 +28,6 @@ Sarus is a library designed to do exactly that. It has the following features:
 
 - Record messages to deliver if the WebSocket connection is closed, and deliver
   them once there is an open WebSocket connection.
-
-- Retrieve messages that would have been delivered by the WebSocket server
-  during a period of being disconnected (requires using a WebSocket server
-  which supports retrieving messages for a client to receive).
 
 ### Install
 
@@ -50,7 +44,7 @@ codebase:
 import Sarus from '@anephenix/sarus';
 
 const sarus = new Sarus({
-  url: 'wss://ws.dashku.com'
+  url: 'wss://ws.anephenix.com'
 });
 ```
 
@@ -104,13 +98,13 @@ the near future.
 
 ```javascript
 const sarus = new Sarus({
-  url: 'wss://ws.dashku.com',
+  url: 'wss://ws.anephenix.com',
   reconnectAutomatically: false
 });
 ```
 
 You can then write a function and attach it to the `sarus` instance on the
-`close` event.
+`close` event in the eventListeners parameter.
 
 #### Attaching and removing event listeners
 
@@ -142,7 +136,7 @@ const throwError = error => throw error;
 
 // Create the Sarus instance with the event listeners
 const sarus = new Sarus({
-  url: 'wss://ws.dashku.com',
+  url: 'wss://ws.anephenix.com',
   eventListeners: {
     open: [noteOpened],
     message: [parseMessage],
@@ -153,8 +147,8 @@ const sarus = new Sarus({
 ```
 
 In this example, those functions will be bound to the WebSocket instance. If
-the WebSocket instance's connection closes and a new WebSocket instance is
-created by Sarus to reconnect automatically, the event listeners set in Sarus
+the WebSocket instance's connection closes, a new WebSocket instance is
+created by Sarus to reconnect automatically. The event listeners set in Sarus
 will be attached to that new WebSocket instance.
 
 That is one way that Sarus allows you to bind event listeners to events on the
@@ -226,10 +220,8 @@ messages stored using the [sessionStorage protocol](https://developer.mozilla.or
 
 ```javascript
 const sarus = new Sarus({
-  url: 'wss://ws.dashku.com',
-  messageQueue: {
-    storageType: 'sessionStorage'
-  }
+  url: 'wss://ws.anephenix.com',
+  storageType: 'session'
 });
 ```
 
@@ -243,23 +235,47 @@ then you can use the [localStorage protocol](https://developer.mozilla.org/en-US
 
 ```javascript
 const sarus = new Sarus({
-  url: 'wss://ws.dashku.com',
-  messageQueue: {
-    storageType: 'localStorage'
-  }
+  url: 'wss://ws.anephenix.com',
+  storageType: 'local'
 });
 ```
 
 LocalStorage guarantees that the messages are persisted beyond browsers being
 closed and reopened, as well as when the page is opened in a new tab/window.
 
-**NOTE** When persisting messages
+**NOTE** When persisting messages, be careful that the messages are safe to
+persist in browser storage, and do not contain sensitive information. If you
+want messages to be wiped when the user closes the browser, use 'session' as
+the storage type.
+
+### Advanced options
+
+Sarus has a number of other options that you can pass to the client during
+initialization. They are listed in the example below:
+
+```javascript
+const sarus = new Sarus({
+  url: 'wss.anephenix.com',
+  retryProcessTimePeriod: 25,
+  storageKey: 'messageQueue'
+});
+```
+
+The `retryProcessTimePeriod` property is used to help buffer the time between
+trying to resend a message over a WebSocket connection. By default it is a
+number, 50 (for 50 miliseconds). You can adjust this value in the client
+instance.
+
+The `storageKey` property is a key that is used with sessionStorage and
+localStorage to store and retrieve the messages in the message queue.
 
 ### Developing locally and running tests
 
 ```
 npm t
 ```
+
+This will run tests with jest with code coverage output.
 
 ### License and Credits
 
