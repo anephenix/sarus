@@ -1,7 +1,7 @@
 # Sarus
 
 [![Coverage Status](https://coveralls.io/repos/github/anephenix/sarus/badge.svg?branch=master)](https://coveralls.io/github/anephenix/sarus?branch=master)
-[![CircleCI](https://circleci.com/gh/anephenix/sarus.svg?style=svg)](https://circleci.com/gh/anephenix/sarus)
+[![CircleCI](https://circleci.com/gh/anephenix/sarus.svg?style=svg)](https://circleci.com/gh/anephenix/sarus) [![Greenkeeper badge](https://badges.greenkeeper.io/anephenix/sarus.svg)](https://greenkeeper.io/)
 A WebSocket JavaScript library.
 
 ### Background
