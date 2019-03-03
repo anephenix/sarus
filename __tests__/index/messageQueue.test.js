@@ -50,11 +50,11 @@ describe('message queue', () => {
     expect(initializeBadConfig).toThrowError();
   });
 
-  it('should allow the developer to use sessionStorage for storing messages', async () => {
-    sessionStorage.clear();
+  const applyStorageTest = async (storageType, sarusConfig) => {
+    storageType.clear();
     const server = new WS(url);
-    const sarus = new Sarus({ url, storageType: 'session' });
-    expect(sarus.storageType).toBe('session');
+    const sarus = new Sarus(sarusConfig);
+    expect(sarus.storageType).toBe(sarusConfig.storageType);
     await server.connected;
     sarus.send('Hello server');
     await expect(server).toReceiveMessage('Hello server');
@@ -69,27 +69,14 @@ describe('message queue', () => {
     expect(messageOne).toBe('Hello again');
     expect(messageTwo).toBe('Here is another message');
     newServer.close();
+  };
+
+  it('should allow the developer to use sessionStorage for storing messages', async () => {
+    await applyStorageTest(sessionStorage, { url, storageType: 'session' });
   });
 
   it('should allow the developer to use localStorage for storing messages', async () => {
-    localStorage.clear();
-    const server = new WS(url);
-    const sarus = new Sarus({ url, storageType: 'local' });
-    expect(sarus.storageType).toBe('local');
-    await server.connected;
-    sarus.send('Hello server');
-    await expect(server).toReceiveMessage('Hello server');
-    server.close();
-    sarus.send('Hello again');
-    sarus.send('Here is another message');
-    expect(sarus.messages).toEqual(['Hello again', 'Here is another message']);
-    const newServer = new WS(url);
-    const messageOne = await server.nextMessage;
-    const messageTwo = await server.nextMessage;
-    expect(sarus.messages).toEqual([]);
-    expect(messageOne).toBe('Hello again');
-    expect(messageTwo).toBe('Here is another message');
-    newServer.close();
+    await applyStorageTest(localStorage, { url, storageType: 'local' });
   });
 
   it('should allow the developer to use a custom storageKey', () => {
