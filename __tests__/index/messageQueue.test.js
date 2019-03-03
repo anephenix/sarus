@@ -88,23 +88,21 @@ describe('message queue', () => {
     expect(sarus.storageKey).toBe('sarusWS');
   });
 
-  it('should load any existing messages from previous sessionStorage on initialization', () => {
-    let sarusOne = new Sarus({ url, storageType: 'session' });
+  const retrieveMessagesFromStorage = sarusConfig => {
+    let sarusOne = new Sarus(sarusConfig);
     sarusOne.send('Hello world');
     sarusOne.send('Hello again');
     sarusOne.__proto__ = null;
     sarusOne = null;
-    const sarusTwo = new Sarus({ url, storageType: 'session' });
+    const sarusTwo = new Sarus(sarusConfig);
     expect(sarusTwo.messages).toEqual(['Hello world', 'Hello again']);
+  };
+
+  it('should load any existing messages from previous sessionStorage on initialization', () => {
+    retrieveMessagesFromStorage({ url, storageType: 'session' });
   });
 
   it('should load any existing messages from previous localStorage on initialization', () => {
-    let sarusOne = new Sarus({ url, storageType: 'local' });
-    sarusOne.send('Hello world');
-    sarusOne.send('Hello again');
-    sarusOne.__proto__ = null;
-    sarusOne = null;
-    const sarusTwo = new Sarus({ url, storageType: 'local' });
-    expect(sarusTwo.messages).toEqual(['Hello world', 'Hello again']);
+    retrieveMessagesFromStorage({ url, storageType: 'local' });
   });
 });
