@@ -22,4 +22,4 @@
 - [x] Test loading messages stored in localStorage
 - [ ] Implement a way to configure WebSocket client options
 - [ ] Implement a way to retrieve messages from a server, based on a key indicator
-- [ ] Work out what to do when the message storage limit is reached (technically it should throw an error from the browser)
+- [ ] Work out what to do when the message storage limit is reached (technically the browser will throw a QUOTA_EXCEEDED_ERR)
