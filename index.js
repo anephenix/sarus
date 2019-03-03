@@ -1,30 +1,12 @@
-/**
- * A definitive list of events for a WebSocket client to listen on
- * @constant
- * @type {array}
- */
-const WS_EVENT_NAMES = ['open', 'close', 'message', 'error'];
-
-/**
- * Persistent data storage types
- * @constant
- * @type {array}
- */
-const DATA_STORAGE_TYPES = ['session', 'local'];
-
-/**
- * Serializes the data for storing in sessionStorage/localStorage
- * @param {*} data - the data that we want to serialize
- * @returns {string} - the serialized data
- */
-const serialize = data => JSON.stringify(data);
-
-/**
- * Deserializes the data stored in sessionStorage/localStorage
- * @param {string} data - the data that we want to deserialize
- * @returns {*} The deserialized data
- */
-const deserialize = data => JSON.parse(data);
+// File Dependencies
+const { WS_EVENT_NAMES, DATA_STORAGE_TYPES } = require('./lib/constants');
+const { serialize, deserialize } = require('./lib/dataTransformer');
+const {
+  validateRetryProcessTimePeriod,
+  validateEvents,
+  validateEventFunctionLists,
+  prefillMissingEvents
+} = require('./lib/validators');
 
 /**
  * Retrieves the messages in the message queue from one of either
@@ -74,7 +56,7 @@ class Sarus {
       to another value by the developer.
     */
     this.retryProcessTimePeriod =
-      this.validateRetryProcessTimePeriod(retryProcessTimePeriod) || 50;
+      validateRetryProcessTimePeriod(retryProcessTimePeriod) || 50;
     /*
       This handles attaching event listeners to the WebSocket connection
       at initialization. 
@@ -195,64 +177,6 @@ class Sarus {
   }
 
   /**
-   * Validates the retryProcessTimePeriod parameter
-   * @param {number} retryProcessTimePeriod - How long the time period between retrying to send a messgae to a WebSocket server should be
-   * @returns {number} The number in miliseconds for the retryProcessTimePeriod
-   */
-  validateRetryProcessTimePeriod(retryProcessTimePeriod) {
-    if (!retryProcessTimePeriod) return null;
-    if (typeof retryProcessTimePeriod !== 'number') {
-      throw new Error('retryProcessTimePeriod must be a number');
-    }
-    return retryProcessTimePeriod;
-  }
-
-  /**
-   * Validates that the event passed in is a valid eventListener event
-   * @param {string} event - the event name
-   */
-  validateEvent(event) {
-    if (WS_EVENT_NAMES.indexOf(event) === -1) {
-      throw new Error(`${event} is not a valid eventListener event`);
-    }
-  }
-
-  /**
-   * Loops through a list of events in the eventListeners object to validate them
-   * @param {object} eventListeners
-   */
-  validateEvents(eventListeners) {
-    const eventList = Object.keys(eventListeners);
-    eventList.forEach(this.validateEvent);
-  }
-
-  /**
-   * Validates the data structure of the eventListeners object to make sure that it is correct
-   * @param {object} eventListeners - The eventListeners object parameter
-   */
-  validateEventFunctionLists(eventListeners) {
-    for (let eventName in eventListeners) {
-      if (!(eventListeners[eventName] instanceof Array)) {
-        throw new Error(
-          `The ${eventName} event listener must be an array of functions`
-        );
-      }
-    }
-  }
-
-  /**
-   * Makes sure that any eventListeners object which might miss an event will have them prefilled in
-   * @param {object} eventListeners - The eventListeners object parameter
-   * @returns {object} The eventListeners object parameter, with any missing events prefilled in
-   */
-  prefillMissingEvents(eventListeners) {
-    WS_EVENT_NAMES.forEach(eventName => {
-      if (!eventListeners[eventName]) eventListeners[eventName] = [];
-    });
-    return eventListeners;
-  }
-
-  /**
    * Audits the eventListeners object parameter with validations, and a prefillMissingEvents step
    * This ensures that the eventListeners object is the right format for binding events to WebSocket clients
    * @param {object} eventListeners - The eventListeners object parameter
@@ -260,9 +184,9 @@ class Sarus {
    */
   auditEventListeners(eventListeners) {
     if (!eventListeners) return false;
-    this.validateEvents(eventListeners);
-    this.validateEventFunctionLists(eventListeners);
-    return this.prefillMissingEvents(eventListeners);
+    validateEvents(eventListeners);
+    validateEventFunctionLists(eventListeners);
+    return prefillMissingEvents(eventListeners);
   }
 
   /**
