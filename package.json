@@ -5,12 +5,14 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
+    "coveralls": "^3.0.3",
     "jest": "^24.1.0",
     "jest-websocket-mock": "^1.1.1",
     "jsdoc": "^3.5.5",
     "mock-socket": "^8.0.5"
   },
   "scripts": {
+    "cover": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "test": "jest --coverage"
   },
   "repository": {
