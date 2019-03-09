@@ -43,6 +43,7 @@ class Sarus {
       eventListeners,
       reconnectAutomatically,
       retryProcessTimePeriod,
+      retryStrategy,
       storageType,
       storageKey
     } = props;
@@ -70,6 +71,13 @@ class Sarus {
       developer at initialization
     */
     this.reconnectAutomatically = !(reconnectAutomatically === false);
+
+    /*
+      This handles how quickly retry a WebSocket connection, whether it is 
+      instant, or whether to delay by a small period of time (the default is 
+      1000ms). 
+    */
+    this.retryStrategy = retryStrategy || null;
 
     /*
       Sets the storage type for the messages in the message queue. By default
@@ -100,6 +108,8 @@ class Sarus {
     this.messages = this.messages || [];
 
     // This binds the process function call.
+    this.reconnect = this.reconnect.bind(this);
+    this.connect = this.connect.bind(this);
     this.process = this.process.bind(this);
     this.connect();
   }
@@ -203,8 +213,20 @@ class Sarus {
    * Connects the WebSocket client, and attaches event listeners
    */
   connect() {
+    this;
     this.ws = new WebSocket(this.url);
     this.attachEventListeners();
+  }
+
+  /**
+   * Reconnects the WebSocket client based on the retryStrategy setting.
+   */
+  reconnect() {
+    const self = this;
+    if (!self.retryStrategy || self.retryStrategy !== 'fixed')
+      return self.connect();
+    // Wait 1 second before connecting
+    setTimeout(self.connect, 1000);
   }
 
   /**
@@ -303,7 +325,7 @@ class Sarus {
       self.ws[`on${eventName}`] = e => {
         self.eventListeners[eventName].forEach(f => f(e));
         if (eventName === 'close' && self.reconnectAutomatically) {
-          self.connect();
+          self.reconnect();
         }
       };
     });
