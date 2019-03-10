@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.1.0 - Sunday 10th March, 2019
+
+- Added a new feature: retryConnectionDelay
+- Updated documentation
+
 ### 0.0.2 - Sunday 3rd March, 2019
 
 - Refactored the code

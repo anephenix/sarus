@@ -17,3 +17,6 @@ of exponential backoff.
 Feature:
 
 - Introduce an exponential back-off strategy to Sarus in the near future.
+
+Note - there is a `retryConnectionDelay` option - perhaps this could be used to
+support the feature by passing a function that implements exponential back-off.
