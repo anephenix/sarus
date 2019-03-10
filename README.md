@@ -165,7 +165,7 @@ const sarus = new Sarus({
 Our recommendation is to enable this option by passing `true`. The reason for
 this is because we are seeing an issue where event listeners that were attached
 to closed WebSocket connections are not getting garbage collected in the
-web browser (see "event listner garbage collection" in issues)[https://github.com/anephenix/sarus/issues].
+web browser (see "event listener garbage collection" in issues)[https://github.com/anephenix/sarus/issues].
 
 Even though those event listeners will not be emitted (as they are attached to
 a severed WebSocket connection), they still exist in the web browsers memory.
