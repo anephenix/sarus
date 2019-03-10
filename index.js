@@ -31,6 +31,7 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
  * @param {object} param0.eventListeners - An optional object containing event listener functions keyed to websocket events
  * @param {boolean} param0.reconnectAutomatically - An optional boolean flag to indicate whether to reconnect automatically when a websocket connection is severed
  * @param {number} param0.retryProcessTimePeriod - An optional number for how long the time period between retrying to send a messgae to a WebSocket server should be
+ * @param {boolean|number} param0.retryConnectionDelay - An optional parameter for whether to delay WebSocket reconnection attempts by a time period. If true, the delay is 1000ms, otherwise it is the number passed
  * @param {string} param0.storageType - An optional string specifying the type of storage to use for persisting messages in the message queue
  * @param {string} param0.storageKey - An optional string specifying the key used to store the messages data against in sessionStorage/localStorage
  * @returns {object} The class instance
@@ -43,6 +44,7 @@ class Sarus {
       eventListeners,
       reconnectAutomatically,
       retryProcessTimePeriod,
+      retryConnectionDelay,
       storageType,
       storageKey
     } = props;
@@ -70,6 +72,13 @@ class Sarus {
       developer at initialization
     */
     this.reconnectAutomatically = !(reconnectAutomatically === false);
+
+    /*
+      This handles whether to add a time delay to reconnecting the WebSocket
+      client. If true, a 1000ms delay is added. If a number, that number (as 
+      miliseconds) is used as the delay. Default is false.
+    */
+    this.retryConnectionDelay = retryConnectionDelay || false;
 
     /*
       Sets the storage type for the messages in the message queue. By default
@@ -100,6 +109,8 @@ class Sarus {
     this.messages = this.messages || [];
 
     // This binds the process function call.
+    this.reconnect = this.reconnect.bind(this);
+    this.connect = this.connect.bind(this);
     this.process = this.process.bind(this);
     this.connect();
   }
@@ -203,8 +214,33 @@ class Sarus {
    * Connects the WebSocket client, and attaches event listeners
    */
   connect() {
+    this;
     this.ws = new WebSocket(this.url);
     this.attachEventListeners();
+  }
+
+  /**
+   * Reconnects the WebSocket client based on the retryConnectionDelay setting.
+   */
+  reconnect() {
+    const self = this;
+    const { retryConnectionDelay } = self;
+    switch (typeof retryConnectionDelay) {
+      case 'boolean':
+        if (retryConnectionDelay) {
+          setTimeout(self.connect, 1000);
+        } else {
+          self.connect();
+        }
+        break;
+      case 'number':
+        setTimeout(self.connect, retryConnectionDelay);
+        break;
+      default:
+        throw new Error(
+          'retryConnectionDelay should be either a boolean or a number'
+        );
+    }
   }
 
   /**
@@ -303,7 +339,7 @@ class Sarus {
       self.ws[`on${eventName}`] = e => {
         self.eventListeners[eventName].forEach(f => f(e));
         if (eventName === 'close' && self.reconnectAutomatically) {
-          self.connect();
+          self.reconnect();
         }
       };
     });
