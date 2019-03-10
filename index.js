@@ -31,6 +31,7 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
  * @param {object} param0.eventListeners - An optional object containing event listener functions keyed to websocket events
  * @param {boolean} param0.reconnectAutomatically - An optional boolean flag to indicate whether to reconnect automatically when a websocket connection is severed
  * @param {number} param0.retryProcessTimePeriod - An optional number for how long the time period between retrying to send a messgae to a WebSocket server should be
+ * @param {boolean|number} param0.retryConnectionDelay - An optional parameter for whether to delay WebSocket reconnection attempts by a time period. If true, the delay is 1000ms, otherwise it is the number passed
  * @param {string} param0.storageType - An optional string specifying the type of storage to use for persisting messages in the message queue
  * @param {string} param0.storageKey - An optional string specifying the key used to store the messages data against in sessionStorage/localStorage
  * @returns {object} The class instance
@@ -43,7 +44,7 @@ class Sarus {
       eventListeners,
       reconnectAutomatically,
       retryProcessTimePeriod,
-      retryStrategy,
+      retryConnectionDelay,
       storageType,
       storageKey
     } = props;
@@ -73,11 +74,11 @@ class Sarus {
     this.reconnectAutomatically = !(reconnectAutomatically === false);
 
     /*
-      This handles how quickly retry a WebSocket connection, whether it is 
-      instant, or whether to delay by a small period of time (the default is 
-      1000ms). 
+      This handles whether to add a time delay to reconnecting the WebSocket
+      client. If true, a 1000ms delay is added. If a number, that number (as 
+      miliseconds) is used as the delay. Default is false.
     */
-    this.retryStrategy = retryStrategy || null;
+    this.retryConnectionDelay = retryConnectionDelay || false;
 
     /*
       Sets the storage type for the messages in the message queue. By default
@@ -219,14 +220,27 @@ class Sarus {
   }
 
   /**
-   * Reconnects the WebSocket client based on the retryStrategy setting.
+   * Reconnects the WebSocket client based on the retryConnectionDelay setting.
    */
   reconnect() {
     const self = this;
-    if (!self.retryStrategy || self.retryStrategy !== 'fixed')
-      return self.connect();
-    // Wait 1 second before connecting
-    setTimeout(self.connect, 1000);
+    const { retryConnectionDelay } = self;
+    switch (typeof retryConnectionDelay) {
+      case 'boolean':
+        if (retryConnectionDelay) {
+          setTimeout(self.connect, 1000);
+        } else {
+          self.connect();
+        }
+        break;
+      case 'number':
+        setTimeout(self.connect, retryConnectionDelay);
+        break;
+      default:
+        throw new Error(
+          'retryConnectionDelay should be either a boolean or a number'
+        );
+    }
   }
 
   /**
