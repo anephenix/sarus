@@ -169,7 +169,7 @@ to closed WebSocket connections are not getting garbage collected in the
 web browser ([See GitHub issue: "Event listener garbage collection"](https://github.com/anephenix/sarus/issues/2)).
 
 Even though those event listeners will not be emitted (as they are attached to
-a severed WebSocket connection), they still exist in the web browsers memory.
+a severed WebSocket connection), they still exist in the web browser's memory.
 We are trying to identify the root cause of that issue, and resolve it.
 
 #### Attaching and removing event listeners
