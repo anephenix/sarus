@@ -214,7 +214,6 @@ class Sarus {
    * Connects the WebSocket client, and attaches event listeners
    */
   connect() {
-    this;
     this.ws = new WebSocket(this.url);
     this.attachEventListeners();
   }
@@ -241,6 +240,15 @@ class Sarus {
           'retryConnectionDelay should be either a boolean or a number'
         );
     }
+  }
+
+  disconnect(overrideDisableReconnect) {
+    const self = this;
+    // We do this to prevent automatic reconnections;
+    if (!overrideDisableReconnect) {
+      self.reconnectAutomatically = false;
+    }
+    self.ws.close();
   }
 
   /**
