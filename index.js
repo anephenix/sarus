@@ -242,6 +242,12 @@ class Sarus {
     }
   }
 
+  /**
+   * Disconnects the WebSocket client from the server, and changes the
+   * reconnectAutomatically flag to disable automatic reconnection, unless the
+   * developer passes a boolean flag to not do that.
+   * @param {boolean} overrideDisableReconnect
+   */
   disconnect(overrideDisableReconnect) {
     const self = this;
     // We do this to prevent automatic reconnections;
