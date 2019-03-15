@@ -147,8 +147,8 @@ sarus.disconnect();
 
 Calling that function on the sarus client will do 2 things:
 
-1 - Set the `reconnectAutomatically` flag to false.
-2 - Close the WebSocket connection.
+1. Set the `reconnectAutomatically` flag to false.
+2. Close the WebSocket connection.
 
 Event listeners listening on the WebSocket's close event will still trigger,
 but the client will not attempt to reconnect automatically.
