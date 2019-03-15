@@ -136,6 +136,31 @@ const sarus = new Sarus({
 });
 ```
 
+#### Disconnecting a WebSocket connection
+
+There may be a case where you wish to close a WebSocket connection (such as
+when logging out of a service). Sarus provides a way to do that:
+
+```javascript
+sarus.disconnect();
+```
+
+Calling that function on the sarus client will do 2 things:
+
+1 - Set the `reconnectAutomatically` flag to false.
+2 - Close the WebSocket connection.
+
+Event listeners listening on the WebSocket's close event will still trigger,
+but the client will not attempt to reconnect automatically.
+
+If you wish to close the WebSocket but not override the `reconnectAutomatically` flag, pass this:
+
+```javascript
+sarus.disconnect(true);
+```
+
+The client will attempt to reconnect automatically.
+
 #### Delaying WebSocket reconnection attempts
 
 When a connection is severed and the sarus client tries to reconnect
