@@ -328,6 +328,17 @@ class Sarus {
   }
 
   /**
+   * Sends a message over the WebSocket, removes the message from the queue,
+   * and calls proces again if there is another message to process.
+   * @param {string} data - The data payload to send over the WebSocket
+   */
+  processMessage(data) {
+    this.ws.send(data);
+    this.removeMessage();
+    if (this.messages.length > 0) this.process();
+  }
+
+  /**
    * Processes messages that are on the message queue. Handles looping through the list, as well as retrying message
    * dispatch if the WebSocket connection is not open.
    */
@@ -336,9 +347,7 @@ class Sarus {
     const data = messages[0];
     if (!data && messages.length === 0) return;
     if (this.ws.readyState === 1) {
-      this.ws.send(data);
-      this.removeMessage();
-      if (this.messages.length > 0) this.process();
+      this.processMessage(data);
     } else {
       setTimeout(this.process, this.retryProcessTimePeriod);
     }
