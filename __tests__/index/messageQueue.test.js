@@ -92,10 +92,10 @@ describe('message queue', () => {
     let sarusOne = new Sarus(sarusConfig);
     sarusOne.send('Hello world');
     sarusOne.send('Hello again');
-    sarusOne.__proto__ = null;
-    sarusOne = null;
+    sarusOne.disconnect();
     const sarusTwo = new Sarus(sarusConfig);
     expect(sarusTwo.messages).toEqual(['Hello world', 'Hello again']);
+    return sarusTwo;
   };
 
   it('should load any existing messages from previous sessionStorage on initialization', () => {
@@ -104,5 +104,37 @@ describe('message queue', () => {
 
   it('should load any existing messages from previous localStorage on initialization', () => {
     retrieveMessagesFromStorage({ url, storageType: 'local' });
+  });
+
+  it('should process any existing messages from previous sessionStorage on initialization', async () => {
+    sessionStorage.clear();
+    const sarusTwo = retrieveMessagesFromStorage({
+      url,
+      storageType: 'session',
+      reconnectAutomatically: true
+    });
+    const server = new WS(url);
+    const messageOne = await server.nextMessage;
+    const messageTwo = await server.nextMessage;
+    expect(sarusTwo.messages).toEqual([]);
+    expect(messageOne).toBe('Hello world');
+    expect(messageTwo).toBe('Hello again');
+    server.close();
+  });
+
+  it('should process any existing messages from previous localStorage on initialization', async () => {
+    localStorage.clear();
+    const sarusTwo = retrieveMessagesFromStorage({
+      url,
+      storageType: 'local',
+      reconnectAutomatically: true
+    });
+    const server = new WS(url);
+    const messageOne = await server.nextMessage;
+    const messageTwo = await server.nextMessage;
+    expect(sarusTwo.messages).toEqual([]);
+    expect(messageOne).toBe('Hello world');
+    expect(messageTwo).toBe('Hello again');
+    server.close();
   });
 });

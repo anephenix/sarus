@@ -216,6 +216,7 @@ class Sarus {
   connect() {
     this.ws = new WebSocket(this.url);
     this.attachEventListeners();
+    if (this.messages.length > 0) this.process();
   }
 
   /**
@@ -333,6 +334,7 @@ class Sarus {
   process() {
     const { messages } = this;
     const data = messages[0];
+    if (!data && messages.length === 0) return;
     if (this.ws.readyState === 1) {
       this.ws.send(data);
       this.removeMessage();
