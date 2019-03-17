@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### 0.2.1 - Sunday 17th March, 2019
+
+- Fixed a bug where messages stored in persistent storage were not being popped
+  off of the message queue by new Sarus clients.
+- Added GitHub issue templates
+- Added CONTRIBUTING.md
+- Added CODE_OF_CONDUCT.md
+- Added some missing JSdoc code comments
+
 ### 0.2.0 - Friday 15th March, 2019
 
 - Added a new feature: sarus.disconnect(); Disconnects the WebSocket connection
