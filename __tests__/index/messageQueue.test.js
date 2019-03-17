@@ -98,6 +98,21 @@ describe('message queue', () => {
     return sarusTwo;
   };
 
+  const processExistingMessagesFromStorage = async (
+    storageType,
+    sarusConfig
+  ) => {
+    storageType.clear();
+    const sarusTwo = retrieveMessagesFromStorage(sarusConfig);
+    const server = new WS(url);
+    const messageOne = await server.nextMessage;
+    const messageTwo = await server.nextMessage;
+    expect(sarusTwo.messages).toEqual([]);
+    expect(messageOne).toBe('Hello world');
+    expect(messageTwo).toBe('Hello again');
+    return server.close();
+  };
+
   it('should load any existing messages from previous sessionStorage on initialization', () => {
     retrieveMessagesFromStorage({ url, storageType: 'session' });
   });
@@ -107,34 +122,18 @@ describe('message queue', () => {
   });
 
   it('should process any existing messages from previous sessionStorage on initialization', async () => {
-    sessionStorage.clear();
-    const sarusTwo = retrieveMessagesFromStorage({
+    await processExistingMessagesFromStorage(sessionStorage, {
       url,
       storageType: 'session',
       reconnectAutomatically: true
     });
-    const server = new WS(url);
-    const messageOne = await server.nextMessage;
-    const messageTwo = await server.nextMessage;
-    expect(sarusTwo.messages).toEqual([]);
-    expect(messageOne).toBe('Hello world');
-    expect(messageTwo).toBe('Hello again');
-    server.close();
   });
 
   it('should process any existing messages from previous localStorage on initialization', async () => {
-    localStorage.clear();
-    const sarusTwo = retrieveMessagesFromStorage({
+    await processExistingMessagesFromStorage(localStorage, {
       url,
       storageType: 'local',
       reconnectAutomatically: true
     });
-    const server = new WS(url);
-    const messageOne = await server.nextMessage;
-    const messageTwo = await server.nextMessage;
-    expect(sarusTwo.messages).toEqual([]);
-    expect(messageOne).toBe('Hello world');
-    expect(messageTwo).toBe('Hello again');
-    server.close();
   });
 });
