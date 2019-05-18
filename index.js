@@ -59,6 +59,7 @@ class Sarus {
     */
     this.retryProcessTimePeriod =
       validateRetryProcessTimePeriod(retryProcessTimePeriod) || 50;
+
     /*
       This handles attaching event listeners to the WebSocket connection
       at initialization. 
