@@ -9,7 +9,7 @@
     "jest": "^24.8.0",
     "jest-websocket-mock": "^1.4.0",
     "jsdoc": "^3.6.2",
-    "mock-socket": "^8.0.5"
+    "mock-socket": "^9.0.0"
   },
   "scripts": {
     "cover": "jest --coverage --coverageReporters=text-lcov | coveralls",
