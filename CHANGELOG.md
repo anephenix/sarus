@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.2.2 - Thursday 10th October, 2019
+
+- Added support for specifying the protocol to use with the WebSocket connection
+- Updated dependencies
+
 ### 0.2.1 - Sunday 17th March, 2019
 
 - Fixed a bug where messages stored in persistent storage were not being popped

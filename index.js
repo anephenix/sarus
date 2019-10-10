@@ -28,6 +28,7 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
  * @constructor
  * @param {Object} param0 - An object containing parameters
  * @param {string} param0.url - The url for the WebSocket client to connect to
+ * @param {string\array} param0.protocols - An optional string or array of strings for the sub-protocols that the WebSocket will use
  * @param {object} param0.eventListeners - An optional object containing event listener functions keyed to websocket events
  * @param {boolean} param0.reconnectAutomatically - An optional boolean flag to indicate whether to reconnect automatically when a websocket connection is severed
  * @param {number} param0.retryProcessTimePeriod - An optional number for how long the time period between retrying to send a messgae to a WebSocket server should be
@@ -41,6 +42,7 @@ class Sarus {
     // Extract the properties that are passed to the class
     const {
       url,
+      protocols,
       eventListeners,
       reconnectAutomatically,
       retryProcessTimePeriod,
@@ -51,6 +53,9 @@ class Sarus {
 
     // Sets the WebSocket server url for the client to connect to.
     this.url = url;
+
+    // Sets an optional protocols value, which can be either a string or an array of strings
+    this.protocols = protocols;
 
     /*
       When attempting to re-send a message when the WebSocket connection is 
@@ -215,7 +220,7 @@ class Sarus {
    * Connects the WebSocket client, and attaches event listeners
    */
   connect() {
-    this.ws = new WebSocket(this.url);
+    this.ws = new WebSocket(this.url, this.protocols);
     this.attachEventListeners();
     if (this.messages.length > 0) this.process();
   }

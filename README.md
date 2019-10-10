@@ -357,10 +357,14 @@ initialization. They are listed in the example below:
 ```javascript
 const sarus = new Sarus({
   url: 'wss.anephenix.com',
+  protocols: 'hybi-00',
   retryProcessTimePeriod: 25,
   storageKey: 'messageQueue'
 });
 ```
+
+The `protocols` property is used to specify the sub-protocol that the WebSocket
+connection should use. You can pass either a string, or an array of strings.
 
 The `retryProcessTimePeriod` property is used to help buffer the time between
 trying to resend a message over a WebSocket connection. By default it is a
