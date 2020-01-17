@@ -22,6 +22,7 @@
 - [x] Test loading messages stored in localStorage
 - [x] Implement a way to configure WebSocket client options
 - [ ] Implement a way to retrieve messages from a server, based on a key indicator
-- [ ] Work out what to do when the message storage limit is reached (technically the browser will throw a QUOTA_EXCEEDED_ERR)
+- [x] Work out what to do when the message storage limit is reached (technically the browser will throw a QUOTA_EXCEEDED_ERR)
 - [ ] Work out how to support sending binary data instead of string data
 - [ ] Think about how to support higher-level use cases of WebSockets (rpc, pubsub) via a plugin architecture.
+- [ ] TypeScript definitions
