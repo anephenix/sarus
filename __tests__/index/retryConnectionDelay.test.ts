@@ -1,8 +1,8 @@
 // File Dependencies
-const Sarus = require('../../index');
-const { WS } = require('jest-websocket-mock');
+import Sarus from "../../src/index";
+import { WS } from "jest-websocket-mock";
 
-const url = 'ws://localhost:1234';
+const url = "ws://localhost:1234";
 
 const delay = duration => new Promise(resolve => setTimeout(resolve, duration));
 const condition = func => {
@@ -16,9 +16,9 @@ const condition = func => {
   });
 };
 
-describe('retry connection delay', () => {
-  describe('when passed as true', () => {
-    it('should delay the reconnection attempt by 1 second', async () => {
+describe("retry connection delay", () => {
+  describe("when passed as true", () => {
+    it("should delay the reconnection attempt by 1 second", async () => {
       const server = new WS(url);
       const sarus = new Sarus({ url, retryConnectionDelay: true });
       await server.connected;
@@ -36,8 +36,8 @@ describe('retry connection delay', () => {
       newServer.close();
     });
 
-    describe('when passed as a number', () => {
-      it('should delay the reconnection attempt by that number', async () => {
+    describe("when passed as a number", () => {
+      it("should delay the reconnection attempt by that number", async () => {
         const server = new WS(url);
         const sarus = new Sarus({ url, retryConnectionDelay: 500 });
         await server.connected;
@@ -60,12 +60,12 @@ describe('retry connection delay', () => {
     });
   });
 
-  describe('when passed as not a boolean or a number', () => {
-    it('should throw an error', async () => {
+  describe("when passed as not a boolean or a number", () => {
+    it("should throw an error", async () => {
       const server = new WS(url);
       const sarus = new Sarus({
         url,
-        retryConnectionDelay: 'yes',
+        retryConnectionDelay: "yes",
         reconnectAutomatically: false
       });
 

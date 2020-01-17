@@ -1,12 +1,17 @@
 // File Dependencies
-const { WS_EVENT_NAMES, DATA_STORAGE_TYPES } = require('./lib/constants');
-const { serialize, deserialize } = require('./lib/dataTransformer');
-const {
+import { WS_EVENT_NAMES, DATA_STORAGE_TYPES } from "./lib/constants";
+import { serialize, deserialize } from "./lib/dataTransformer";
+import {
   validateRetryProcessTimePeriod,
   validateEvents,
   validateEventFunctionLists,
   prefillMissingEvents
-} = require('./lib/validators');
+} from "./lib/validators";
+
+interface StorageParams {
+  storageType: string;
+  storageKey: string;
+}
 
 /**
  * Retrieves the messages in the message queue from one of either
@@ -16,9 +21,10 @@ const {
  * @param {string} param0.storageType - The type of storage used
  * @returns {*}
  */
-const getMessagesFromStore = ({ storageType, storageKey }) => {
+const getMessagesFromStore = ({ storageType, storageKey }: StorageParams) => {
   if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
-    const rawData = window[`${storageType}Storage`].getItem(storageKey);
+    const storageTypeApi: string = `${storageType}Storage`;
+    const rawData: string = window[storageTypeApi].getItem(storageKey);
     return deserialize(rawData);
   }
 };
@@ -37,8 +43,41 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
  * @param {string} param0.storageKey - An optional string specifying the key used to store the messages data against in sessionStorage/localStorage
  * @returns {object} The class instance
  */
-class Sarus {
-  constructor(props) {
+export default class Sarus {
+  // Constructor params
+  url: string;
+  protocols: string | Array<string>;
+  eventListeners: {
+    open: Array<Function>;
+    message: Array<Function>;
+    error: Array<Function>;
+    close: Array<Function>;
+  };
+  retryProcessTimePeriod: number;
+  reconnectAutomatically: boolean;
+  retryConnectionDelay: boolean | number;
+  storageType: string;
+  storageKey: string;
+
+  // Internally set
+  messageStore: any;
+  ws: WebSocket | undefined;
+
+  constructor(props: {
+    url: string;
+    protocols: string | Array<string>;
+    eventListeners: {
+      open: Array<Function>;
+      message: Array<Function>;
+      error: Array<Function>;
+      close: Array<Function>;
+    };
+    retryProcessTimePeriod: number;
+    reconnectAutomatically: boolean;
+    retryConnectionDelay: boolean | number;
+    storageType: string;
+    storageKey: string;
+  }) {
     // Extract the properties that are passed to the class
     const {
       url,
@@ -91,7 +130,7 @@ class Sarus {
       it is an in-memory option, but can also be set as 'session' for 
       sessionStorage or 'local' for localStorage data persistence.
     */
-    this.storageType = storageType || 'memory';
+    this.storageType = storageType || "memory";
 
     /*
       When using 'session' or 'local' as the storageType, the storage key is
@@ -99,7 +138,7 @@ class Sarus {
       
       It can also be configured by the developer during initialization.
     */
-    this.storageKey = storageKey || 'sarus';
+    this.storageKey = storageKey || "sarus";
 
     /*
       When initializing the client, if we are using sessionStorage/localStorage
@@ -141,12 +180,13 @@ class Sarus {
    * @param {*} data - the data payload to set for the messages in the message queue
    * @returns {*} the data payload
    */
-  set messages(data) {
+  set messages(data: any) {
     const { storageType, storageKey } = this;
     if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
-      window[`${storageType}Storage`].setItem(storageKey, serialize(data));
+      const storageTypeApi: string = `${storageType}Storage`;
+      window[storageTypeApi].setItem(storageKey, serialize(data));
     }
-    if (storageType === 'memory') {
+    if (storageType === "memory") {
       this.messageStore = data;
     }
     return data;
@@ -157,7 +197,7 @@ class Sarus {
    * @param {*} data - the message
    * @returns {array} the messages in the message queue
    */
-  addMessageToStore(data) {
+  addMessageToStore(data: any) {
     const { messages, storageType } = this;
     if (DATA_STORAGE_TYPES.indexOf(storageType) === -1) return null;
     return (this.messages = [...messages, data]);
@@ -167,7 +207,7 @@ class Sarus {
    * Adds a messge to the message queue
    * @param {*} data - the data payload to put on the message queue
    */
-  addMessage(data) {
+  addMessage(data: any) {
     const { messages } = this;
     this.addMessageToStore(data) || messages.push(data);
   }
@@ -176,7 +216,7 @@ class Sarus {
    * Removes a message from the message queue that is in persistent storage
    * @param {*} messages - the messages in the message queue
    */
-  removeMessageFromStore(messages) {
+  removeMessageFromStore(messages: any) {
     const newArray = [...messages];
     newArray.shift();
     this.messages = newArray;
@@ -199,7 +239,7 @@ class Sarus {
    * @param {object} eventListeners - The eventListeners object parameter
    * @returns {object} The eventListeners object parameter, with any missing events prefilled in
    */
-  auditEventListeners(eventListeners) {
+  auditEventListeners(eventListeners: object) {
     if (!eventListeners) return false;
     validateEvents(eventListeners);
     validateEventFunctionLists(eventListeners);
@@ -232,19 +272,19 @@ class Sarus {
     const self = this;
     const { retryConnectionDelay } = self;
     switch (typeof retryConnectionDelay) {
-      case 'boolean':
+      case "boolean":
         if (retryConnectionDelay) {
           setTimeout(self.connect, 1000);
         } else {
           self.connect();
         }
         break;
-      case 'number':
+      case "number":
         setTimeout(self.connect, retryConnectionDelay);
         break;
       default:
         throw new Error(
-          'retryConnectionDelay should be either a boolean or a number'
+          "retryConnectionDelay should be either a boolean or a number"
         );
     }
   }
@@ -255,7 +295,7 @@ class Sarus {
    * developer passes a boolean flag to not do that.
    * @param {boolean} overrideDisableReconnect
    */
-  disconnect(overrideDisableReconnect) {
+  disconnect(overrideDisableReconnect: boolean) {
     const self = this;
     // We do this to prevent automatic reconnections;
     if (!overrideDisableReconnect) {
@@ -269,7 +309,7 @@ class Sarus {
    * @param {string} eventName - The name of the event in the eventListeners object
    * @param {function} eventFunc - The function to trigger when the event occurs
    */
-  on(eventName, eventFunc) {
+  on(eventName: string, eventFunc: Function) {
     if (this.eventListeners[eventName].indexOf(eventFunc) !== -1) {
       throw new Error(
         `${eventFunc.name} has already been added to this event Listener`
@@ -284,8 +324,8 @@ class Sarus {
    * @param {function|string} eventFuncOrName - Either the function to remove, or the name of the function to remove
    * @returns {function|undefined} The existing function, or nothing
    */
-  findFunction(eventName, eventFuncOrName) {
-    if (typeof eventFuncOrName === 'string') {
+  findFunction(eventName: string, eventFuncOrName: string | Function) {
+    if (typeof eventFuncOrName === "string") {
       const byName = f => f.name === eventFuncOrName;
       return this.eventListeners[eventName].find(byName);
     } else {
@@ -301,10 +341,17 @@ class Sarus {
    * @param {object} opts - An optional object to pass that contains extra configuration options
    * @param {boolean} opts.doNotThrowError - A boolean flag that indicates whether to not throw an error if the function to remove is not found in the list
    */
-  raiseErrorIfFunctionIsMissing(existingFunc, opts) {
+  raiseErrorIfFunctionIsMissing(
+    existingFunc: Function | undefined,
+    opts:
+      | {
+          doNotThrowError: boolean;
+        }
+      | undefined
+  ) {
     if (!existingFunc) {
       if (!(opts && opts.doNotThrowError)) {
-        throw new Error('Function does not exist in eventListener list');
+        throw new Error("Function does not exist in eventListener list");
       }
     }
   }
@@ -316,7 +363,11 @@ class Sarus {
    * @param {object} opts - An optional object to pass that contains extra configuration options
    * @param {boolean} opts.doNotThrowError - A boolean flag that indicates whether to not throw an error if the function to remove is not found in the list
    */
-  off(eventName, eventFuncOrName, opts) {
+  off(
+    eventName: string,
+    eventFuncOrName: Function | string,
+    opts: { doNotThrowError: boolean } | undefined
+  ) {
     const existingFunc = this.findFunction(eventName, eventFuncOrName);
     this.raiseErrorIfFunctionIsMissing(existingFunc, opts);
     const index = this.eventListeners[eventName].indexOf(existingFunc);
@@ -327,7 +378,7 @@ class Sarus {
    * Puts data on a message queue, and then processes the message queue to get the data sent to the WebSocket server
    * @param {*} data - The data payload to put the on message queue
    */
-  send(data) {
+  send(data: any) {
     const callProcessAfterwards = this.messages.length === 0;
     this.addMessage(data);
     if (callProcessAfterwards) this.process();
@@ -338,7 +389,7 @@ class Sarus {
    * and calls proces again if there is another message to process.
    * @param {string} data - The data payload to send over the WebSocket
    */
-  processMessage(data) {
+  processMessage(data: string) {
     this.ws.send(data);
     this.removeMessage();
     if (this.messages.length > 0) this.process();
@@ -369,15 +420,10 @@ class Sarus {
     WS_EVENT_NAMES.forEach(eventName => {
       self.ws[`on${eventName}`] = e => {
         self.eventListeners[eventName].forEach(f => f(e));
-        if (eventName === 'close' && self.reconnectAutomatically) {
+        if (eventName === "close" && self.reconnectAutomatically) {
           self.reconnect();
         }
       };
     });
   }
 }
-
-/**
- * Export the Sarus class as a commonjs module
- */
-module.exports = Sarus;

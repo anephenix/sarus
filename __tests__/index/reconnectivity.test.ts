@@ -1,11 +1,11 @@
 // File Dependencies
-const Sarus = require('../../index');
-const { WS } = require('jest-websocket-mock');
+import Sarus from "../../src/index";
+import { WS } from "jest-websocket-mock";
 
-const url = 'ws://localhost:1234';
+const url = "ws://localhost:1234";
 
-describe('automatic reconnectivity', () => {
-  it('should reconnect the WebSocket connection when it is severed', async () => {
+describe("automatic reconnectivity", () => {
+  it("should reconnect the WebSocket connection when it is severed", async () => {
     const server = new WS(url);
     const mockConnect = jest.fn();
     const sarus = new Sarus({ url });
@@ -15,7 +15,7 @@ describe('automatic reconnectivity', () => {
     expect(sarus.connect).toBeCalled();
   });
 
-  it('should not reconnect if automatic reconnection is disabled', async () => {
+  it("should not reconnect if automatic reconnection is disabled", async () => {
     const server = new WS(url);
     const mockConnect = jest.fn();
     const sarus = new Sarus({
