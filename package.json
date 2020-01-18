@@ -4,8 +4,10 @@
   "description": "A WebSocket JavaScript library",
   "main": "dist/index.js",
   "devDependencies": {
-    "@types/websocket": "^1.0.0",
+    "@babel/parser": "^7.8.3",
+    "@babel/types": "^7.8.3",
     "@types/jest": "^24.9.0",
+    "@types/websocket": "^1.0.0",
     "coveralls": "^3.0.3",
     "jest": "^24.9.0",
     "jest-websocket-mock": "^2.0.0",
@@ -32,5 +34,8 @@
   "bugs": {
     "url": "https://github.com/anephenix/sarus/issues"
   },
-  "homepage": "https://github.com/anephenix/sarus#readme"
+  "homepage": "https://github.com/anephenix/sarus#readme",
+  "dependencies": {
+    "@types/window-or-global": "^1.0.0"
+  }
 }

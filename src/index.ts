@@ -5,13 +5,23 @@ import {
   validateRetryProcessTimePeriod,
   validateEvents,
   validateEventFunctionLists,
-  prefillMissingEvents
+  prefillMissingEvents,
+  EventListenersInterface
 } from "./lib/validators";
 
 interface StorageParams {
   storageType: string;
   storageKey: string;
 }
+
+const getStorage = (storageType: string) => {
+  switch (storageType) {
+    case "local":
+      return window.localStorage;
+    case "session":
+      return window.sessionStorage;
+  }
+};
 
 /**
  * Retrieves the messages in the message queue from one of either
@@ -23,11 +33,28 @@ interface StorageParams {
  */
 const getMessagesFromStore = ({ storageType, storageKey }: StorageParams) => {
   if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
-    const storageTypeApi: string = `${storageType}Storage`;
-    const rawData: string = window[storageTypeApi].getItem(storageKey);
+    const storage = getStorage(storageType);
+    const rawData: string = storage.getItem(storageKey);
     return deserialize(rawData);
   }
 };
+
+export interface SarusClassParams {
+  url: string;
+  protocols?: string | Array<string>;
+  eventListeners?: {
+    open: Array<Function>;
+    message: Array<Function>;
+    error: Array<Function>;
+    close: Array<Function>;
+    [key: string]: Array<Function>;
+  };
+  retryProcessTimePeriod?: number;
+  reconnectAutomatically?: boolean;
+  retryConnectionDelay?: boolean | number;
+  storageType?: string;
+  storageKey?: string;
+}
 
 /**
  * The Sarus client class
@@ -46,38 +73,25 @@ const getMessagesFromStore = ({ storageType, storageKey }: StorageParams) => {
 export default class Sarus {
   // Constructor params
   url: string;
-  protocols: string | Array<string>;
-  eventListeners: {
+  protocols?: string | Array<string>;
+  eventListeners?: {
     open: Array<Function>;
     message: Array<Function>;
     error: Array<Function>;
     close: Array<Function>;
+    [key: string]: Array<Function>;
   };
-  retryProcessTimePeriod: number;
-  reconnectAutomatically: boolean;
-  retryConnectionDelay: boolean | number;
-  storageType: string;
-  storageKey: string;
+  retryProcessTimePeriod?: number = 50;
+  reconnectAutomatically?: boolean;
+  retryConnectionDelay?: boolean | number;
+  storageType?: string = "memory";
+  storageKey?: string = "sarus";
 
   // Internally set
   messageStore: any;
   ws: WebSocket | undefined;
 
-  constructor(props: {
-    url: string;
-    protocols: string | Array<string>;
-    eventListeners: {
-      open: Array<Function>;
-      message: Array<Function>;
-      error: Array<Function>;
-      close: Array<Function>;
-    };
-    retryProcessTimePeriod: number;
-    reconnectAutomatically: boolean;
-    retryConnectionDelay: boolean | number;
-    storageType: string;
-    storageKey: string;
-  }) {
+  constructor(props: SarusClassParams) {
     // Extract the properties that are passed to the class
     const {
       url,
@@ -183,8 +197,8 @@ export default class Sarus {
   set messages(data: any) {
     const { storageType, storageKey } = this;
     if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
-      const storageTypeApi: string = `${storageType}Storage`;
-      window[storageTypeApi].setItem(storageKey, serialize(data));
+      const storage = getStorage(storageType);
+      storage.setItem(storageKey, serialize(data));
     }
     if (storageType === "memory") {
       this.messageStore = data;
@@ -239,7 +253,7 @@ export default class Sarus {
    * @param {object} eventListeners - The eventListeners object parameter
    * @returns {object} The eventListeners object parameter, with any missing events prefilled in
    */
-  auditEventListeners(eventListeners: object) {
+  auditEventListeners(eventListeners?: EventListenersInterface) {
     if (!eventListeners) return false;
     validateEvents(eventListeners);
     validateEventFunctionLists(eventListeners);
@@ -251,8 +265,12 @@ export default class Sarus {
    * @returns {object} The eventListeners object
    */
   initialEventlisteners() {
-    const eventListeners = {};
-    WS_EVENT_NAMES.forEach(e => (eventListeners[e] = []));
+    const eventListeners: EventListenersInterface = {
+      open: [],
+      message: [],
+      error: [],
+      close: []
+    };
     return eventListeners;
   }
 
@@ -295,7 +313,7 @@ export default class Sarus {
    * developer passes a boolean flag to not do that.
    * @param {boolean} overrideDisableReconnect
    */
-  disconnect(overrideDisableReconnect: boolean) {
+  disconnect(overrideDisableReconnect?: boolean) {
     const self = this;
     // We do this to prevent automatic reconnections;
     if (!overrideDisableReconnect) {
@@ -343,7 +361,7 @@ export default class Sarus {
    */
   raiseErrorIfFunctionIsMissing(
     existingFunc: Function | undefined,
-    opts:
+    opts?:
       | {
           doNotThrowError: boolean;
         }
@@ -390,9 +408,10 @@ export default class Sarus {
    * @param {string} data - The data payload to send over the WebSocket
    */
   processMessage(data: string) {
-    this.ws.send(data);
-    this.removeMessage();
-    if (this.messages.length > 0) this.process();
+    const self: any = this;
+    self.ws.send(data);
+    self.removeMessage();
+    if (self.messages.length > 0) this.process();
   }
 
   /**
@@ -416,7 +435,7 @@ export default class Sarus {
    * of the WebSocket, unless configured not to.
    */
   attachEventListeners() {
-    const self = this;
+    const self: any = this;
     WS_EVENT_NAMES.forEach(eventName => {
       self.ws[`on${eventName}`] = e => {
         self.eventListeners[eventName].forEach(f => f(e));
