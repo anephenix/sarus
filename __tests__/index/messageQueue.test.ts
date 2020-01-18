@@ -114,6 +114,7 @@ describe("message queue", () => {
     expect(messageOne).toBe("Hello world");
     expect(messageTwo).toBe("Hello again");
     await server.close();
+    WS.clean();
   };
 
   it("should load any existing messages from previous sessionStorage on initialization", () => {
