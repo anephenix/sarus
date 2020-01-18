@@ -16,7 +16,7 @@ describe("message queue", () => {
     sarus.send("Hello again");
     await server.connected;
     await expect(server).toReceiveMessage("Hello again");
-    server.close();
+    await server.close();
   });
 
   it("should queue messages for delivery when server is offline for a bit", async () => {
@@ -25,7 +25,7 @@ describe("message queue", () => {
     await server.connected;
     sarus.send("Hello server");
     await expect(server).toReceiveMessage("Hello server");
-    server.close();
+    await server.close();
     sarus.send("Hello again");
     sarus.send("Here is another message");
     expect(sarus.messages).toEqual(["Hello again", "Here is another message"]);
@@ -35,7 +35,7 @@ describe("message queue", () => {
     expect(messageOne).toBe("Hello again");
     expect(messageTwo).toBe("Here is another message");
     expect(sarus.messages).toEqual([]);
-    newServer.close();
+    await newServer.close();
   });
 
   it("should allow the developer to provide a custom retryProcessTimePeriod", () => {
@@ -61,7 +61,7 @@ describe("message queue", () => {
     await server.connected;
     sarus.send("Hello server");
     await expect(server).toReceiveMessage("Hello server");
-    server.close();
+    await server.close();
     sarus.send("Hello again");
     sarus.send("Here is another message");
     expect(sarus.messages).toEqual(["Hello again", "Here is another message"]);
@@ -71,7 +71,7 @@ describe("message queue", () => {
     expect(sarus.messages).toEqual([]);
     expect(messageOne).toBe("Hello again");
     expect(messageTwo).toBe("Here is another message");
-    newServer.close();
+    await newServer.close();
   };
 
   it("should allow the developer to use sessionStorage for storing messages", async () => {
@@ -113,7 +113,7 @@ describe("message queue", () => {
     expect(sarusTwo.messages).toEqual([]);
     expect(messageOne).toBe("Hello world");
     expect(messageTwo).toBe("Hello again");
-    return server.close();
+    await server.close();
   };
 
   it("should load any existing messages from previous sessionStorage on initialization", () => {
