@@ -63,7 +63,7 @@ export default class Sarus {
      * @param {*} data - the message
      * @returns {array} the messages in the message queue
      */
-    addMessageToStore(data: any): any[] | null;
+    addMessageToStore(data: any): any[];
     /**
      * Adds a messge to the message queue
      * @param {*} data - the data payload to put on the message queue
@@ -117,7 +117,7 @@ export default class Sarus {
      * @param {function|string} eventFuncOrName - Either the function to remove, or the name of the function to remove
      * @returns {function|undefined} The existing function, or nothing
      */
-    findFunction(eventName: string, eventFuncOrName: string | Function): Function | undefined;
+    findFunction(eventName: string, eventFuncOrName: string | Function): Function;
     /**
      * Raises an error if the existing function is not present, and if the client is configured to throw an error
      * @param {function|undefined} existingFunc

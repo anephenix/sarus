@@ -133,7 +133,6 @@ export default class Sarus {
         if (storageType === "memory") {
             this.messageStore = data;
         }
-        return data;
     }
     /**
      * Adds a message to the messages in the message queue that are kept in persistent storage

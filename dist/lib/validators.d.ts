@@ -10,7 +10,7 @@ export interface EventListenersInterface {
  * @param {number} retryProcessTimePeriod - How long the time period between retrying to send a messgae to a WebSocket server should be
  * @returns {number} The number in miliseconds for the retryProcessTimePeriod
  */
-export declare const validateRetryProcessTimePeriod: (retryProcessTimePeriod: number) => number | null;
+export declare const validateRetryProcessTimePeriod: (retryProcessTimePeriod: number) => number;
 /**
  * Validates that the event passed in is a valid eventListener event
  * @param {string} event - the event name

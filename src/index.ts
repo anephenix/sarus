@@ -203,7 +203,6 @@ export default class Sarus {
     if (storageType === "memory") {
       this.messageStore = data;
     }
-    return data;
   }
 
   /**
