@@ -4,7 +4,6 @@ import { serialize, deserialize } from "./lib/dataTransformer";
 import {
   validateRetryProcessTimePeriod,
   validateEvents,
-  validateEventFunctionLists,
   prefillMissingEvents,
   EventListenersInterface
 } from "./lib/validators";
@@ -255,7 +254,6 @@ export default class Sarus {
   auditEventListeners(eventListeners?: EventListenersInterface) {
     if (!eventListeners) return false;
     validateEvents(eventListeners);
-    validateEventFunctionLists(eventListeners);
     return prefillMissingEvents(eventListeners);
   }
 
@@ -299,10 +297,6 @@ export default class Sarus {
       case "number":
         setTimeout(self.connect, retryConnectionDelay);
         break;
-      default:
-        throw new Error(
-          "retryConnectionDelay should be either a boolean or a number"
-        );
     }
   }
 

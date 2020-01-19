@@ -20,9 +20,6 @@ export const validateRetryProcessTimePeriod = (
   retryProcessTimePeriod: number
 ) => {
   if (!retryProcessTimePeriod) return null;
-  if (typeof retryProcessTimePeriod !== "number") {
-    throw new Error("retryProcessTimePeriod must be a number");
-  }
   return retryProcessTimePeriod;
 };
 
@@ -43,22 +40,6 @@ export const validateEvent = (event: string) => {
 export const validateEvents = (eventListeners: EventListenersInterface) => {
   const eventList = Object.keys(eventListeners);
   eventList.forEach(validateEvent);
-};
-
-/**
- * Validates the data structure of the eventListeners object to make sure that it is correct
- * @param {object} eventListeners - The eventListeners object parameter
- */
-export const validateEventFunctionLists = (
-  eventListeners: EventListenersInterface
-) => {
-  for (let eventName in eventListeners) {
-    if (!(eventListeners[eventName] instanceof Array)) {
-      throw new Error(
-        `The ${eventName} event listener must be an array of functions`
-      );
-    }
-  }
 };
 
 /**

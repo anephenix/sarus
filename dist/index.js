@@ -1,7 +1,7 @@
 // File Dependencies
 import { WS_EVENT_NAMES, DATA_STORAGE_TYPES } from "./lib/constants";
 import { serialize, deserialize } from "./lib/dataTransformer";
-import { validateRetryProcessTimePeriod, validateEvents, validateEventFunctionLists, prefillMissingEvents } from "./lib/validators";
+import { validateRetryProcessTimePeriod, validateEvents, prefillMissingEvents } from "./lib/validators";
 const getStorage = (storageType) => {
     switch (storageType) {
         case "local":
@@ -182,7 +182,6 @@ export default class Sarus {
         if (!eventListeners)
             return false;
         validateEvents(eventListeners);
-        validateEventFunctionLists(eventListeners);
         return prefillMissingEvents(eventListeners);
     }
     /**
@@ -225,8 +224,6 @@ export default class Sarus {
             case "number":
                 setTimeout(self.connect, retryConnectionDelay);
                 break;
-            default:
-                throw new Error("retryConnectionDelay should be either a boolean or a number");
         }
     }
     /**

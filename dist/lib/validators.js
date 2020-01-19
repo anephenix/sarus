@@ -8,9 +8,6 @@ import { WS_EVENT_NAMES } from "./constants";
 export const validateRetryProcessTimePeriod = (retryProcessTimePeriod) => {
     if (!retryProcessTimePeriod)
         return null;
-    if (typeof retryProcessTimePeriod !== "number") {
-        throw new Error("retryProcessTimePeriod must be a number");
-    }
     return retryProcessTimePeriod;
 };
 /**
@@ -29,17 +26,6 @@ export const validateEvent = (event) => {
 export const validateEvents = (eventListeners) => {
     const eventList = Object.keys(eventListeners);
     eventList.forEach(validateEvent);
-};
-/**
- * Validates the data structure of the eventListeners object to make sure that it is correct
- * @param {object} eventListeners - The eventListeners object parameter
- */
-export const validateEventFunctionLists = (eventListeners) => {
-    for (let eventName in eventListeners) {
-        if (!(eventListeners[eventName] instanceof Array)) {
-            throw new Error(`The ${eventName} event listener must be an array of functions`);
-        }
-    }
 };
 /**
  * Makes sure that any eventListeners object which might miss an event will have them prefilled in

@@ -22,11 +22,6 @@ export declare const validateEvent: (event: string) => void;
  */
 export declare const validateEvents: (eventListeners: EventListenersInterface) => void;
 /**
- * Validates the data structure of the eventListeners object to make sure that it is correct
- * @param {object} eventListeners - The eventListeners object parameter
- */
-export declare const validateEventFunctionLists: (eventListeners: EventListenersInterface) => void;
-/**
  * Makes sure that any eventListeners object which might miss an event will have them prefilled in
  * @param {object} eventListeners - The eventListeners object parameter
  * @returns {object} The eventListeners object parameter, with any missing events prefilled in
