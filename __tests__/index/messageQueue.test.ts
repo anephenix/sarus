@@ -30,8 +30,10 @@ describe("message queue", () => {
     sarus.send("Here is another message");
     expect(sarus.messages).toEqual(["Hello again", "Here is another message"]);
     const newServer = new WS(url);
-    const messageOne = await server.nextMessage;
-    const messageTwo = await server.nextMessage;
+    await newServer.connected;
+    const messageOne = await newServer.nextMessage;
+    const messageTwo = await newServer.nextMessage;
+    // NOTE - it is this above that is causing the delay
     expect(messageOne).toBe("Hello again");
     expect(messageTwo).toBe("Here is another message");
     expect(sarus.messages).toEqual([]);
@@ -66,8 +68,9 @@ describe("message queue", () => {
     sarus.send("Here is another message");
     expect(sarus.messages).toEqual(["Hello again", "Here is another message"]);
     const newServer = new WS(url);
-    const messageOne = await server.nextMessage;
-    const messageTwo = await server.nextMessage;
+    await newServer.connected;
+    const messageOne = await newServer.nextMessage;
+    const messageTwo = await newServer.nextMessage;
     expect(sarus.messages).toEqual([]);
     expect(messageOne).toBe("Hello again");
     expect(messageTwo).toBe("Here is another message");
@@ -114,7 +117,6 @@ describe("message queue", () => {
     expect(messageOne).toBe("Hello world");
     expect(messageTwo).toBe("Hello again");
     await server.close();
-    WS.clean();
   };
 
   it("should load any existing messages from previous sessionStorage on initialization", () => {
