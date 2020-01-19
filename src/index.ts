@@ -43,10 +43,10 @@ export interface SarusClassParams {
   url: string;
   protocols?: string | Array<string>;
   eventListeners?: {
-    open: Array<Function>;
-    message: Array<Function>;
-    error: Array<Function>;
-    close: Array<Function>;
+    open?: Array<Function>;
+    message?: Array<Function>;
+    error?: Array<Function>;
+    close?: Array<Function>;
     [key: string]: Array<Function>;
   };
   retryProcessTimePeriod?: number;
@@ -75,10 +75,10 @@ export default class Sarus {
   url: string;
   protocols?: string | Array<string>;
   eventListeners?: {
-    open: Array<Function>;
-    message: Array<Function>;
-    error: Array<Function>;
-    close: Array<Function>;
+    open?: Array<Function>;
+    message?: Array<Function>;
+    error?: Array<Function>;
+    close?: Array<Function>;
     [key: string]: Array<Function>;
   };
   retryProcessTimePeriod?: number = 50;

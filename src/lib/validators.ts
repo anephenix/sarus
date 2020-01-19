@@ -4,10 +4,10 @@ import { WS_EVENT_NAMES } from "./constants";
 // Interfaces
 // Question - can interfaces be embedded as types within other interfaces?
 export interface EventListenersInterface {
-  open: Array<Function>;
-  message: Array<Function>;
-  error: Array<Function>;
-  close: Array<Function>;
+  open?: Array<Function>;
+  message?: Array<Function>;
+  error?: Array<Function>;
+  close?: Array<Function>;
   [key: string]: Array<Function>;
 }
 
