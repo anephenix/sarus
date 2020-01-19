@@ -43,19 +43,6 @@ describe("eventListeners", () => {
     expect(initializeBadConfig).toThrowError();
   });
 
-  it("should prevent invalid eventListener lists being passed during initialization", () => {
-    const initializeBadConfig = () => {
-      return new Sarus({
-        url,
-        eventListeners: {
-          // should be an array of functions, but is a function, so an error should be thrown
-          message: () => {}
-        }
-      });
-    };
-    expect(initializeBadConfig).toThrowError();
-  });
-
   it("should prefill any missing eventListener events during initialization", () => {
     const myFunc = () => {};
     const sarus = new Sarus({
