@@ -1,6 +1,10 @@
 // File Dependencies
 import Sarus, { SarusClassParams } from "../../src/index";
 import { WS } from "jest-websocket-mock";
+const Storage = require("dom-storage");
+
+const localStorage = new Storage(null, { strict: true });
+const sessionStorage = new Storage(null, { strict: true });
 
 const url = "ws://localhost:1234";
 
