@@ -134,7 +134,7 @@ export default class Sarus {
      * @param {object} opts - An optional object to pass that contains extra configuration options
      * @param {boolean} opts.doNotThrowError - A boolean flag that indicates whether to not throw an error if the function to remove is not found in the list
      */
-    off(eventName: string, eventFuncOrName: Function | string, opts: {
+    off(eventName: string, eventFuncOrName: Function | string, opts?: {
         doNotThrowError: boolean;
     } | undefined): void;
     /**

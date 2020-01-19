@@ -383,7 +383,7 @@ export default class Sarus {
   off(
     eventName: string,
     eventFuncOrName: Function | string,
-    opts: { doNotThrowError: boolean } | undefined
+    opts?: { doNotThrowError: boolean } | undefined
   ) {
     const existingFunc = this.findFunction(eventName, eventFuncOrName);
     this.raiseErrorIfFunctionIsMissing(existingFunc, opts);
