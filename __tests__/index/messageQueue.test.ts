@@ -1,10 +1,9 @@
 // File Dependencies
+// const Storage = require("dom-storage");
+// global.localStorage = new Storage(null, { strict: true });
+// global.sessionStorage = new Storage(null, { strict: true });
 import Sarus, { SarusClassParams } from "../../src/index";
 import { WS } from "jest-websocket-mock";
-const Storage = require("dom-storage");
-
-const localStorage = new Storage(null, { strict: true });
-const sessionStorage = new Storage(null, { strict: true });
 
 const url = "ws://localhost:1234";
 
@@ -100,6 +99,7 @@ describe("message queue", () => {
 
   const retrieveMessagesFromStorage = (sarusConfig: SarusClassParams) => {
     let sarusOne = new Sarus(sarusConfig);
+    expect(sarusOne.messages).toEqual([]);
     sarusOne.send("Hello world");
     sarusOne.send("Hello again");
     sarusOne.disconnect();
