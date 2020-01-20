@@ -22,7 +22,7 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
     if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
         const storage = getStorage(storageType);
         const rawData = storage.getItem(storageKey);
-        return deserialize(rawData);
+        return deserialize(rawData) || [];
     }
 };
 /**
@@ -42,8 +42,6 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
 export default class Sarus {
     constructor(props) {
         this.retryProcessTimePeriod = 50;
-        this.storageType = "memory";
-        this.storageKey = "sarus";
         // Extract the properties that are passed to the class
         const { url, protocols, eventListeners, reconnectAutomatically, retryProcessTimePeriod, retryConnectionDelay, storageType, storageKey } = props;
         // Sets the WebSocket server url for the client to connect to.
@@ -127,8 +125,7 @@ export default class Sarus {
     set messages(data) {
         const { storageType, storageKey } = this;
         if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
-            const storage = getStorage(storageType);
-            storage.setItem(storageKey, serialize(data));
+            getStorage(storageType).setItem(storageKey, serialize(data));
         }
         if (storageType === "memory") {
             this.messageStore = data;

@@ -34,7 +34,7 @@ const getMessagesFromStore = ({ storageType, storageKey }: StorageParams) => {
   if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
     const storage = getStorage(storageType);
     const rawData: string = storage.getItem(storageKey);
-    return deserialize(rawData);
+    return deserialize(rawData) || [];
   }
 };
 
@@ -83,8 +83,8 @@ export default class Sarus {
   retryProcessTimePeriod?: number = 50;
   reconnectAutomatically?: boolean;
   retryConnectionDelay?: boolean | number;
-  storageType?: string = "memory";
-  storageKey?: string = "sarus";
+  storageType?: string;
+  storageKey?: string;
 
   // Internally set
   messageStore: any;
@@ -196,8 +196,7 @@ export default class Sarus {
   set messages(data: any) {
     const { storageType, storageKey } = this;
     if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
-      const storage = getStorage(storageType);
-      storage.setItem(storageKey, serialize(data));
+      getStorage(storageType).setItem(storageKey, serialize(data));
     }
     if (storageType === "memory") {
       this.messageStore = data;

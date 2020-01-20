@@ -1,7 +1,4 @@
 // File Dependencies
-// const Storage = require("dom-storage");
-// global.localStorage = new Storage(null, { strict: true });
-// global.sessionStorage = new Storage(null, { strict: true });
 import Sarus, { SarusClassParams } from "../../src/index";
 import { WS } from "jest-websocket-mock";
 
@@ -112,7 +109,8 @@ describe("message queue", () => {
     storageType,
     sarusConfig
   ) => {
-    storageType.clear();
+    // storageType.clear();
+    // storageType.setItem("sarus", JSON.stringify([]));
     const sarusTwo = retrieveMessagesFromStorage(sarusConfig);
     const server = new WS(url);
     const messageOne = await server.nextMessage;
@@ -125,10 +123,12 @@ describe("message queue", () => {
 
   it("should load any existing messages from previous sessionStorage on initialization", () => {
     retrieveMessagesFromStorage({ url, storageType: "session" });
+    sessionStorage.clear();
   });
 
   it("should load any existing messages from previous localStorage on initialization", () => {
     retrieveMessagesFromStorage({ url, storageType: "local" });
+    localStorage.clear();
   });
 
   it("should process any existing messages from previous sessionStorage on initialization", async () => {
