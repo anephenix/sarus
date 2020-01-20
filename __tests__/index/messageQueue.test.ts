@@ -33,7 +33,6 @@ describe("message queue", () => {
     await newServer.connected;
     const messageOne = await newServer.nextMessage;
     const messageTwo = await newServer.nextMessage;
-    // NOTE - it is this above that is causing the delay
     expect(messageOne).toBe("Hello again");
     expect(messageTwo).toBe("Here is another message");
     expect(sarus.messages).toEqual([]);
@@ -44,13 +43,6 @@ describe("message queue", () => {
     const sarus = new Sarus({ url, retryProcessTimePeriod: 25 });
     expect(sarus.retryProcessTimePeriod).toBe(25);
   });
-
-  // it("should throw an error if the retryProcessTimePeriod is not a number", () => {
-  //   const initializeBadConfig = () => {
-  //     return new Sarus({ url, retryProcessTimePeriod: "10" });
-  //   };
-  //   expect(initializeBadConfig).toThrowError();
-  // });
 
   const applyStorageTest = async (
     storageType: any,
@@ -109,8 +101,6 @@ describe("message queue", () => {
     storageType,
     sarusConfig
   ) => {
-    // storageType.clear();
-    // storageType.setItem("sarus", JSON.stringify([]));
     const sarusTwo = retrieveMessagesFromStorage(sarusConfig);
     const server = new WS(url);
     const messageOne = await server.nextMessage;

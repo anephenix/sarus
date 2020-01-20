@@ -60,18 +60,4 @@ describe("retry connection delay", () => {
       });
     });
   });
-
-  // describe("when passed as not a boolean or a number", () => {
-  //   it("should throw an error", async () => {
-  //     const server = new WS(url);
-  //     const sarus = new Sarus({
-  //       url,
-  //       retryConnectionDelay: "yes",
-  //       reconnectAutomatically: false
-  //     });
-  //     const makeCallThatThrowsError = () => sarus.reconnect();
-  //     expect(makeCallThatThrowsError).toThrowError();
-  //     server.close();
-  //   });
-  // });
 });
