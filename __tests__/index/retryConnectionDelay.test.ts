@@ -25,12 +25,12 @@ describe("retry connection delay", () => {
       await server.connected;
       server.close();
       await condition(() => {
-        return sarus.ws.readyState === 3;
+        return sarus.ws?.readyState === 3;
       });
       const timeThen: any = new Date();
       const newServer = new WS(url);
       await newServer.connected;
-      expect(sarus.ws.readyState).toBe(1);
+      expect(sarus.ws?.readyState).toBe(1);
       const timeNow: any = new Date();
       expect(timeNow - timeThen).toBeGreaterThan(1000);
       expect(timeNow - timeThen).toBeLessThan(3000);
@@ -44,15 +44,15 @@ describe("retry connection delay", () => {
         await server.connected;
         server.close();
         await condition(() => {
-          return sarus.ws.readyState === 3;
+          return sarus.ws?.readyState === 3;
         });
         const timeThen: any = new Date();
         const newServer = new WS(url);
         await newServer.connected;
         await condition(() => {
-          return sarus.ws.readyState === 1;
+          return sarus.ws?.readyState === 1;
         });
-        expect(sarus.ws.readyState).toBe(1);
+        expect(sarus.ws?.readyState).toBe(1);
         const timeNow: any = new Date();
         expect(timeNow - timeThen).toBeGreaterThan(400);
         expect(timeNow - timeThen).toBeLessThan(1000);

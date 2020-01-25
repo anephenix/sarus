@@ -33,7 +33,7 @@ const getStorage = (storageType: string) => {
 const getMessagesFromStore = ({ storageType, storageKey }: StorageParams) => {
   if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
     const storage = getStorage(storageType);
-    const rawData: string = storage.getItem(storageKey);
+    const rawData: null | string = storage?.getItem(storageKey) || null;
     return deserialize(rawData) || [];
   }
 };
@@ -41,13 +41,7 @@ const getMessagesFromStore = ({ storageType, storageKey }: StorageParams) => {
 export interface SarusClassParams {
   url: string;
   protocols?: string | Array<string>;
-  eventListeners?: {
-    open?: Array<Function>;
-    message?: Array<Function>;
-    error?: Array<Function>;
-    close?: Array<Function>;
-    [key: string]: Array<Function>;
-  };
+  eventListeners?: EventListenersInterface;
   retryProcessTimePeriod?: number;
   reconnectAutomatically?: boolean;
   retryConnectionDelay?: boolean | number;
@@ -73,18 +67,12 @@ export default class Sarus {
   // Constructor params
   url: string;
   protocols?: string | Array<string>;
-  eventListeners?: {
-    open?: Array<Function>;
-    message?: Array<Function>;
-    error?: Array<Function>;
-    close?: Array<Function>;
-    [key: string]: Array<Function>;
-  };
-  retryProcessTimePeriod?: number = 50;
+  eventListeners: EventListenersInterface;
+  retryProcessTimePeriod?: number;
   reconnectAutomatically?: boolean;
   retryConnectionDelay?: boolean | number;
-  storageType?: string;
-  storageKey?: string;
+  storageType: string;
+  storageKey: string;
 
   // Internally set
   messageStore: any;
@@ -96,12 +84,15 @@ export default class Sarus {
       url,
       protocols,
       eventListeners,
-      reconnectAutomatically,
-      retryProcessTimePeriod,
+      reconnectAutomatically = !(props.reconnectAutomatically === false),
+      retryProcessTimePeriod = 50,
       retryConnectionDelay,
-      storageType,
-      storageKey
+      storageType = "memory",
+      storageKey = "sarus"
     } = props;
+
+    this.eventListeners =
+      this.auditEventListeners(eventListeners) || this.initialEventlisteners();
 
     // Sets the WebSocket server url for the client to connect to.
     this.url = url;
@@ -116,13 +107,6 @@ export default class Sarus {
     */
     this.retryProcessTimePeriod =
       validateRetryProcessTimePeriod(retryProcessTimePeriod) || 50;
-
-    /*
-      This handles attaching event listeners to the WebSocket connection
-      at initialization. 
-    */
-    this.eventListeners =
-      this.auditEventListeners(eventListeners) || this.initialEventlisteners();
 
     /*
       If a WebSocket connection is severed, Sarus is configured to reconnect to
@@ -175,8 +159,6 @@ export default class Sarus {
 
   /* 
     Gets the messages from the message queue.
-
-    This tool TODO - got here
   */
 
   /**
@@ -191,12 +173,13 @@ export default class Sarus {
   /**
    * Sets the messages to store in the message queue
    * @param {*} data - the data payload to set for the messages in the message queue
-   * @returns {*} the data payload
+   * @returns {void} - set does not return
    */
   set messages(data: any) {
     const { storageType, storageKey } = this;
     if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
-      getStorage(storageType).setItem(storageKey, serialize(data));
+      const storage = getStorage(storageType);
+      if (storage) storage.setItem(storageKey, serialize(data));
     }
     if (storageType === "memory") {
       this.messageStore = data;
@@ -250,7 +233,14 @@ export default class Sarus {
    * @param {object} eventListeners - The eventListeners object parameter
    * @returns {object} The eventListeners object parameter, with any missing events prefilled in
    */
-  auditEventListeners(eventListeners?: EventListenersInterface) {
+  auditEventListeners(
+    eventListeners: EventListenersInterface = {
+      open: [],
+      close: [],
+      message: [],
+      error: []
+    }
+  ) {
     if (!eventListeners) return false;
     validateEvents(eventListeners);
     return prefillMissingEvents(eventListeners);
@@ -311,7 +301,7 @@ export default class Sarus {
     if (!overrideDisableReconnect) {
       self.reconnectAutomatically = false;
     }
-    self.ws.close();
+    if (self.ws) self.ws.close();
   }
 
   /**
@@ -320,12 +310,15 @@ export default class Sarus {
    * @param {function} eventFunc - The function to trigger when the event occurs
    */
   on(eventName: string, eventFunc: Function) {
-    if (this.eventListeners[eventName].indexOf(eventFunc) !== -1) {
+    const eventFunctions = this.eventListeners[eventName];
+    if (eventFunctions && eventFunctions.indexOf(eventFunc) !== -1) {
       throw new Error(
         `${eventFunc.name} has already been added to this event Listener`
       );
     }
-    this.eventListeners[eventName].push(eventFunc);
+    if (eventFunctions && eventFunctions instanceof Array) {
+      this.eventListeners[eventName].push(eventFunc);
+    }
   }
 
   /**
@@ -336,7 +329,7 @@ export default class Sarus {
    */
   findFunction(eventName: string, eventFuncOrName: string | Function) {
     if (typeof eventFuncOrName === "string") {
-      const byName = f => f.name === eventFuncOrName;
+      const byName = (f: Function) => f.name === eventFuncOrName;
       return this.eventListeners[eventName].find(byName);
     } else {
       if (this.eventListeners[eventName].indexOf(eventFuncOrName) !== -1) {
@@ -379,9 +372,12 @@ export default class Sarus {
     opts?: { doNotThrowError: boolean } | undefined
   ) {
     const existingFunc = this.findFunction(eventName, eventFuncOrName);
-    this.raiseErrorIfFunctionIsMissing(existingFunc, opts);
-    const index = this.eventListeners[eventName].indexOf(existingFunc);
-    this.eventListeners[eventName].splice(index, 1);
+    if (existingFunc) {
+      const index = this.eventListeners[eventName].indexOf(existingFunc);
+      this.eventListeners[eventName].splice(index, 1);
+    } else {
+      this.raiseErrorIfFunctionIsMissing(existingFunc, opts);
+    }
   }
 
   /**
@@ -414,7 +410,7 @@ export default class Sarus {
     const { messages } = this;
     const data = messages[0];
     if (!data && messages.length === 0) return;
-    if (this.ws.readyState === 1) {
+    if (this.ws?.readyState === 1) {
       this.processMessage(data);
     } else {
       setTimeout(this.process, this.retryProcessTimePeriod);
@@ -429,8 +425,8 @@ export default class Sarus {
   attachEventListeners() {
     const self: any = this;
     WS_EVENT_NAMES.forEach(eventName => {
-      self.ws[`on${eventName}`] = e => {
-        self.eventListeners[eventName].forEach(f => f(e));
+      self.ws[`on${eventName}`] = (e: Function) => {
+        self.eventListeners[eventName].forEach((f: Function) => f(e));
         if (eventName === "close" && self.reconnectAutomatically) {
           self.reconnect();
         }

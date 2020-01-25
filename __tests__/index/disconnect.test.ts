@@ -14,7 +14,7 @@ describe("disconnecting the WebSocket connection", () => {
     sarus.disconnect();
     expect(sarus.reconnectAutomatically).toBe(false);
     await server.closed;
-    expect(sarus.ws.readyState).toBe(3);
+    expect(sarus.ws?.readyState).toBe(3);
     expect(sarus.reconnect).toBeCalledTimes(0);
     server.close();
   });

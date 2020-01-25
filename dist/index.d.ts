@@ -2,13 +2,7 @@ import { EventListenersInterface } from "./lib/validators";
 export interface SarusClassParams {
     url: string;
     protocols?: string | Array<string>;
-    eventListeners?: {
-        open?: Array<Function>;
-        message?: Array<Function>;
-        error?: Array<Function>;
-        close?: Array<Function>;
-        [key: string]: Array<Function>;
-    };
+    eventListeners?: EventListenersInterface;
     retryProcessTimePeriod?: number;
     reconnectAutomatically?: boolean;
     retryConnectionDelay?: boolean | number;
@@ -32,18 +26,12 @@ export interface SarusClassParams {
 export default class Sarus {
     url: string;
     protocols?: string | Array<string>;
-    eventListeners?: {
-        open?: Array<Function>;
-        message?: Array<Function>;
-        error?: Array<Function>;
-        close?: Array<Function>;
-        [key: string]: Array<Function>;
-    };
+    eventListeners: EventListenersInterface;
     retryProcessTimePeriod?: number;
     reconnectAutomatically?: boolean;
     retryConnectionDelay?: boolean | number;
-    storageType?: string;
-    storageKey?: string;
+    storageType: string;
+    storageKey: string;
     messageStore: any;
     ws: WebSocket | undefined;
     constructor(props: SarusClassParams);
@@ -55,7 +43,7 @@ export default class Sarus {
     /**
      * Sets the messages to store in the message queue
      * @param {*} data - the data payload to set for the messages in the message queue
-     * @returns {*} the data payload
+     * @returns {void} - set does not return
      */
     set messages(data: any);
     /**
@@ -63,7 +51,7 @@ export default class Sarus {
      * @param {*} data - the message
      * @returns {array} the messages in the message queue
      */
-    addMessageToStore(data: any): any[];
+    addMessageToStore(data: any): any[] | null;
     /**
      * Adds a messge to the message queue
      * @param {*} data - the data payload to put on the message queue
@@ -117,7 +105,7 @@ export default class Sarus {
      * @param {function|string} eventFuncOrName - Either the function to remove, or the name of the function to remove
      * @returns {function|undefined} The existing function, or nothing
      */
-    findFunction(eventName: string, eventFuncOrName: string | Function): Function;
+    findFunction(eventName: string, eventFuncOrName: string | Function): Function | undefined;
     /**
      * Raises an error if the existing function is not present, and if the client is configured to throw an error
      * @param {function|undefined} existingFunc

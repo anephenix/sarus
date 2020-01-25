@@ -20,18 +20,18 @@ describe("connection options", () => {
   it("should set the WebSocket protocols value to an empty string if nothing is passed", async () => {
     const sarus = new Sarus({ url });
     await server.connected;
-    expect(sarus.ws.protocol).toBe("");
+    expect(sarus.ws?.protocol).toBe("");
   });
 
   it("should set the WebSocket protocols value to a string if a string is passed", async () => {
     const sarus = new Sarus({ url, protocols: stringProtocol });
     await server.connected;
-    expect(sarus.ws.protocol).toBe(stringProtocol);
+    expect(sarus.ws?.protocol).toBe(stringProtocol);
   });
 
   it("should set the WebSocket protocols value to the first value in an array if an array is passed", async () => {
     const sarus = new Sarus({ url, protocols: arrayOfProtocols });
     await server.connected;
-    expect(sarus.ws.protocol).toBe(arrayOfProtocols[0]);
+    expect(sarus.ws?.protocol).toBe(arrayOfProtocols[0]);
   });
 });

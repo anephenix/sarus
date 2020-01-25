@@ -9,4 +9,8 @@ export const serialize = (data) => JSON.stringify(data);
  * @param {string} data - the data that we want to deserialize
  * @returns {*} The deserialized data
  */
-export const deserialize = (data) => JSON.parse(data);
+export const deserialize = (data) => {
+    if (!data)
+        return null;
+    return JSON.parse(data);
+};

@@ -32,7 +32,12 @@ export const validateEvents = (eventListeners) => {
  * @param {object} eventListeners - The eventListeners object parameter
  * @returns {object} The eventListeners object parameter, with any missing events prefilled in
  */
-export const prefillMissingEvents = (eventListeners) => {
+export const prefillMissingEvents = (eventListeners = {
+    open: [],
+    close: [],
+    error: [],
+    message: []
+}) => {
     WS_EVENT_NAMES.forEach((eventName) => {
         if (!eventListeners[eventName])
             eventListeners[eventName] = [];

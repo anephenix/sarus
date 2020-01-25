@@ -4,10 +4,10 @@ import { WS_EVENT_NAMES } from "./constants";
 // Interfaces
 // Question - can interfaces be embedded as types within other interfaces?
 export interface EventListenersInterface {
-  open?: Array<Function>;
-  message?: Array<Function>;
-  error?: Array<Function>;
-  close?: Array<Function>;
+  open: Array<Function>;
+  message: Array<Function>;
+  error: Array<Function>;
+  close: Array<Function>;
   [key: string]: Array<Function>;
 }
 
@@ -37,7 +37,7 @@ export const validateEvent = (event: string) => {
  * Loops through a list of events in the eventListeners object to validate them
  * @param {object} eventListeners
  */
-export const validateEvents = (eventListeners: EventListenersInterface) => {
+export const validateEvents = (eventListeners: object) => {
   const eventList = Object.keys(eventListeners);
   eventList.forEach(validateEvent);
 };
@@ -48,7 +48,12 @@ export const validateEvents = (eventListeners: EventListenersInterface) => {
  * @returns {object} The eventListeners object parameter, with any missing events prefilled in
  */
 export const prefillMissingEvents = (
-  eventListeners: EventListenersInterface
+  eventListeners: EventListenersInterface = {
+    open: [],
+    close: [],
+    error: [],
+    message: []
+  }
 ) => {
   WS_EVENT_NAMES.forEach((eventName: string) => {
     if (!eventListeners[eventName]) eventListeners[eventName] = [];

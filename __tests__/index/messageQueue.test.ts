@@ -12,7 +12,7 @@ describe("message queue", () => {
     await server.connected;
     sarus.send("Hello server");
     await expect(server).toReceiveMessage("Hello server");
-    sarus.ws.close();
+    sarus.ws?.close();
     sarus.send("Hello again");
     await server.connected;
     await expect(server).toReceiveMessage("Hello again");
@@ -28,6 +28,7 @@ describe("message queue", () => {
     await server.close();
     sarus.send("Hello again");
     sarus.send("Here is another message");
+    expect(sarus.storageType).toEqual("memory");
     expect(sarus.messages).toEqual(["Hello again", "Here is another message"]);
     const newServer = new WS(url);
     await newServer.connected;
@@ -98,8 +99,7 @@ describe("message queue", () => {
   };
 
   const processExistingMessagesFromStorage = async (
-    storageType,
-    sarusConfig
+    sarusConfig: SarusClassParams
   ) => {
     const sarusTwo = retrieveMessagesFromStorage(sarusConfig);
     const server = new WS(url);
@@ -122,7 +122,7 @@ describe("message queue", () => {
   });
 
   it("should process any existing messages from previous sessionStorage on initialization", async () => {
-    await processExistingMessagesFromStorage(sessionStorage, {
+    await processExistingMessagesFromStorage({
       url,
       storageType: "session",
       reconnectAutomatically: true
@@ -130,7 +130,7 @@ describe("message queue", () => {
   });
 
   it("should process any existing messages from previous localStorage on initialization", async () => {
-    await processExistingMessagesFromStorage(localStorage, {
+    await processExistingMessagesFromStorage({
       url,
       storageType: "local",
       reconnectAutomatically: true

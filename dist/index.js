@@ -19,9 +19,10 @@ const getStorage = (storageType) => {
  * @returns {*}
  */
 const getMessagesFromStore = ({ storageType, storageKey }) => {
+    var _a;
     if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
         const storage = getStorage(storageType);
-        const rawData = storage.getItem(storageKey);
+        const rawData = ((_a = storage) === null || _a === void 0 ? void 0 : _a.getItem(storageKey)) || null;
         return deserialize(rawData) || [];
     }
 };
@@ -41,9 +42,10 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
  */
 export default class Sarus {
     constructor(props) {
-        this.retryProcessTimePeriod = 50;
         // Extract the properties that are passed to the class
-        const { url, protocols, eventListeners, reconnectAutomatically, retryProcessTimePeriod, retryConnectionDelay, storageType, storageKey } = props;
+        const { url, protocols, eventListeners, reconnectAutomatically = !(props.reconnectAutomatically === false), retryProcessTimePeriod = 50, retryConnectionDelay, storageType = "memory", storageKey = "sarus" } = props;
+        this.eventListeners =
+            this.auditEventListeners(eventListeners) || this.initialEventlisteners();
         // Sets the WebSocket server url for the client to connect to.
         this.url = url;
         // Sets an optional protocols value, which can be either a string or an array of strings
@@ -55,12 +57,6 @@ export default class Sarus {
         */
         this.retryProcessTimePeriod =
             validateRetryProcessTimePeriod(retryProcessTimePeriod) || 50;
-        /*
-          This handles attaching event listeners to the WebSocket connection
-          at initialization.
-        */
-        this.eventListeners =
-            this.auditEventListeners(eventListeners) || this.initialEventlisteners();
         /*
           If a WebSocket connection is severed, Sarus is configured to reconnect to
           the WebSocket server url automatically, unless specified otherwise by the
@@ -106,8 +102,6 @@ export default class Sarus {
     }
     /*
       Gets the messages from the message queue.
-  
-      This tool TODO - got here
     */
     /**
      * Fetches the messages from the message queue
@@ -120,12 +114,14 @@ export default class Sarus {
     /**
      * Sets the messages to store in the message queue
      * @param {*} data - the data payload to set for the messages in the message queue
-     * @returns {*} the data payload
+     * @returns {void} - set does not return
      */
     set messages(data) {
         const { storageType, storageKey } = this;
         if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
-            getStorage(storageType).setItem(storageKey, serialize(data));
+            const storage = getStorage(storageType);
+            if (storage)
+                storage.setItem(storageKey, serialize(data));
         }
         if (storageType === "memory") {
             this.messageStore = data;
@@ -175,7 +171,12 @@ export default class Sarus {
      * @param {object} eventListeners - The eventListeners object parameter
      * @returns {object} The eventListeners object parameter, with any missing events prefilled in
      */
-    auditEventListeners(eventListeners) {
+    auditEventListeners(eventListeners = {
+        open: [],
+        close: [],
+        message: [],
+        error: []
+    }) {
         if (!eventListeners)
             return false;
         validateEvents(eventListeners);
@@ -235,7 +236,8 @@ export default class Sarus {
         if (!overrideDisableReconnect) {
             self.reconnectAutomatically = false;
         }
-        self.ws.close();
+        if (self.ws)
+            self.ws.close();
     }
     /**
      * Adds a function to trigger on the occurrence of an event with the specified event name
@@ -243,10 +245,13 @@ export default class Sarus {
      * @param {function} eventFunc - The function to trigger when the event occurs
      */
     on(eventName, eventFunc) {
-        if (this.eventListeners[eventName].indexOf(eventFunc) !== -1) {
+        const eventFunctions = this.eventListeners[eventName];
+        if (eventFunctions && eventFunctions.indexOf(eventFunc) !== -1) {
             throw new Error(`${eventFunc.name} has already been added to this event Listener`);
         }
-        this.eventListeners[eventName].push(eventFunc);
+        if (eventFunctions && eventFunctions instanceof Array) {
+            this.eventListeners[eventName].push(eventFunc);
+        }
     }
     /**
      * Finds a function in a eventListener's event list, by functon or by function name
@@ -256,7 +261,7 @@ export default class Sarus {
      */
     findFunction(eventName, eventFuncOrName) {
         if (typeof eventFuncOrName === "string") {
-            const byName = f => f.name === eventFuncOrName;
+            const byName = (f) => f.name === eventFuncOrName;
             return this.eventListeners[eventName].find(byName);
         }
         else {
@@ -287,9 +292,13 @@ export default class Sarus {
      */
     off(eventName, eventFuncOrName, opts) {
         const existingFunc = this.findFunction(eventName, eventFuncOrName);
-        this.raiseErrorIfFunctionIsMissing(existingFunc, opts);
-        const index = this.eventListeners[eventName].indexOf(existingFunc);
-        this.eventListeners[eventName].splice(index, 1);
+        if (existingFunc) {
+            const index = this.eventListeners[eventName].indexOf(existingFunc);
+            this.eventListeners[eventName].splice(index, 1);
+        }
+        else {
+            this.raiseErrorIfFunctionIsMissing(existingFunc, opts);
+        }
     }
     /**
      * Puts data on a message queue, and then processes the message queue to get the data sent to the WebSocket server
@@ -318,11 +327,12 @@ export default class Sarus {
      * dispatch if the WebSocket connection is not open.
      */
     process() {
+        var _a;
         const { messages } = this;
         const data = messages[0];
         if (!data && messages.length === 0)
             return;
-        if (this.ws.readyState === 1) {
+        if (((_a = this.ws) === null || _a === void 0 ? void 0 : _a.readyState) === 1) {
             this.processMessage(data);
         }
         else {
@@ -337,8 +347,8 @@ export default class Sarus {
     attachEventListeners() {
         const self = this;
         WS_EVENT_NAMES.forEach(eventName => {
-            self.ws[`on${eventName}`] = e => {
-                self.eventListeners[eventName].forEach(f => f(e));
+            self.ws[`on${eventName}`] = (e) => {
+                self.eventListeners[eventName].forEach((f) => f(e));
                 if (eventName === "close" && self.reconnectAutomatically) {
                     self.reconnect();
                 }
