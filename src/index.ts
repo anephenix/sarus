@@ -1,11 +1,7 @@
 // File Dependencies
 import { WS_EVENT_NAMES, DATA_STORAGE_TYPES } from "./lib/constants";
 import { serialize, deserialize } from "./lib/dataTransformer";
-import {
-  // validateEvents,
-  // prefillMissingEvents,
-  EventListenersInterface
-} from "./lib/validators";
+import { EventListenersInterface } from "./lib/validators";
 
 interface StorageParams {
   storageType: string;
