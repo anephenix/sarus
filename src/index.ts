@@ -28,7 +28,8 @@ const getStorage = (storageType: string) => {
 const getMessagesFromStore = ({ storageType, storageKey }: StorageParams) => {
   if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
     const storage = getStorage(storageType);
-    const rawData: null | string = storage?.getItem(storageKey) || null;
+    const rawData: null | string =
+      (storage && storage.getItem(storageKey)) || null;
     return deserialize(rawData) || [];
   }
 };
@@ -388,7 +389,7 @@ export default class Sarus {
     const { messages } = this;
     const data = messages[0];
     if (!data && messages.length === 0) return;
-    if (this.ws?.readyState === 1) {
+    if (this.ws && this.ws.readyState === 1) {
       this.processMessage(data);
     } else {
       setTimeout(this.process, this.retryProcessTimePeriod);
