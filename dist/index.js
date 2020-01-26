@@ -1,7 +1,6 @@
 // File Dependencies
 import { WS_EVENT_NAMES, DATA_STORAGE_TYPES } from "./lib/constants";
 import { serialize, deserialize } from "./lib/dataTransformer";
-import { validateRetryProcessTimePeriod, validateEvents, prefillMissingEvents } from "./lib/validators";
 const getStorage = (storageType) => {
     switch (storageType) {
         case "local":
@@ -43,9 +42,9 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
 export default class Sarus {
     constructor(props) {
         // Extract the properties that are passed to the class
-        const { url, protocols, eventListeners, reconnectAutomatically = !(props.reconnectAutomatically === false), retryProcessTimePeriod = 50, retryConnectionDelay, storageType = "memory", storageKey = "sarus" } = props;
-        this.eventListeners =
-            this.auditEventListeners(eventListeners) || this.initialEventlisteners();
+        const { url, protocols, eventListeners, reconnectAutomatically, retryProcessTimePeriod, // TODO - write a test case to check this
+        retryConnectionDelay, storageType = "memory", storageKey = "sarus" } = props;
+        this.eventListeners = this.auditEventListeners(eventListeners);
         // Sets the WebSocket server url for the client to connect to.
         this.url = url;
         // Sets an optional protocols value, which can be either a string or an array of strings
@@ -55,8 +54,7 @@ export default class Sarus {
           not open, there is a retry process time period of 50ms. It can be set
           to another value by the developer.
         */
-        this.retryProcessTimePeriod =
-            validateRetryProcessTimePeriod(retryProcessTimePeriod) || 50;
+        this.retryProcessTimePeriod = retryProcessTimePeriod || 50;
         /*
           If a WebSocket connection is severed, Sarus is configured to reconnect to
           the WebSocket server url automatically, unless specified otherwise by the
@@ -74,14 +72,14 @@ export default class Sarus {
           it is an in-memory option, but can also be set as 'session' for
           sessionStorage or 'local' for localStorage data persistence.
         */
-        this.storageType = storageType || "memory";
+        this.storageType = storageType;
         /*
           When using 'session' or 'local' as the storageType, the storage key is
           used as the key for calls to sessionStorage/localStorage getItem/setItem.
           
           It can also be configured by the developer during initialization.
         */
-        this.storageKey = storageKey || "sarus";
+        this.storageKey = storageKey;
         /*
           When initializing the client, if we are using sessionStorage/localStorage
           for storing messages in the messageQueue, then we want to retrieve any
@@ -177,22 +175,7 @@ export default class Sarus {
         message: [],
         error: []
     }) {
-        if (!eventListeners)
-            return false;
-        validateEvents(eventListeners);
-        return prefillMissingEvents(eventListeners);
-    }
-    /**
-     * Creates an initial eventListeners object with all of the required events, in the right format
-     * @returns {object} The eventListeners object
-     */
-    initialEventlisteners() {
-        const eventListeners = {
-            open: [],
-            message: [],
-            error: [],
-            close: []
-        };
+        // validateEvents(eventListeners);
         return eventListeners;
     }
     /**

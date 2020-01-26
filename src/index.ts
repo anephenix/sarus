@@ -2,9 +2,8 @@
 import { WS_EVENT_NAMES, DATA_STORAGE_TYPES } from "./lib/constants";
 import { serialize, deserialize } from "./lib/dataTransformer";
 import {
-  validateRetryProcessTimePeriod,
-  validateEvents,
-  prefillMissingEvents,
+  // validateEvents,
+  // prefillMissingEvents,
   EventListenersInterface
 } from "./lib/validators";
 
@@ -84,15 +83,14 @@ export default class Sarus {
       url,
       protocols,
       eventListeners,
-      reconnectAutomatically = !(props.reconnectAutomatically === false),
-      retryProcessTimePeriod = 50,
+      reconnectAutomatically,
+      retryProcessTimePeriod, // TODO - write a test case to check this
       retryConnectionDelay,
       storageType = "memory",
       storageKey = "sarus"
     } = props;
 
-    this.eventListeners =
-      this.auditEventListeners(eventListeners) || this.initialEventlisteners();
+    this.eventListeners = this.auditEventListeners(eventListeners);
 
     // Sets the WebSocket server url for the client to connect to.
     this.url = url;
@@ -105,8 +103,7 @@ export default class Sarus {
       not open, there is a retry process time period of 50ms. It can be set
       to another value by the developer.
     */
-    this.retryProcessTimePeriod =
-      validateRetryProcessTimePeriod(retryProcessTimePeriod) || 50;
+    this.retryProcessTimePeriod = retryProcessTimePeriod || 50;
 
     /*
       If a WebSocket connection is severed, Sarus is configured to reconnect to
@@ -127,7 +124,7 @@ export default class Sarus {
       it is an in-memory option, but can also be set as 'session' for 
       sessionStorage or 'local' for localStorage data persistence.
     */
-    this.storageType = storageType || "memory";
+    this.storageType = storageType;
 
     /*
       When using 'session' or 'local' as the storageType, the storage key is
@@ -135,7 +132,7 @@ export default class Sarus {
       
       It can also be configured by the developer during initialization.
     */
-    this.storageKey = storageKey || "sarus";
+    this.storageKey = storageKey;
 
     /*
       When initializing the client, if we are using sessionStorage/localStorage
@@ -241,22 +238,7 @@ export default class Sarus {
       error: []
     }
   ) {
-    if (!eventListeners) return false;
-    validateEvents(eventListeners);
-    return prefillMissingEvents(eventListeners);
-  }
-
-  /**
-   * Creates an initial eventListeners object with all of the required events, in the right format
-   * @returns {object} The eventListeners object
-   */
-  initialEventlisteners() {
-    const eventListeners: EventListenersInterface = {
-      open: [],
-      message: [],
-      error: [],
-      close: []
-    };
+    // validateEvents(eventListeners);
     return eventListeners;
   }
 

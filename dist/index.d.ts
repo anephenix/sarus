@@ -72,12 +72,7 @@ export default class Sarus {
      * @param {object} eventListeners - The eventListeners object parameter
      * @returns {object} The eventListeners object parameter, with any missing events prefilled in
      */
-    auditEventListeners(eventListeners?: EventListenersInterface): false | EventListenersInterface;
-    /**
-     * Creates an initial eventListeners object with all of the required events, in the right format
-     * @returns {object} The eventListeners object
-     */
-    initialEventlisteners(): EventListenersInterface;
+    auditEventListeners(eventListeners?: EventListenersInterface): EventListenersInterface;
     /**
      * Connects the WebSocket client, and attaches event listeners
      */
