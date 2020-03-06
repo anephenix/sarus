@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.3.0 - Friday 6th March, 2020
+
+- Library has been converted to TypeScript
+- Removed unnecessary checks as TypeScript types capture them
+
 ### 0.2.2 - Thursday 10th October, 2019
 
 - Added support for specifying the protocol to use with the WebSocket connection
