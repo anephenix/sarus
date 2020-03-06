@@ -3,13 +3,10 @@
  * @constant
  * @type {array}
  */
-const WS_EVENT_NAMES = ['open', 'close', 'message', 'error'];
-
+export declare const WS_EVENT_NAMES: Array<string>;
 /**
  * Persistent data storage types
  * @constant
  * @type {array}
  */
-const DATA_STORAGE_TYPES = ['session', 'local'];
-
-module.exports = { WS_EVENT_NAMES, DATA_STORAGE_TYPES };
+export declare const DATA_STORAGE_TYPES: Array<string>;

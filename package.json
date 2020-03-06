@@ -2,16 +2,25 @@
   "name": "@anephenix/sarus",
   "version": "0.2.2",
   "description": "A WebSocket JavaScript library",
-  "main": "index.js",
-  "dependencies": {},
+  "main": "dist/index.js",
   "devDependencies": {
+    "@babel/parser": "^7.8.3",
+    "@babel/types": "^7.8.3",
+    "@types/jest": "^24.9.0",
+    "@types/websocket": "^1.0.0",
     "coveralls": "^3.0.3",
-    "jest": "^24.8.0",
+    "dom-storage": "^2.1.0",
+    "jest": "^24.9.0",
     "jest-websocket-mock": "^2.0.0",
     "jsdoc": "^3.6.3",
-    "mock-socket": "^9.0.0"
+    "jsdom": "^16.0.0",
+    "mock-socket": "^9.0.0",
+    "ts-jest": "^24.3.0",
+    "typescript": "^3.7.5"
   },
   "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "watch": "tsc --project tsconfig.json --watch",
     "cover": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "test": "jest --coverage"
   },
@@ -27,5 +36,8 @@
   "bugs": {
     "url": "https://github.com/anephenix/sarus/issues"
   },
-  "homepage": "https://github.com/anephenix/sarus#readme"
+  "homepage": "https://github.com/anephenix/sarus#readme",
+  "dependencies": {
+    "@types/window-or-global": "^1.0.0"
+  }
 }
