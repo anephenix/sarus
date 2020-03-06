@@ -1,6 +1,11 @@
 // File Dependencies
 import { WS_EVENT_NAMES, DATA_STORAGE_TYPES } from "./lib/constants";
 import { serialize, deserialize } from "./lib/dataTransformer";
+/**
+ * Retrieves the storage API for the browser
+ * @param {string} storageType - The storage type (local or session)
+ * @returns {Storage} - the storage API
+ */
 const getStorage = (storageType) => {
     switch (storageType) {
         case "local":
@@ -18,10 +23,9 @@ const getStorage = (storageType) => {
  * @returns {*}
  */
 const getMessagesFromStore = ({ storageType, storageKey }) => {
-    var _a;
     if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
         const storage = getStorage(storageType);
-        const rawData = ((_a = storage) === null || _a === void 0 ? void 0 : _a.getItem(storageKey)) || null;
+        const rawData = (storage && storage.getItem(storageKey)) || null;
         return deserialize(rawData) || [];
     }
 };
@@ -310,12 +314,11 @@ export default class Sarus {
      * dispatch if the WebSocket connection is not open.
      */
     process() {
-        var _a;
         const { messages } = this;
         const data = messages[0];
         if (!data && messages.length === 0)
             return;
-        if (((_a = this.ws) === null || _a === void 0 ? void 0 : _a.readyState) === 1) {
+        if (this.ws && this.ws.readyState === 1) {
             this.processMessage(data);
         }
         else {
