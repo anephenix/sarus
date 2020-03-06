@@ -8,6 +8,11 @@ interface StorageParams {
   storageKey: string;
 }
 
+/**
+ * Retrieves the storage API for the browser
+ * @param {string} storageType - The storage type (local or session)
+ * @returns {Storage} - the storage API
+ */
 const getStorage = (storageType: string) => {
   switch (storageType) {
     case "local":

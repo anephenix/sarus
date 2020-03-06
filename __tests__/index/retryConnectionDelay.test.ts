@@ -30,7 +30,9 @@ describe("retry connection delay", () => {
       const timeThen: any = new Date();
       const newServer = new WS(url);
       await newServer.connected;
-      expect(sarus.ws?.readyState).toBe(1);
+      await condition(() => {
+        return sarus.ws?.readyState === 1;
+      });
       const timeNow: any = new Date();
       expect(timeNow - timeThen).toBeGreaterThan(1000);
       expect(timeNow - timeThen).toBeLessThan(3000);
