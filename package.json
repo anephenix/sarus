@@ -10,12 +10,12 @@
     "@types/websocket": "^1.0.0",
     "coveralls": "^3.0.3",
     "dom-storage": "^2.1.0",
-    "jest": "^24.9.0",
+    "jest": "^25.1.0",
     "jest-websocket-mock": "^2.0.0",
     "jsdoc": "^3.6.3",
-    "jsdom": "^16.0.0",
+    "jsdom": "^16.2.1",
     "mock-socket": "^9.0.0",
-    "ts-jest": "^24.3.0",
+    "ts-jest": "^25.2.1",
     "typescript": "^3.7.5"
   },
   "scripts": {

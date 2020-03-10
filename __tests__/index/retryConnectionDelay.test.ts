@@ -4,8 +4,6 @@ import { WS } from "jest-websocket-mock";
 
 const url = "ws://localhost:1234";
 
-const delay = (duration: number) =>
-  new Promise(resolve => setTimeout(resolve, duration));
 const condition = (func: Function) => {
   return new Promise(resolve => {
     let check: Function;

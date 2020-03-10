@@ -2,13 +2,13 @@
 import Sarus, { SarusClassParams } from "../../src/index";
 import { WS } from "jest-websocket-mock";
 
-const url = "ws://localhost:1234";
+const url: string = "ws://localhost:1234";
 
 describe("message queue", () => {
   //Implement message queue with in-memory as default
   it("should queue messages for delivery", async () => {
-    const server = new WS(url);
-    const sarus = new Sarus({ url });
+    const server: WS = new WS(url);
+    const sarus: Sarus = new Sarus({ url });
     await server.connected;
     sarus.send("Hello server");
     await expect(server).toReceiveMessage("Hello server");
@@ -20,8 +20,8 @@ describe("message queue", () => {
   });
 
   it("should queue messages for delivery when server is offline for a bit", async () => {
-    const server = new WS(url);
-    const sarus = new Sarus({ url });
+    const server: WS = new WS(url);
+    const sarus: Sarus = new Sarus({ url });
     await server.connected;
     sarus.send("Hello server");
     await expect(server).toReceiveMessage("Hello server");
@@ -41,7 +41,7 @@ describe("message queue", () => {
   });
 
   it("should allow the developer to provide a custom retryProcessTimePeriod", () => {
-    const sarus = new Sarus({ url, retryProcessTimePeriod: 25 });
+    const sarus: Sarus = new Sarus({ url, retryProcessTimePeriod: 25 });
     expect(sarus.retryProcessTimePeriod).toBe(25);
   });
 
@@ -50,8 +50,8 @@ describe("message queue", () => {
     sarusConfig: SarusClassParams
   ) => {
     storageType.clear();
-    const server = new WS(url);
-    const sarus = new Sarus(sarusConfig);
+    const server: WS = new WS(url);
+    const sarus: Sarus = new Sarus(sarusConfig);
     expect(sarus.storageType).toBe(sarusConfig.storageType);
     await server.connected;
     sarus.send("Hello server");
@@ -79,7 +79,7 @@ describe("message queue", () => {
   });
 
   it("should allow the developer to use a custom storageKey", () => {
-    const sarus = new Sarus({
+    const sarus: Sarus = new Sarus({
       url,
       storageType: "local",
       storageKey: "sarusWS"
@@ -88,12 +88,12 @@ describe("message queue", () => {
   });
 
   const retrieveMessagesFromStorage = (sarusConfig: SarusClassParams) => {
-    let sarusOne = new Sarus(sarusConfig);
+    let sarusOne: Sarus = new Sarus(sarusConfig);
     expect(sarusOne.messages).toEqual([]);
     sarusOne.send("Hello world");
     sarusOne.send("Hello again");
     sarusOne.disconnect();
-    const sarusTwo = new Sarus(sarusConfig);
+    const sarusTwo: Sarus = new Sarus(sarusConfig);
     expect(sarusTwo.messages).toEqual(["Hello world", "Hello again"]);
     return sarusTwo;
   };
@@ -102,7 +102,7 @@ describe("message queue", () => {
     sarusConfig: SarusClassParams
   ) => {
     const sarusTwo = retrieveMessagesFromStorage(sarusConfig);
-    const server = new WS(url);
+    const server: WS = new WS(url);
     const messageOne = await server.nextMessage;
     const messageTwo = await server.nextMessage;
     expect(sarusTwo.messages).toEqual([]);

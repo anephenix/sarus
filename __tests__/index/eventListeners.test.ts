@@ -6,7 +6,7 @@ const url = "ws://localhost:1234";
 
 describe("eventListeners", () => {
   it("should bind eventListeners that are passed during initialization", async () => {
-    const server = new WS("ws://localhost:1234");
+    const server: WS = new WS("ws://localhost:1234");
     const mockOpen = jest.fn();
     const mockParseMessage = jest.fn();
     const mockClose = jest.fn();
@@ -44,8 +44,8 @@ describe("eventListeners", () => {
   // });
 
   it("should prefill any missing eventListener events during initialization", () => {
-    const myFunc = () => {};
-    const sarus = new Sarus({
+    const myFunc: Function = () => {};
+    const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
         open: [],
@@ -79,9 +79,9 @@ describe("eventListeners", () => {
   });
 
   it("should allow an event listener to be added after initialization", () => {
-    const myFunc = () => {};
-    const anotherFunc = () => {};
-    const sarus = new Sarus({
+    const myFunc: Function = () => {};
+    const anotherFunc: Function = () => {};
+    const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
         open: [],
@@ -96,10 +96,10 @@ describe("eventListeners", () => {
   });
 
   it("should bind any added event listeners after initialization to the WebSocket", async () => {
-    const server = new WS(url);
+    const server: WS = new WS(url);
     const myFunc = jest.fn();
     const anotherFunc = jest.fn();
-    const sarus = new Sarus({
+    const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
         open: [],
@@ -120,8 +120,8 @@ describe("eventListeners", () => {
   });
 
   it("should allow an event listener to be removed by passing the function name", () => {
-    const myFunc = () => {};
-    const sarus = new Sarus({
+    const myFunc: Function = () => {};
+    const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
         open: [],
@@ -136,8 +136,8 @@ describe("eventListeners", () => {
   });
 
   it("should allow an event listener to be removed by passing the function", () => {
-    const myFunc = () => {};
-    const sarus = new Sarus({
+    const myFunc: Function = () => {};
+    const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
         open: [],
@@ -152,9 +152,9 @@ describe("eventListeners", () => {
   });
 
   it("should throw an error if a function cannot be found when trying to remove it from an event listener", () => {
-    const myFunc = () => {};
-    const anotherFunc = () => {};
-    const sarus = new Sarus({
+    const myFunc: Function = () => {};
+    const anotherFunc: Function = () => {};
+    const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
         open: [],
@@ -171,9 +171,9 @@ describe("eventListeners", () => {
   });
 
   it("should throw an error if a function name cannot be found when trying to remove it from an event listener", () => {
-    const myFunc = () => {};
-    const anotherFunc = () => {};
-    const sarus = new Sarus({
+    const myFunc: Function = () => {};
+    const anotherFunc: Function = () => {};
+    const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
         open: [],
@@ -190,9 +190,9 @@ describe("eventListeners", () => {
   });
 
   it("should not throw an error, if a function cannot be found when trying to remove it from an event listener, and additional doNotThrowError is passed", () => {
-    const myFunc = () => {};
-    const anotherFunc = () => {};
-    const sarus = new Sarus({
+    const myFunc: Function = () => {};
+    const anotherFunc: Function = () => {};
+    const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
         open: [],
