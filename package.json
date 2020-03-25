@@ -31,7 +31,6 @@
   "keywords": [
     "websocket"
   ],
-  "type": "module",
   "author": "Paul Jensen <paul@anephenix.com>",
   "license": "MIT",
   "bugs": {

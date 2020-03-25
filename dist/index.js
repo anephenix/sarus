@@ -1,6 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 // File Dependencies
-import { WS_EVENT_NAMES, DATA_STORAGE_TYPES } from "./lib/constants";
-import { serialize, deserialize } from "./lib/dataTransformer";
+const constants_1 = require("./lib/constants");
+const dataTransformer_1 = require("./lib/dataTransformer");
 /**
  * Retrieves the storage API for the browser
  * @param {string} storageType - The storage type (local or session)
@@ -23,10 +25,10 @@ const getStorage = (storageType) => {
  * @returns {*}
  */
 const getMessagesFromStore = ({ storageType, storageKey }) => {
-    if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
+    if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
         const storage = getStorage(storageType);
         const rawData = (storage && storage.getItem(storageKey)) || null;
-        return deserialize(rawData) || [];
+        return dataTransformer_1.deserialize(rawData) || [];
     }
 };
 /**
@@ -43,7 +45,7 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
  * @param {string} param0.storageKey - An optional string specifying the key used to store the messages data against in sessionStorage/localStorage
  * @returns {object} The class instance
  */
-export default class Sarus {
+class Sarus {
     constructor(props) {
         // Extract the properties that are passed to the class
         const { url, protocols, eventListeners, reconnectAutomatically, retryProcessTimePeriod, // TODO - write a test case to check this
@@ -120,10 +122,10 @@ export default class Sarus {
      */
     set messages(data) {
         const { storageType, storageKey } = this;
-        if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
+        if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
             const storage = getStorage(storageType);
             if (storage)
-                storage.setItem(storageKey, serialize(data));
+                storage.setItem(storageKey, dataTransformer_1.serialize(data));
         }
         if (storageType === "memory") {
             this.messageStore = data;
@@ -136,7 +138,7 @@ export default class Sarus {
      */
     addMessageToStore(data) {
         const { messages, storageType } = this;
-        if (DATA_STORAGE_TYPES.indexOf(storageType) === -1)
+        if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) === -1)
             return null;
         return (this.messages = [...messages, data]);
     }
@@ -162,7 +164,7 @@ export default class Sarus {
      */
     removeMessage() {
         const { messages, storageType } = this;
-        if (DATA_STORAGE_TYPES.indexOf(storageType) === -1) {
+        if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) === -1) {
             return this.messages.shift();
         }
         this.removeMessageFromStore(messages);
@@ -332,7 +334,7 @@ export default class Sarus {
      */
     attachEventListeners() {
         const self = this;
-        WS_EVENT_NAMES.forEach(eventName => {
+        constants_1.WS_EVENT_NAMES.forEach(eventName => {
             self.ws[`on${eventName}`] = (e) => {
                 self.eventListeners[eventName].forEach((f) => f(e));
                 if (eventName === "close" && self.reconnectAutomatically) {
@@ -342,3 +344,4 @@ export default class Sarus {
         });
     }
 }
+exports.default = Sarus;
