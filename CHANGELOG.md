@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.3.1 - Wednesday 25th March, 2020
+
+- Fixed GitHub issue #14 (Cannot use import statement outside a module)
+- Shipped module is now compiled as a CommonJS module
+
 ### 0.3.0 - Friday 6th March, 2020
 
 - Library has been converted to TypeScript
