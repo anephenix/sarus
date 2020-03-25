@@ -1,9 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * A definitive list of events for a WebSocket client to listen on
  * @constant
  * @type {array}
  */
-export const WS_EVENT_NAMES = [
+exports.WS_EVENT_NAMES = [
     "open",
     "close",
     "message",
@@ -14,4 +16,4 @@ export const WS_EVENT_NAMES = [
  * @constant
  * @type {array}
  */
-export const DATA_STORAGE_TYPES = ["session", "local"];
+exports.DATA_STORAGE_TYPES = ["session", "local"];
