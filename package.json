@@ -38,6 +38,6 @@
   },
   "homepage": "https://github.com/anephenix/sarus#readme",
   "dependencies": {
-    "@types/window-or-global": "^1.0.0"
+    "@types/window-or-global": "^1.0.1"
   }
 }
