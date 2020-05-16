@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.3.2 - Saturday 16th May, 2020
+
+- Added support for defining the binaryType on the WebSocket
+
 ### 0.3.1 - Wednesday 25th March, 2020
 
 - Fixed GitHub issue #14 (Cannot use import statement outside a module)
