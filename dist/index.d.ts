@@ -1,6 +1,7 @@
 import { EventListenersInterface } from "./lib/validators";
 export interface SarusClassParams {
     url: string;
+    binaryType?: string;
     protocols?: string | Array<string>;
     eventListeners?: EventListenersInterface;
     retryProcessTimePeriod?: number;
@@ -14,6 +15,7 @@ export interface SarusClassParams {
  * @constructor
  * @param {Object} param0 - An object containing parameters
  * @param {string} param0.url - The url for the WebSocket client to connect to
+ * @param {string} param0.binaryType - The optional type of binary data transmitted over the WebSocket connection
  * @param {string\array} param0.protocols - An optional string or array of strings for the sub-protocols that the WebSocket will use
  * @param {object} param0.eventListeners - An optional object containing event listener functions keyed to websocket events
  * @param {boolean} param0.reconnectAutomatically - An optional boolean flag to indicate whether to reconnect automatically when a websocket connection is severed
@@ -25,6 +27,7 @@ export interface SarusClassParams {
  */
 export default class Sarus {
     url: string;
+    binaryType?: string;
     protocols?: string | Array<string>;
     eventListeners: EventListenersInterface;
     retryProcessTimePeriod?: number;
@@ -142,4 +145,8 @@ export default class Sarus {
      * of the WebSocket, unless configured not to.
      */
     attachEventListeners(): void;
+    /**
+     * Sets the binary type for the WebSocket, if such an option is set
+     */
+    setBinaryType(): void;
 }

@@ -36,6 +36,7 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
  * @constructor
  * @param {Object} param0 - An object containing parameters
  * @param {string} param0.url - The url for the WebSocket client to connect to
+ * @param {string} param0.binaryType - The optional type of binary data transmitted over the WebSocket connection
  * @param {string\array} param0.protocols - An optional string or array of strings for the sub-protocols that the WebSocket will use
  * @param {object} param0.eventListeners - An optional object containing event listener functions keyed to websocket events
  * @param {boolean} param0.reconnectAutomatically - An optional boolean flag to indicate whether to reconnect automatically when a websocket connection is severed
@@ -48,11 +49,13 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
 class Sarus {
     constructor(props) {
         // Extract the properties that are passed to the class
-        const { url, protocols, eventListeners, reconnectAutomatically, retryProcessTimePeriod, // TODO - write a test case to check this
+        const { url, binaryType, protocols, eventListeners, reconnectAutomatically, retryProcessTimePeriod, // TODO - write a test case to check this
         retryConnectionDelay, storageType = "memory", storageKey = "sarus" } = props;
         this.eventListeners = this.auditEventListeners(eventListeners);
         // Sets the WebSocket server url for the client to connect to.
         this.url = url;
+        // Sets the binaryType of the data being sent over the connection
+        this.binaryType = binaryType;
         // Sets an optional protocols value, which can be either a string or an array of strings
         this.protocols = protocols;
         /*
@@ -189,6 +192,7 @@ class Sarus {
      */
     connect() {
         this.ws = new WebSocket(this.url, this.protocols);
+        this.setBinaryType();
         this.attachEventListeners();
         if (this.messages.length > 0)
             this.process();
@@ -342,6 +346,15 @@ class Sarus {
                 }
             };
         });
+    }
+    /**
+     * Sets the binary type for the WebSocket, if such an option is set
+     */
+    setBinaryType() {
+        const self = this;
+        const { binaryType } = self;
+        if (binaryType)
+            self.ws.binaryType = binaryType;
     }
 }
 exports.default = Sarus;
