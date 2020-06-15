@@ -4,19 +4,19 @@
   "description": "A WebSocket JavaScript library",
   "main": "dist/index.js",
   "devDependencies": {
-    "@babel/parser": "^7.9.0",
-    "@babel/types": "^7.9.0",
-    "@types/jest": "^24.9.1",
+    "@babel/parser": "^7.10.2",
+    "@babel/types": "^7.10.2",
+    "@types/jest": "^26.0.0",
     "@types/websocket": "^1.0.0",
-    "coveralls": "^3.0.11",
+    "coveralls": "^3.1.0",
     "dom-storage": "^2.1.0",
-    "jest": "^25.1.0",
+    "jest": "^26.0.1",
     "jest-websocket-mock": "^2.0.2",
-    "jsdoc": "^3.6.3",
-    "jsdom": "^16.2.1",
+    "jsdoc": "^3.6.4",
+    "jsdom": "^16.2.2",
     "mock-socket": "^9.0.3",
-    "ts-jest": "^25.2.1",
-    "typescript": "^3.8.3"
+    "ts-jest": "^26.1.0",
+    "typescript": "^3.9.5"
   },
   "scripts": {
     "build": "npx tsc --project tsconfig.json",
@@ -38,6 +38,7 @@
   },
   "homepage": "https://github.com/anephenix/sarus#readme",
   "dependencies": {
-    "@types/window-or-global": "^1.0.1"
+    "@types/window-or-global": "^1.0.2",
+    "npm-upgrade": "^2.0.3"
   }
 }
