@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DATA_STORAGE_TYPES = exports.WS_EVENT_NAMES = void 0;
 /**
  * A definitive list of events for a WebSocket client to listen on
  * @constant
