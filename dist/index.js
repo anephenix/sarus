@@ -1,14 +1,21 @@
 "use strict";
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // File Dependencies
-const constants_1 = require("./lib/constants");
-const dataTransformer_1 = require("./lib/dataTransformer");
+var constants_1 = require("./lib/constants");
+var dataTransformer_1 = require("./lib/dataTransformer");
 /**
  * Retrieves the storage API for the browser
  * @param {string} storageType - The storage type (local or session)
  * @returns {Storage} - the storage API
  */
-const getStorage = (storageType) => {
+var getStorage = function (storageType) {
     switch (storageType) {
         case "local":
             return window.localStorage;
@@ -24,10 +31,11 @@ const getStorage = (storageType) => {
  * @param {string} param0.storageType - The type of storage used
  * @returns {*}
  */
-const getMessagesFromStore = ({ storageType, storageKey }) => {
+var getMessagesFromStore = function (_a) {
+    var storageType = _a.storageType, storageKey = _a.storageKey;
     if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
-        const storage = getStorage(storageType);
-        const rawData = (storage && storage.getItem(storageKey)) || null;
+        var storage = getStorage(storageType);
+        var rawData = (storage && storage.getItem(storageKey)) || null;
         return dataTransformer_1.deserialize(rawData) || [];
     }
 };
@@ -46,11 +54,11 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
  * @param {string} param0.storageKey - An optional string specifying the key used to store the messages data against in sessionStorage/localStorage
  * @returns {object} The class instance
  */
-class Sarus {
-    constructor(props) {
+var Sarus = /** @class */ (function () {
+    function Sarus(props) {
         // Extract the properties that are passed to the class
-        const { url, binaryType, protocols, eventListeners, reconnectAutomatically, retryProcessTimePeriod, // TODO - write a test case to check this
-        retryConnectionDelay, storageType = "memory", storageKey = "sarus" } = props;
+        var url = props.url, binaryType = props.binaryType, protocols = props.protocols, eventListeners = props.eventListeners, reconnectAutomatically = props.reconnectAutomatically, retryProcessTimePeriod = props.retryProcessTimePeriod, // TODO - write a test case to check this
+        retryConnectionDelay = props.retryConnectionDelay, _a = props.storageType, storageType = _a === void 0 ? "memory" : _a, _b = props.storageKey, storageKey = _b === void 0 ? "sarus" : _b;
         this.eventListeners = this.auditEventListeners(eventListeners);
         // Sets the WebSocket server url for the client to connect to.
         this.url = url;
@@ -107,102 +115,107 @@ class Sarus {
         this.process = this.process.bind(this);
         this.connect();
     }
-    /*
-      Gets the messages from the message queue.
-    */
-    /**
-     * Fetches the messages from the message queue
-     * @returns {array} the messages in the message queue, as an array
-     */
-    get messages() {
-        const { storageType, storageKey, messageStore } = this;
-        return getMessagesFromStore({ storageType, storageKey }) || messageStore;
-    }
-    /**
-     * Sets the messages to store in the message queue
-     * @param {*} data - the data payload to set for the messages in the message queue
-     * @returns {void} - set does not return
-     */
-    set messages(data) {
-        const { storageType, storageKey } = this;
-        if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
-            const storage = getStorage(storageType);
-            if (storage)
-                storage.setItem(storageKey, dataTransformer_1.serialize(data));
-        }
-        if (storageType === "memory") {
-            this.messageStore = data;
-        }
-    }
+    Object.defineProperty(Sarus.prototype, "messages", {
+        /*
+          Gets the messages from the message queue.
+        */
+        /**
+         * Fetches the messages from the message queue
+         * @returns {array} the messages in the message queue, as an array
+         */
+        get: function () {
+            var _a = this, storageType = _a.storageType, storageKey = _a.storageKey, messageStore = _a.messageStore;
+            return getMessagesFromStore({ storageType: storageType, storageKey: storageKey }) || messageStore;
+        },
+        /**
+         * Sets the messages to store in the message queue
+         * @param {*} data - the data payload to set for the messages in the message queue
+         * @returns {void} - set does not return
+         */
+        set: function (data) {
+            var _a = this, storageType = _a.storageType, storageKey = _a.storageKey;
+            if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
+                var storage = getStorage(storageType);
+                if (storage)
+                    storage.setItem(storageKey, dataTransformer_1.serialize(data));
+            }
+            if (storageType === "memory") {
+                this.messageStore = data;
+            }
+        },
+        enumerable: false,
+        configurable: true
+    });
     /**
      * Adds a message to the messages in the message queue that are kept in persistent storage
      * @param {*} data - the message
      * @returns {array} the messages in the message queue
      */
-    addMessageToStore(data) {
-        const { messages, storageType } = this;
+    Sarus.prototype.addMessageToStore = function (data) {
+        var _a = this, messages = _a.messages, storageType = _a.storageType;
         if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) === -1)
             return null;
-        return (this.messages = [...messages, data]);
-    }
+        return (this.messages = __spreadArrays(messages, [data]));
+    };
     /**
      * Adds a messge to the message queue
      * @param {*} data - the data payload to put on the message queue
      */
-    addMessage(data) {
-        const { messages } = this;
+    Sarus.prototype.addMessage = function (data) {
+        var messages = this.messages;
         this.addMessageToStore(data) || messages.push(data);
-    }
+    };
     /**
      * Removes a message from the message queue that is in persistent storage
      * @param {*} messages - the messages in the message queue
      */
-    removeMessageFromStore(messages) {
-        const newArray = [...messages];
+    Sarus.prototype.removeMessageFromStore = function (messages) {
+        var newArray = __spreadArrays(messages);
         newArray.shift();
         this.messages = newArray;
-    }
+    };
     /**
      * Removes a message from the message queue
      */
-    removeMessage() {
-        const { messages, storageType } = this;
+    Sarus.prototype.removeMessage = function () {
+        var _a = this, messages = _a.messages, storageType = _a.storageType;
         if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) === -1) {
             return this.messages.shift();
         }
         this.removeMessageFromStore(messages);
-    }
+    };
     /**
      * Audits the eventListeners object parameter with validations, and a prefillMissingEvents step
      * This ensures that the eventListeners object is the right format for binding events to WebSocket clients
      * @param {object} eventListeners - The eventListeners object parameter
      * @returns {object} The eventListeners object parameter, with any missing events prefilled in
      */
-    auditEventListeners(eventListeners = {
-        open: [],
-        close: [],
-        message: [],
-        error: []
-    }) {
+    Sarus.prototype.auditEventListeners = function (eventListeners) {
+        if (eventListeners === void 0) { eventListeners = {
+            open: [],
+            close: [],
+            message: [],
+            error: []
+        }; }
         // validateEvents(eventListeners);
         return eventListeners;
-    }
+    };
     /**
      * Connects the WebSocket client, and attaches event listeners
      */
-    connect() {
+    Sarus.prototype.connect = function () {
         this.ws = new WebSocket(this.url, this.protocols);
         this.setBinaryType();
         this.attachEventListeners();
         if (this.messages.length > 0)
             this.process();
-    }
+    };
     /**
      * Reconnects the WebSocket client based on the retryConnectionDelay setting.
      */
-    reconnect() {
-        const self = this;
-        const { retryConnectionDelay } = self;
+    Sarus.prototype.reconnect = function () {
+        var self = this;
+        var retryConnectionDelay = self.retryConnectionDelay;
         switch (typeof retryConnectionDelay) {
             case "boolean":
                 if (retryConnectionDelay) {
@@ -216,45 +229,45 @@ class Sarus {
                 setTimeout(self.connect, retryConnectionDelay);
                 break;
         }
-    }
+    };
     /**
      * Disconnects the WebSocket client from the server, and changes the
      * reconnectAutomatically flag to disable automatic reconnection, unless the
      * developer passes a boolean flag to not do that.
      * @param {boolean} overrideDisableReconnect
      */
-    disconnect(overrideDisableReconnect) {
-        const self = this;
+    Sarus.prototype.disconnect = function (overrideDisableReconnect) {
+        var self = this;
         // We do this to prevent automatic reconnections;
         if (!overrideDisableReconnect) {
             self.reconnectAutomatically = false;
         }
         if (self.ws)
             self.ws.close();
-    }
+    };
     /**
      * Adds a function to trigger on the occurrence of an event with the specified event name
      * @param {string} eventName - The name of the event in the eventListeners object
      * @param {function} eventFunc - The function to trigger when the event occurs
      */
-    on(eventName, eventFunc) {
-        const eventFunctions = this.eventListeners[eventName];
+    Sarus.prototype.on = function (eventName, eventFunc) {
+        var eventFunctions = this.eventListeners[eventName];
         if (eventFunctions && eventFunctions.indexOf(eventFunc) !== -1) {
-            throw new Error(`${eventFunc.name} has already been added to this event Listener`);
+            throw new Error(eventFunc.name + " has already been added to this event Listener");
         }
         if (eventFunctions && eventFunctions instanceof Array) {
             this.eventListeners[eventName].push(eventFunc);
         }
-    }
+    };
     /**
      * Finds a function in a eventListener's event list, by functon or by function name
      * @param {string} eventName - The name of the event in the eventListeners object
      * @param {function|string} eventFuncOrName - Either the function to remove, or the name of the function to remove
      * @returns {function|undefined} The existing function, or nothing
      */
-    findFunction(eventName, eventFuncOrName) {
+    Sarus.prototype.findFunction = function (eventName, eventFuncOrName) {
         if (typeof eventFuncOrName === "string") {
-            const byName = (f) => f.name === eventFuncOrName;
+            var byName = function (f) { return f.name === eventFuncOrName; };
             return this.eventListeners[eventName].find(byName);
         }
         else {
@@ -262,20 +275,20 @@ class Sarus {
                 return eventFuncOrName;
             }
         }
-    }
+    };
     /**
      * Raises an error if the existing function is not present, and if the client is configured to throw an error
      * @param {function|undefined} existingFunc
      * @param {object} opts - An optional object to pass that contains extra configuration options
      * @param {boolean} opts.doNotThrowError - A boolean flag that indicates whether to not throw an error if the function to remove is not found in the list
      */
-    raiseErrorIfFunctionIsMissing(existingFunc, opts) {
+    Sarus.prototype.raiseErrorIfFunctionIsMissing = function (existingFunc, opts) {
         if (!existingFunc) {
             if (!(opts && opts.doNotThrowError)) {
                 throw new Error("Function does not exist in eventListener list");
             }
         }
-    }
+    };
     /**
      * Removes a function from an eventListener events list for that event
      * @param {string} eventName - The name of the event in the eventListeners object
@@ -283,45 +296,45 @@ class Sarus {
      * @param {object} opts - An optional object to pass that contains extra configuration options
      * @param {boolean} opts.doNotThrowError - A boolean flag that indicates whether to not throw an error if the function to remove is not found in the list
      */
-    off(eventName, eventFuncOrName, opts) {
-        const existingFunc = this.findFunction(eventName, eventFuncOrName);
+    Sarus.prototype.off = function (eventName, eventFuncOrName, opts) {
+        var existingFunc = this.findFunction(eventName, eventFuncOrName);
         if (existingFunc) {
-            const index = this.eventListeners[eventName].indexOf(existingFunc);
+            var index = this.eventListeners[eventName].indexOf(existingFunc);
             this.eventListeners[eventName].splice(index, 1);
         }
         else {
             this.raiseErrorIfFunctionIsMissing(existingFunc, opts);
         }
-    }
+    };
     /**
      * Puts data on a message queue, and then processes the message queue to get the data sent to the WebSocket server
      * @param {*} data - The data payload to put the on message queue
      */
-    send(data) {
-        const callProcessAfterwards = this.messages.length === 0;
+    Sarus.prototype.send = function (data) {
+        var callProcessAfterwards = this.messages.length === 0;
         this.addMessage(data);
         if (callProcessAfterwards)
             this.process();
-    }
+    };
     /**
      * Sends a message over the WebSocket, removes the message from the queue,
      * and calls proces again if there is another message to process.
      * @param {string} data - The data payload to send over the WebSocket
      */
-    processMessage(data) {
-        const self = this;
+    Sarus.prototype.processMessage = function (data) {
+        var self = this;
         self.ws.send(data);
         self.removeMessage();
         if (self.messages.length > 0)
             this.process();
-    }
+    };
     /**
      * Processes messages that are on the message queue. Handles looping through the list, as well as retrying message
      * dispatch if the WebSocket connection is not open.
      */
-    process() {
-        const { messages } = this;
-        const data = messages[0];
+    Sarus.prototype.process = function () {
+        var messages = this.messages;
+        var data = messages[0];
         if (!data && messages.length === 0)
             return;
         if (this.ws && this.ws.readyState === 1) {
@@ -330,31 +343,32 @@ class Sarus {
         else {
             setTimeout(this.process, this.retryProcessTimePeriod);
         }
-    }
+    };
     /**
      * Attaches the event listeners to the WebSocket instance.
      * Also attaches an additional eventListener on the 'close' event to trigger a reconnection
      * of the WebSocket, unless configured not to.
      */
-    attachEventListeners() {
-        const self = this;
-        constants_1.WS_EVENT_NAMES.forEach(eventName => {
-            self.ws[`on${eventName}`] = (e) => {
-                self.eventListeners[eventName].forEach((f) => f(e));
+    Sarus.prototype.attachEventListeners = function () {
+        var self = this;
+        constants_1.WS_EVENT_NAMES.forEach(function (eventName) {
+            self.ws["on" + eventName] = function (e) {
+                self.eventListeners[eventName].forEach(function (f) { return f(e); });
                 if (eventName === "close" && self.reconnectAutomatically) {
                     self.reconnect();
                 }
             };
         });
-    }
+    };
     /**
      * Sets the binary type for the WebSocket, if such an option is set
      */
-    setBinaryType() {
-        const self = this;
-        const { binaryType } = self;
+    Sarus.prototype.setBinaryType = function () {
+        var self = this;
+        var binaryType = self.binaryType;
         if (binaryType)
             self.ws.binaryType = binaryType;
-    }
-}
+    };
+    return Sarus;
+}());
 exports.default = Sarus;
