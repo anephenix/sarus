@@ -1,12 +1,12 @@
 {
   "name": "@anephenix/sarus",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "A WebSocket JavaScript library",
   "main": "dist/index.js",
   "devDependencies": {
     "@babel/parser": "^7.11.5",
     "@babel/types": "^7.11.5",
-    "@types/jest": "^26.0.10",
+    "@types/jest": "^26.0.13",
     "@types/websocket": "^1.0.1",
     "coveralls": "^3.1.0",
     "dom-storage": "^2.1.0",
@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/anephenix/sarus#readme",
   "dependencies": {
-    "@types/window-or-global": "^1.0.2",
+    "@types/window-or-global": "^1.0.3",
     "npm-upgrade": "^2.0.4"
   }
 }

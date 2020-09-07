@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.3.3 - Monday 7th September, 2020
+
+- Merged PR#19 (ES5 support)
+- Updated dependencies
+
 ### 0.3.2 - Saturday 16th May, 2020
 
 - Added support for defining the binaryType on the WebSocket
