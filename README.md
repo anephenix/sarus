@@ -66,7 +66,7 @@ const sarus = new Sarus({
   eventListeners: {
     open: [noteOpened],
     message: [parseMessage],
-    close: [notedClosed],
+    close: [noteClosed],
     error: [throwError]
   }
 });
