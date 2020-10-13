@@ -1,6 +1,7 @@
 // File Dependencies
 import Sarus from "../../src/index";
 import { WS } from "jest-websocket-mock";
+import { delay} from '../helpers/delay';
 
 const url: string = "ws://localhost:1234";
 
@@ -12,6 +13,7 @@ describe("automatic reconnectivity", () => {
     await server.connected;
     sarus.connect = mockConnect;
     server.close();
+    await delay(1000);
     expect(sarus.connect).toBeCalled();
   });
 

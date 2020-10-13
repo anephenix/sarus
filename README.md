@@ -161,17 +161,7 @@ The client will attempt to reconnect automatically.
 #### Delaying WebSocket reconnection attempts
 
 When a connection is severed and the sarus client tries to reconnect
-automatically, it will do so without delay. If you wish to delay the
-reconnection attempt by a small period of time, you can pass a
-`retryConnectionDelay` parameter to the sarus client. If you pass `true`, then
-it will delay the reconnection attempt by 1000ms:
-
-```javascript
-const sarus = new Sarus({
-  url: "wss://ws.anephenix.com",
-  retryConnectionDelay: true
-});
-```
+automatically, it will do so with a delay of 1000ms (1 second).
 
 If you pass a number, then it will delay the reconnection attempt by that time
 (in miliseconds):
@@ -183,16 +173,12 @@ const sarus = new Sarus({
 });
 ```
 
-**NOTE**
+** NOTE **
 
-Our recommendation is to enable this option by passing `true`. The reason for
-this is because we are seeing an issue where event listeners that were attached
-to closed WebSocket connections are not getting garbage collected in the
-web browser ([See GitHub issue: "Event listener garbage collection"](https://github.com/anephenix/sarus/issues/2)).
-
-Even though those event listeners will not be emitted (as they are attached to
-a severed WebSocket connection), they still exist in the web browser's memory.
-We are trying to identify the root cause of that issue, and resolve it.
+In the past this option needed to be explicitly passed, but we decided to 
+change it to be enabled by default. Without it, any disconnection could result
+in thousands of attempted reconnections by one client in the space of a few 
+seconds.
 
 #### Attaching and removing event listeners
 

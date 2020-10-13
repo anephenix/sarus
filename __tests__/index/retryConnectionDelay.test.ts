@@ -16,10 +16,10 @@ const condition = (func: Function) => {
 };
 
 describe("retry connection delay", () => {
-  describe("when passed as true", () => {
+  describe("by default", () => {
     it("should delay the reconnection attempt by 1 second", async () => {
       const server = new WS(url);
-      const sarus = new Sarus({ url, retryConnectionDelay: true });
+      const sarus = new Sarus({ url });
       await server.connected;
       server.close();
       await condition(() => {

@@ -1,6 +1,7 @@
 // File Dependencies
 import Sarus, { SarusClassParams } from "../../src/index";
 import { WS } from "jest-websocket-mock";
+import { delay } from "../helpers/delay";
 
 const url: string = "ws://localhost:1234";
 
@@ -14,6 +15,7 @@ describe("message queue", () => {
     await expect(server).toReceiveMessage("Hello server");
     sarus.ws?.close();
     sarus.send("Hello again");
+    await delay(1000);
     await server.connected;
     await expect(server).toReceiveMessage("Hello again");
     await server.close();

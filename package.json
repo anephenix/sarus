@@ -1,22 +1,22 @@
 {
   "name": "@anephenix/sarus",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "A WebSocket JavaScript library",
   "main": "dist/index.js",
   "devDependencies": {
     "@babel/parser": "^7.11.5",
     "@babel/types": "^7.11.5",
-    "@types/jest": "^26.0.13",
+    "@types/jest": "^26.0.14",
     "@types/websocket": "^1.0.1",
     "coveralls": "^3.1.0",
     "dom-storage": "^2.1.0",
-    "jest": "^26.4.2",
-    "jest-websocket-mock": "^2.1.0",
-    "jsdoc": "^3.6.5",
+    "jest": "^26.5.3",
+    "jest-websocket-mock": "^2.2.0",
+    "jsdoc": "^3.6.6",
     "jsdom": "^16.4.0",
     "mock-socket": "^9.0.3",
-    "ts-jest": "^26.3.0",
-    "typescript": "^4.0.2"
+    "ts-jest": "^26.4.1",
+    "typescript": "^4.0.3"
   },
   "scripts": {
     "build": "npx tsc --project tsconfig.json",

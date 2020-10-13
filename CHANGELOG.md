@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.4.0 - Tuesday 13th October, 2020
+
+- retryConnectionDelay is true by default
+- Updated dependencies
+
 ### 0.3.3 - Monday 7th September, 2020
 
 - Merged PR#19 (ES5 support)

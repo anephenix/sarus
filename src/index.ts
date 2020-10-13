@@ -124,9 +124,9 @@ export default class Sarus {
     /*
       This handles whether to add a time delay to reconnecting the WebSocket
       client. If true, a 1000ms delay is added. If a number, that number (as 
-      miliseconds) is used as the delay. Default is false.
+      miliseconds) is used as the delay. Default is true.
     */
-    this.retryConnectionDelay = retryConnectionDelay || false;
+    this.retryConnectionDelay = retryConnectionDelay || true;
 
     /*
       Sets the storage type for the messages in the message queue. By default
