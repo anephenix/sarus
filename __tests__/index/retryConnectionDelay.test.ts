@@ -5,7 +5,7 @@ import { WS } from "jest-websocket-mock";
 const url = "ws://localhost:1234";
 
 const condition = (func: Function) => {
-  return new Promise(resolve => {
+  return new Promise<void>(resolve => {
     let check: Function;
     check = () => {
       if (func()) return resolve();
