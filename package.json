@@ -39,6 +39,6 @@
   "homepage": "https://github.com/anephenix/sarus#readme",
   "dependencies": {
     "@types/window-or-global": "^1.0.3",
-    "npm-upgrade": "^2.0.4"
+    "npm-upgrade": "^3.0.0"
   }
 }
