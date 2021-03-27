@@ -2,8 +2,7 @@
 
 A WebSocket JavaScript library.
 
-[![npm version](https://badge.fury.io/js/%40anephenix%2Fsarus.svg)](https://badge.fury.io/js/%40anephenix%2Fsarus) [![Coverage Status](https://coveralls.io/repos/github/anephenix/sarus/badge.svg?branch=master)](https://coveralls.io/github/anephenix/sarus?branch=master)
-[![Maintainability](https://api.codeclimate.com/v1/badges/0671cfc9630a97854b30/maintainability)](https://codeclimate.com/github/anephenix/sarus/maintainability)
+[![npm version](https://badge.fury.io/js/%40anephenix%2Fsarus.svg)](https://badge.fury.io/js/%40anephenix%2Fsarus) ![example workflow](https://github.com/anephenix/sarus/actions/workflows/node.js.yml/badge.svg) [![Maintainability](https://api.codeclimate.com/v1/badges/0671cfc9630a97854b30/maintainability)](https://codeclimate.com/github/anephenix/sarus/maintainability)
 
 ### Features
 
