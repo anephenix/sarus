@@ -2,17 +2,17 @@
 
 A WebSocket JavaScript library.
 
-[![npm version](https://badge.fury.io/js/%40anephenix%2Fsarus.svg)](https://badge.fury.io/js/%40anephenix%2Fsarus) [![CircleCI](https://circleci.com/gh/anephenix/sarus.svg?style=shield)](https://circleci.com/gh/anephenix/sarus) [![Coverage Status](https://coveralls.io/repos/github/anephenix/sarus/badge.svg?branch=master)](https://coveralls.io/github/anephenix/sarus?branch=master)
+[![npm version](https://badge.fury.io/js/%40anephenix%2Fsarus.svg)](https://badge.fury.io/js/%40anephenix%2Fsarus) [![Coverage Status](https://coveralls.io/repos/github/anephenix/sarus/badge.svg?branch=master)](https://coveralls.io/github/anephenix/sarus?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/0671cfc9630a97854b30/maintainability)](https://codeclimate.com/github/anephenix/sarus/maintainability)
 
 ### Features
 
-- Automatically reconnects WebSocket connections when they are severed
-- Handles rebinding eventListener functions to new WebSocket connections created to replace closed connections
-- Uses a message queue to dispatch messages over the WebSocket connection, which means:
-  - Messages don't get lost if the WebSocket connection is not open
-  - Message sending gets retried if the WebSocket connection is not open
-  - Messages can be persisted in browser storage, so that they remain even after webpage refreshes.
+-   Automatically reconnects WebSocket connections when they are severed
+-   Handles rebinding eventListener functions to new WebSocket connections created to replace closed connections
+-   Uses a message queue to dispatch messages over the WebSocket connection, which means:
+    -   Messages don't get lost if the WebSocket connection is not open
+    -   Message sending gets retried if the WebSocket connection is not open
+    -   Messages can be persisted in browser storage, so that they remain even after webpage refreshes.
 
 ### Install
 
@@ -26,49 +26,49 @@ After installing Sarus, you can use the client library with your frontend
 codebase:
 
 ```javascript
-import Sarus from "@anephenix/sarus";
+import Sarus from '@anephenix/sarus';
 
 const sarus = new Sarus({
-  url: "wss://ws.anephenix.com"
+	url: 'wss://ws.anephenix.com',
 });
 ```
 
 Sarus creates a WebSocket connection to the url. You can then attach event
 listener functions to that WebSocket client via `sarus` for events like:
 
-- When the socket receives a message
-- When an error occurs on the socket
-- When the socket is closed
-- When a new socket is opened
+-   When the socket receives a message
+-   When an error occurs on the socket
+-   When the socket is closed
+-   When a new socket is opened
 
 Here's an example of attaching events on client initialization:
 
 ```javascript
 // Log a message that the connection is open
-const noteOpened = () => console.log("Connection opened");
+const noteOpened = () => console.log('Connection opened');
 
 // Assuming that the WebSocket server is sending JSON data,
 // you can use this to parse the data payload;
-const parseMessage = event => {
-  const message = JSON.parse(event.data);
-  // Then do what you like with the message
+const parseMessage = (event) => {
+	const message = JSON.parse(event.data);
+	// Then do what you like with the message
 };
 
 // Log a message that the connection has closed
-const noteClosed = () => console.log("Connection closed");
+const noteClosed = () => console.log('Connection closed');
 
 // If an error occurs, throw the error
-const throwError = error => throw error;
+const throwError = (error) => throw error;
 
 // Create the Sarus instance with the event listeners
 const sarus = new Sarus({
-  url: "wss://ws.anephenix.com",
-  eventListeners: {
-    open: [noteOpened],
-    message: [parseMessage],
-    close: [noteClosed],
-    error: [throwError]
-  }
+	url: 'wss://ws.anephenix.com',
+	eventListeners: {
+		open: [noteOpened],
+		message: [parseMessage],
+		close: [noteClosed],
+		error: [throwError],
+	},
 });
 ```
 
@@ -79,27 +79,27 @@ You can also add eventListeners after client initialization:
     A function that stores messages in the browser's LocalStorage, possibly 
     for debugging, or for event stream processing on the client side.
 */
-const storeMessage = event => {
-  const store = window.localStorage;
-  let record = store.getItem("messages");
-  if (!record) {
-    record = [];
-  } else {
-    record = JSON.parse(record);
-  }
-  record.push(event.data);
-  store.setItem("messages", JSON.stringify(record));
+const storeMessage = (event) => {
+	const store = window.localStorage;
+	let record = store.getItem('messages');
+	if (!record) {
+		record = [];
+	} else {
+		record = JSON.parse(record);
+	}
+	record.push(event.data);
+	store.setItem('messages', JSON.stringify(record));
 };
 
 // Attach the storeMessage function to Sarus when it receives a message from
 // the WebSocket server
-sarus.on("message", storeMessage);
+sarus.on('message', storeMessage);
 ```
 
 You can also use it to send messages to the WebSocket server:
 
 ```javascript
-sarus.send("Hello world");
+sarus.send('Hello world');
 ```
 
 #### Automatic WebSocket reconnection
@@ -128,8 +128,8 @@ initializing the client, like the example below.
 
 ```javascript
 const sarus = new Sarus({
-  url: "wss://ws.anephenix.com",
-  reconnectAutomatically: false
+	url: 'wss://ws.anephenix.com',
+	reconnectAutomatically: false,
 });
 ```
 
@@ -168,16 +168,16 @@ If you pass a number, then it will delay the reconnection attempt by that time
 
 ```javascript
 const sarus = new Sarus({
-  url: "wss://ws.anephenix.com",
-  retryConnectionDelay: 500 // equivalent to 500ms or 1/2 second
+	url: 'wss://ws.anephenix.com',
+	retryConnectionDelay: 500, // equivalent to 500ms or 1/2 second
 });
 ```
 
 ** NOTE **
 
-In the past this option needed to be explicitly passed, but we decided to 
+In the past this option needed to be explicitly passed, but we decided to
 change it to be enabled by default. Without it, any disconnection could result
-in thousands of attempted reconnections by one client in the space of a few 
+in thousands of attempted reconnections by one client in the space of a few
 seconds.
 
 #### Attaching and removing event listeners
@@ -193,30 +193,30 @@ event listeners - either when creating the Sarus instance, or after it exists:
 
 ```javascript
 // Log a message that the connection is open
-const noteOpened = () => console.log("Connection opened");
+const noteOpened = () => console.log('Connection opened');
 
 // Assuming that the WebSocket server is sending JSON data,
 // you can use this to parse the data payload;
-const parseMessage = event => {
-  const message = JSON.parse(event.data);
-  // Then do what you like with the message
+const parseMessage = (event) => {
+	const message = JSON.parse(event.data);
+	// Then do what you like with the message
 };
 
 // Log a message that the connection has closed
-const noteClosed = () => console.log("Connection closed");
+const noteClosed = () => console.log('Connection closed');
 
 // If an error occurs, throw the error
-const throwError = error => throw error;
+const throwError = (error) => throw error;
 
 // Create the Sarus instance with the event listeners
 const sarus = new Sarus({
-  url: "wss://ws.anephenix.com",
-  eventListeners: {
-    open: [noteOpened],
-    message: [parseMessage],
-    close: [notedClosed],
-    error: [throwError]
-  }
+	url: 'wss://ws.anephenix.com',
+	eventListeners: {
+		open: [noteOpened],
+		message: [parseMessage],
+		close: [notedClosed],
+		error: [throwError],
+	},
 });
 ```
 
@@ -234,21 +234,21 @@ Sarus instance, like this:
     A function that stores messages in the browser's LocalStorage, possibly 
     for debugging, or for event stream processing on the client side.
 */
-const storeMessage = event => {
-  const store = window.localStorage;
-  let record = store.getItem("messages");
-  if (!record) {
-    record = [];
-  } else {
-    record = JSON.parse(record);
-  }
-  record.push(event.data);
-  store.setItem("messages", JSON.stringify(record));
+const storeMessage = (event) => {
+	const store = window.localStorage;
+	let record = store.getItem('messages');
+	if (!record) {
+		record = [];
+	} else {
+		record = JSON.parse(record);
+	}
+	record.push(event.data);
+	store.setItem('messages', JSON.stringify(record));
 };
 
 // Attach the storeMessage function to Sarus when it receives a message from
 // the WebSocket server
-sarus.on("message", storeMessage);
+sarus.on('message', storeMessage);
 ```
 
 If you want to remove a function from a WebSocket event listener, you can do
@@ -256,10 +256,10 @@ that by calling the `off` function on Sarus like this:
 
 ```javascript
 // Pass the function variable
-sarus.off("message", storeMessage);
+sarus.off('message', storeMessage);
 
 // You can also pass the name of the function as well
-sarus.off("message", "storeMessage");
+sarus.off('message', 'storeMessage');
 ```
 
 If you attempt to remove an event listener function which is not in the list of
@@ -273,7 +273,7 @@ If the developer is happy for an event listener removal to fail without
 throwing an error, they can pass this to the `off` function:
 
 ```javascript
-sarus.off("message", "myNonExistentFunction", { doNotThrowError: true });
+sarus.off('message', 'myNonExistentFunction', { doNotThrowError: true });
 ```
 
 #### Queuing messages for delivery when the WebSocket connection is severed
@@ -294,8 +294,8 @@ messages stored using the [sessionStorage protocol](https://developer.mozilla.or
 
 ```javascript
 const sarus = new Sarus({
-  url: "wss://ws.anephenix.com",
-  storageType: "session"
+	url: 'wss://ws.anephenix.com',
+	storageType: 'session',
 });
 ```
 
@@ -309,8 +309,8 @@ then you can use the [localStorage protocol](https://developer.mozilla.org/en-US
 
 ```javascript
 const sarus = new Sarus({
-  url: "wss://ws.anephenix.com",
-  storageType: "local"
+	url: 'wss://ws.anephenix.com',
+	storageType: 'local',
 });
 ```
 
@@ -339,10 +339,10 @@ initialization. They are listed in the example below:
 
 ```javascript
 const sarus = new Sarus({
-  url: "wss.anephenix.com",
-  protocols: "hybi-00",
-  retryProcessTimePeriod: 25,
-  storageKey: "messageQueue"
+	url: 'wss.anephenix.com',
+	protocols: 'hybi-00',
+	retryProcessTimePeriod: 25,
+	storageKey: 'messageQueue',
 });
 ```
 
