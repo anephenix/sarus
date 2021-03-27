@@ -54,7 +54,7 @@ describe("retry connection delay", () => {
         });
         expect(sarus.ws?.readyState).toBe(1);
         const timeNow: any = new Date();
-        expect(timeNow - timeThen).toBeGreaterThan(400);
+        expect(timeNow - timeThen).toBeGreaterThanOrEqual(400);
         expect(timeNow - timeThen).toBeLessThan(1000);
         return newServer.close();
       });
