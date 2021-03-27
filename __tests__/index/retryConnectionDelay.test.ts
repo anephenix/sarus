@@ -32,9 +32,9 @@ describe("retry connection delay", () => {
         return sarus.ws?.readyState === 1;
       });
       const timeNow: any = new Date();
-      expect(timeNow - timeThen).toBeGreaterThan(1000);
+      expect(timeNow - timeThen).toBeGreaterThanOrEqual(1000);
       expect(timeNow - timeThen).toBeLessThan(3000);
-      newServer.close();
+      return newServer.close();
     });
 
     describe("when passed as a number", () => {
@@ -56,7 +56,7 @@ describe("retry connection delay", () => {
         const timeNow: any = new Date();
         expect(timeNow - timeThen).toBeGreaterThan(400);
         expect(timeNow - timeThen).toBeLessThan(1000);
-        newServer.close();
+        return newServer.close();
       });
     });
   });
