@@ -32,4 +32,3 @@ jobs:
             - run: ./cc-test-reporter before-build
             - run: npm t
             - run: ./cc-test-reporter after-build
-            - run: npm run cover
