@@ -11,7 +11,7 @@
     "coveralls": "^3.1.0",
     "dom-storage": "^2.1.0",
     "ip-regex": "^4.3.0",
-    "jest": "^26.6.3",
+    "jest": "^27.0.4",
     "jest-websocket-mock": "^2.2.0",
     "jsdoc": "^3.6.6",
     "jsdom": "^16.5.1",
