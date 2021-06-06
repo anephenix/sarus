@@ -353,9 +353,24 @@ var Sarus = /** @class */ (function () {
             self.ws["on" + eventName] = function (e) {
                 self.eventListeners[eventName].forEach(function (f) { return f(e); });
                 if (eventName === "close" && self.reconnectAutomatically) {
+                    self.removeEventListeners();
                     self.reconnect();
                 }
             };
+        });
+    };
+    /**
+     * Removes the event listeners from a close WebSocket instance, so that
+     * they are cleaned up
+     */
+    Sarus.prototype.removeEventListeners = function () {
+        var self = this;
+        constants_1.WS_EVENT_NAMES.forEach(function (eventName) {
+            if (self.ws.listeners && self.ws.listeners[eventName]) {
+                self.ws.listeners[eventName].forEach(function (iel) {
+                    self.ws.removeEventListener(eventName, iel);
+                });
+            }
         });
     };
     /**

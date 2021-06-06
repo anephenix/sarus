@@ -146,6 +146,11 @@ export default class Sarus {
      */
     attachEventListeners(): void;
     /**
+     * Removes the event listeners from a close WebSocket instance, so that
+     * they are cleaned up
+     */
+    removeEventListeners(): void;
+    /**
      * Sets the binary type for the WebSocket, if such an option is set
      */
     setBinaryType(): void;

@@ -29,4 +29,25 @@ describe("automatic reconnectivity", () => {
     server.close();
     expect(sarus.connect).toBeCalledTimes(0);
   });
+
+  describe('if a websocket is closed and meant to reconnect automatically', () => {
+    it('should remove all eventListeners on the closed websocket before reconnecting', async () => {
+      const server: WS = new WS(url);
+      const mockReconnect = jest.fn();
+      const sarus: Sarus = new Sarus({
+        url,
+      });
+      await server.connected;
+      sarus.reconnect = mockReconnect;
+      server.close();
+      await delay(1000);
+      expect(sarus.reconnect).toBeCalled();
+      expect(sarus.ws?.onopen?.length).toBe(0);
+      expect(sarus.ws?.onmessage?.length).toBe(0);
+      expect(sarus.ws?.onerror?.length).toBe(0);  
+      expect(sarus.ws?.onclose?.length).toBe(0);  
+    });
+  })
+
+
 });

@@ -420,9 +420,25 @@ export default class Sarus {
       self.ws[`on${eventName}`] = (e: Function) => {
         self.eventListeners[eventName].forEach((f: Function) => f(e));
         if (eventName === "close" && self.reconnectAutomatically) {
+          self.removeEventListeners();
           self.reconnect();
         }
       };
+    });
+  }
+
+  /**
+   * Removes the event listeners from a close WebSocket instance, so that 
+   * they are cleaned up
+   */
+  removeEventListeners() {
+    const self: any = this;
+    WS_EVENT_NAMES.forEach(eventName => {
+      if (self.ws.listeners && self.ws.listeners[eventName]) {
+        self.ws.listeners[eventName].forEach((iel:Function) => {
+          self.ws.removeEventListener(eventName, iel);
+        })
+      }
     });
   }
 
