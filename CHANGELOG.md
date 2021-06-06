@@ -1,5 +1,12 @@
 # CHANGELOG
 
+### 0.4.2 - Sunday 6th June, 2021
+
+-   Updated dependencies
+-   Added SECURITY.md
+-   EventListeners on a closed WebSocket are removed before creating a new
+    WebSocket instance upon reconnect.
+
 ### 0.4.1 - Monday 1st March, 2021
 
 -   Updated dependencies
