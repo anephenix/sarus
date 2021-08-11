@@ -6,7 +6,7 @@
   "devDependencies": {
     "@babel/parser": "^7.13.13",
     "@babel/types": "^7.13.13",
-    "@types/jest": "^26.0.22",
+    "@types/jest": "^27.0.0",
     "@types/websocket": "^1.0.2",
     "coveralls": "^3.1.0",
     "dom-storage": "^2.1.0",
