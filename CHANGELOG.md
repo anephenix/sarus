@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.4.3 - Sunday 5th September, 2021
+
+-   Updated dependencies
+
 ### 0.4.2 - Sunday 6th June, 2021
 
 -   Updated dependencies
