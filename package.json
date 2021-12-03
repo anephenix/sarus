@@ -14,7 +14,7 @@
     "jest": "^27.1.0",
     "jest-websocket-mock": "^2.2.1",
     "jsdoc": "^3.6.7",
-    "jsdom": "^18.0.0",
+    "jsdom": "^19.0.0",
     "mock-socket": "^9.0.3",
     "ts-jest": "^27.0.5",
     "typescript": "^4.4.2"
