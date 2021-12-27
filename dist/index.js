@@ -1,8 +1,12 @@
 "use strict";
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // File Dependencies
@@ -34,7 +38,7 @@ var getMessagesFromStore = function (_a) {
     if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
         var storage = getStorage(storageType);
         var rawData = (storage && storage.getItem(storageKey)) || null;
-        return dataTransformer_1.deserialize(rawData) || [];
+        return (0, dataTransformer_1.deserialize)(rawData) || [];
     }
 };
 /**
@@ -135,7 +139,7 @@ var Sarus = /** @class */ (function () {
             if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
                 var storage = getStorage(storageType);
                 if (storage)
-                    storage.setItem(storageKey, dataTransformer_1.serialize(data));
+                    storage.setItem(storageKey, (0, dataTransformer_1.serialize)(data));
             }
             if (storageType === "memory") {
                 this.messageStore = data;
@@ -153,7 +157,7 @@ var Sarus = /** @class */ (function () {
         var _a = this, messages = _a.messages, storageType = _a.storageType;
         if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) === -1)
             return null;
-        return (this.messages = __spreadArray(__spreadArray([], messages), [data]));
+        return (this.messages = __spreadArray(__spreadArray([], messages, true), [data], false));
     };
     /**
      * Adds a messge to the message queue
@@ -168,7 +172,7 @@ var Sarus = /** @class */ (function () {
      * @param {*} messages - the messages in the message queue
      */
     Sarus.prototype.removeMessageFromStore = function (messages) {
-        var newArray = __spreadArray([], messages);
+        var newArray = __spreadArray([], messages, true);
         newArray.shift();
         this.messages = newArray;
     };
@@ -251,7 +255,7 @@ var Sarus = /** @class */ (function () {
     Sarus.prototype.on = function (eventName, eventFunc) {
         var eventFunctions = this.eventListeners[eventName];
         if (eventFunctions && eventFunctions.indexOf(eventFunc) !== -1) {
-            throw new Error(eventFunc.name + " has already been added to this event Listener");
+            throw new Error("".concat(eventFunc.name, " has already been added to this event Listener"));
         }
         if (eventFunctions && eventFunctions instanceof Array) {
             this.eventListeners[eventName].push(eventFunc);
@@ -350,7 +354,7 @@ var Sarus = /** @class */ (function () {
     Sarus.prototype.attachEventListeners = function () {
         var self = this;
         constants_1.WS_EVENT_NAMES.forEach(function (eventName) {
-            self.ws["on" + eventName] = function (e) {
+            self.ws["on".concat(eventName)] = function (e) {
                 self.eventListeners[eventName].forEach(function (f) { return f(e); });
                 if (eventName === "close" && self.reconnectAutomatically) {
                     self.removeEventListeners();
