@@ -10,7 +10,7 @@
     "@types/websocket": "^1.0.4",
     "coveralls": "^3.1.1",
     "dom-storage": "^2.1.0",
-    "ip-regex": "^4.3.0",
+    "ip-regex": "^5.0.0",
     "jest": "^27.4.5",
     "jest-websocket-mock": "^2.2.1",
     "jsdoc": "^3.6.7",
