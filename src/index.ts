@@ -428,7 +428,7 @@ export default class Sarus {
   }
 
   /**
-   * Removes the event listeners from a close WebSocket instance, so that 
+   * Removes the event listeners from a closed WebSocket instance, so that 
    * they are cleaned up
    */
   removeEventListeners() {

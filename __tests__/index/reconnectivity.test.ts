@@ -42,10 +42,14 @@ describe("automatic reconnectivity", () => {
       server.close();
       await delay(1000);
       expect(sarus.reconnect).toBeCalled();
-      expect(sarus.ws?.onopen?.length).toBe(0);
-      expect(sarus.ws?.onmessage?.length).toBe(0);
-      expect(sarus.ws?.onerror?.length).toBe(0);  
-      expect(sarus.ws?.onclose?.length).toBe(0);  
+      // @ts-ignore
+      expect(sarus.ws?.listeners?.open?.length).toBe(0);
+      // @ts-ignore
+      expect(sarus.ws?.listeners?.message?.length).toBe(0);
+      // @ts-ignore
+      expect(sarus.ws?.listeners?.error?.length).toBe(0);  
+      // @ts-ignore
+      expect(sarus.ws?.listeners?.close?.length).toBe(0);  
     });
   })
 
