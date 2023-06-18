@@ -1,9 +1,9 @@
-import { EventListenersInterface } from "./lib/validators";
+import { PartialEventListenersInterface, EventListenersInterface } from "./lib/validators";
 export interface SarusClassParams {
     url: string;
-    binaryType?: string;
+    binaryType?: BinaryType;
     protocols?: string | Array<string>;
-    eventListeners?: EventListenersInterface;
+    eventListeners?: PartialEventListenersInterface;
     retryProcessTimePeriod?: number;
     reconnectAutomatically?: boolean;
     retryConnectionDelay?: boolean | number;
@@ -27,7 +27,7 @@ export interface SarusClassParams {
  */
 export default class Sarus {
     url: string;
-    binaryType?: string;
+    binaryType?: BinaryType;
     protocols?: string | Array<string>;
     eventListeners: EventListenersInterface;
     retryProcessTimePeriod?: number;
@@ -75,7 +75,7 @@ export default class Sarus {
      * @param {object} eventListeners - The eventListeners object parameter
      * @returns {object} The eventListeners object parameter, with any missing events prefilled in
      */
-    auditEventListeners(eventListeners?: EventListenersInterface): EventListenersInterface;
+    auditEventListeners(eventListeners: PartialEventListenersInterface): EventListenersInterface;
     /**
      * Connects the WebSocket client, and attaches event listeners
      */
@@ -127,13 +127,13 @@ export default class Sarus {
      * Puts data on a message queue, and then processes the message queue to get the data sent to the WebSocket server
      * @param {*} data - The data payload to put the on message queue
      */
-    send(data: any): void;
+    send(data: unknown): void;
     /**
      * Sends a message over the WebSocket, removes the message from the queue,
      * and calls proces again if there is another message to process.
-     * @param {string} data - The data payload to send over the WebSocket
+     * @param {unknown} data - The data payload to send over the WebSocket
      */
-    processMessage(data: string): void;
+    processMessage(data: unknown): void;
     /**
      * Processes messages that are on the message queue. Handles looping through the list, as well as retrying message
      * dispatch if the WebSocket connection is not open.

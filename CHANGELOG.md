@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.4.6 - Sunday 18th June, 2023
+
+- Remove string typing on messages sent via WebSocket, to align with TypeScript any type
+- Updated dependencies
+
 ### 0.4.5 - Sunday 18th June, 2023
 
 - Added support for passing partial event listener events during class instantiation

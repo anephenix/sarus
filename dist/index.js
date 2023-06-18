@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
         if (ar || !(i in from)) {
@@ -59,8 +70,8 @@ var getMessagesFromStore = function (_a) {
 var Sarus = /** @class */ (function () {
     function Sarus(props) {
         // Extract the properties that are passed to the class
-        var url = props.url, binaryType = props.binaryType, protocols = props.protocols, eventListeners = props.eventListeners, reconnectAutomatically = props.reconnectAutomatically, retryProcessTimePeriod = props.retryProcessTimePeriod, // TODO - write a test case to check this
-        retryConnectionDelay = props.retryConnectionDelay, _a = props.storageType, storageType = _a === void 0 ? "memory" : _a, _b = props.storageKey, storageKey = _b === void 0 ? "sarus" : _b;
+        var url = props.url, binaryType = props.binaryType, protocols = props.protocols, _a = props.eventListeners, eventListeners = _a === void 0 ? constants_1.DEFAULT_EVENT_LISTENERS_OBJECT : _a, reconnectAutomatically = props.reconnectAutomatically, retryProcessTimePeriod = props.retryProcessTimePeriod, // TODO - write a test case to check this
+        retryConnectionDelay = props.retryConnectionDelay, _b = props.storageType, storageType = _b === void 0 ? "memory" : _b, _c = props.storageKey, storageKey = _c === void 0 ? "sarus" : _c;
         this.eventListeners = this.auditEventListeners(eventListeners);
         // Sets the WebSocket server url for the client to connect to.
         this.url = url;
@@ -193,14 +204,14 @@ var Sarus = /** @class */ (function () {
      * @returns {object} The eventListeners object parameter, with any missing events prefilled in
      */
     Sarus.prototype.auditEventListeners = function (eventListeners) {
-        if (eventListeners === void 0) { eventListeners = {
+        var defaultEventListeners = {
             open: [],
-            close: [],
             message: [],
-            error: []
-        }; }
-        // validateEvents(eventListeners);
-        return eventListeners;
+            error: [],
+            close: [],
+        };
+        var mergedEventListeners = __assign(__assign({}, defaultEventListeners), eventListeners); // Type assertion added here
+        return mergedEventListeners;
     };
     /**
      * Connects the WebSocket client, and attaches event listeners
@@ -224,7 +235,7 @@ var Sarus = /** @class */ (function () {
                     setTimeout(self.connect, 1000);
                 }
                 else {
-                    self.connect();
+                    self.connect(); // NOTE - this line is not tested
                 }
                 break;
             case "number":
@@ -321,7 +332,7 @@ var Sarus = /** @class */ (function () {
     /**
      * Sends a message over the WebSocket, removes the message from the queue,
      * and calls proces again if there is another message to process.
-     * @param {string} data - The data payload to send over the WebSocket
+     * @param {unknown} data - The data payload to send over the WebSocket
      */
     Sarus.prototype.processMessage = function (data) {
         var self = this;
@@ -381,10 +392,9 @@ var Sarus = /** @class */ (function () {
      * Sets the binary type for the WebSocket, if such an option is set
      */
     Sarus.prototype.setBinaryType = function () {
-        var self = this;
-        var binaryType = self.binaryType;
-        if (binaryType)
-            self.ws.binaryType = binaryType;
+        var binaryType = this.binaryType;
+        if (binaryType && this.ws)
+            this.ws.binaryType = binaryType;
     };
     return Sarus;
 }());
