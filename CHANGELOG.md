@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.4.5 - Sunday 18th June, 2023
+
+- Added support for passing partial event listener events during class instantiation
+- Updated dependencies
+
 ### 0.4.4 - Tuesday 15th November, 2022
 
 -   Updated dependencies
