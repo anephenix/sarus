@@ -5,7 +5,7 @@ import { WS } from "jest-websocket-mock";
 const url: string = "ws://localhost:1234";
 const stringProtocol: string = "hybi-00";
 const arrayOfProtocols: Array<string> = ["hybi-07", "hybi-00"];
-const binaryTypes: Array<string> = ["blob", "arraybuffer"];
+const binaryTypes: Array<BinaryType> = ["blob", "arraybuffer"];
 
 describe("connection options", () => {
   let server: WS;

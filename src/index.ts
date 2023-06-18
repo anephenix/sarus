@@ -41,7 +41,7 @@ const getMessagesFromStore = ({ storageType, storageKey }: StorageParams) => {
 
 export interface SarusClassParams {
   url: string;
-  binaryType?: string;
+  binaryType?: BinaryType;
   protocols?: string | Array<string>;
   eventListeners?: PartialEventListenersInterface;
   retryProcessTimePeriod?: number;
@@ -69,7 +69,7 @@ export interface SarusClassParams {
 export default class Sarus {
   // Constructor params
   url: string;
-  binaryType?: string;
+  binaryType?: BinaryType;
   protocols?: string | Array<string>;
   eventListeners: EventListenersInterface;
   retryProcessTimePeriod?: number;
@@ -381,7 +381,7 @@ export default class Sarus {
    * Puts data on a message queue, and then processes the message queue to get the data sent to the WebSocket server
    * @param {*} data - The data payload to put the on message queue
    */
-  send(data: any) {
+  send(data: unknown) {
     const callProcessAfterwards = this.messages.length === 0;
     this.addMessage(data);
     if (callProcessAfterwards) this.process();
@@ -390,9 +390,9 @@ export default class Sarus {
   /**
    * Sends a message over the WebSocket, removes the message from the queue,
    * and calls proces again if there is another message to process.
-   * @param {string} data - The data payload to send over the WebSocket
+   * @param {unknown} data - The data payload to send over the WebSocket
    */
-  processMessage(data: string) {
+  processMessage(data: unknown) {
     const self: any = this;
     self.ws.send(data);
     self.removeMessage();
@@ -451,8 +451,7 @@ export default class Sarus {
    * Sets the binary type for the WebSocket, if such an option is set
    */
   setBinaryType() {
-    const self: any = this;
-    const { binaryType } = self;
-    if (binaryType) self.ws.binaryType = binaryType;
+    const { binaryType } = this;
+    if (binaryType && this.ws) this.ws.binaryType = binaryType;
   }
 }
