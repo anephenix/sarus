@@ -60,6 +60,20 @@ describe("eventListeners", () => {
     expect(sarus.eventListeners.error).toEqual([]);
   });
 
+  it("should allow an eventListener object to pass in some events but omit others", () => {
+    const myFunc: Function = () => {};
+    const sarus: Sarus = new Sarus({
+      url,
+      eventListeners: {
+        message: [myFunc]
+      }
+    });
+    expect(sarus.eventListeners.open).toEqual([]);
+    expect(sarus.eventListeners.message).toEqual([myFunc]);
+    expect(sarus.eventListeners.close).toEqual([]);
+    expect(sarus.eventListeners.error).toEqual([]);
+  });
+
   it("should prevent an event being added multiple times to an event listener", () => {
     const myFunc = () => {};
     const sarus = new Sarus({

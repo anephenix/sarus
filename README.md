@@ -71,6 +71,27 @@ const sarus = new Sarus({
 });
 ```
 
+You can specify all of the event listeners at initialisation, or just one of them:
+
+```javascript
+
+// Assuming that the WebSocket server is sending JSON data,
+// you can use this to parse the data payload;
+const parseMessage = (event) => {
+	const message = JSON.parse(event.data);
+	// Then do what you like with the message
+};
+
+
+// Create the Sarus instance with the event listeners
+const sarus = new Sarus({
+	url: 'wss://ws.anephenix.com',
+	eventListeners: {
+		message: [parseMessage],
+	},
+});
+```
+
 You can also add eventListeners after client initialization:
 
 ```javascript

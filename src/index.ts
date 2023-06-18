@@ -1,7 +1,7 @@
 // File Dependencies
-import { WS_EVENT_NAMES, DATA_STORAGE_TYPES } from "./lib/constants";
+import { WS_EVENT_NAMES, DATA_STORAGE_TYPES, DEFAULT_EVENT_LISTENERS_OBJECT } from "./lib/constants";
 import { serialize, deserialize } from "./lib/dataTransformer";
-import { EventListenersInterface } from "./lib/validators";
+import { PartialEventListenersInterface, EventListenersInterface } from "./lib/validators";
 
 interface StorageParams {
   storageType: string;
@@ -43,7 +43,7 @@ export interface SarusClassParams {
   url: string;
   binaryType?: string;
   protocols?: string | Array<string>;
-  eventListeners?: EventListenersInterface;
+  eventListeners?: PartialEventListenersInterface;
   retryProcessTimePeriod?: number;
   reconnectAutomatically?: boolean;
   retryConnectionDelay?: boolean | number;
@@ -88,7 +88,7 @@ export default class Sarus {
       url,
       binaryType,
       protocols,
-      eventListeners,
+      eventListeners = DEFAULT_EVENT_LISTENERS_OBJECT,
       reconnectAutomatically,
       retryProcessTimePeriod, // TODO - write a test case to check this
       retryConnectionDelay,
@@ -239,17 +239,22 @@ export default class Sarus {
    * @param {object} eventListeners - The eventListeners object parameter
    * @returns {object} The eventListeners object parameter, with any missing events prefilled in
    */
-  auditEventListeners(
-    eventListeners: EventListenersInterface = {
+  auditEventListeners(eventListeners: PartialEventListenersInterface) {
+    const defaultEventListeners: EventListenersInterface = {
       open: [],
-      close: [],
       message: [],
-      error: []
-    }
-  ) {
-    // validateEvents(eventListeners);
-    return eventListeners;
+      error: [],
+      close: [],
+    };
+  
+    const mergedEventListeners: EventListenersInterface = {
+      ...defaultEventListeners,
+      ...eventListeners,
+    } as EventListenersInterface; // Type assertion added here
+  
+    return mergedEventListeners;
   }
+  
 
   /**
    * Connects the WebSocket client, and attaches event listeners
@@ -272,7 +277,7 @@ export default class Sarus {
         if (retryConnectionDelay) {
           setTimeout(self.connect, 1000);
         } else {
-          self.connect();
+          self.connect(); // NOTE - this line is not tested
         }
         break;
       case "number":
