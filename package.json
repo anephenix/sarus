@@ -3,6 +3,22 @@
   "version": "0.4.6",
   "description": "A WebSocket JavaScript library",
   "main": "dist/index.js",
+  "contributors": [
+      {
+          "name": "Paul Jensen",
+          "email": "paulbjensen@gmail.com",
+          "url": "https://paulbjensen.co.uk"
+      },
+      {
+          "name": "Chris Lajoie",
+          "email": "chris@ettaviation.com"
+      },
+      {
+          "name": "Justus Perlwitz",
+          "email": "justus@jwpconsulting.net",
+          "url": "https://www.jwpconsulting.net"
+      }
+  ],
   "devDependencies": {
     "@babel/parser": "^7.22.5",
     "@babel/types": "^7.22.5",
@@ -17,6 +33,7 @@
     "jsdom": "^22.1.0",
     "mock-socket": "^9.2.1",
     "npm-upgrade": "^3.1.0",
+    "prettier": "^3.0.3",
     "ts-jest": "^29.1.0",
     "typescript": "^5.1.3"
   },
@@ -24,7 +41,9 @@
     "build": "npx tsc --project tsconfig.json",
     "watch": "npx tsc --project tsconfig.json --watch",
     "cover": "npx jest --coverage --coverageReporters=text-lcov | coveralls",
-    "test": "npx jest --coverage"
+    "test": "npx jest --coverage",
+    "prettier": "prettier src --write",
+    "check-prettier": "prettier src --check"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,28 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.0
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.8.1
+      - name: Clean NPM install
+        run: npm clean-install
+      - name: Check with prettier
+        run: npm run check-prettier
