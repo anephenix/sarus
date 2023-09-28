@@ -3,6 +3,22 @@
   "version": "0.4.6",
   "description": "A WebSocket JavaScript library",
   "main": "dist/index.js",
+  "contributors": [
+      {
+          "name": "Paul Jensen",
+          "email": "paulbjensen@gmail.com",
+          "url": "https://paulbjensen.co.uk"
+      },
+      {
+          "name": "Chris Lajoie",
+          "email": "chris@ettaviation.com"
+      },
+      {
+          "name": "Justus Perlwitz",
+          "email": "justus@jwpconsulting.net",
+          "url": "https://www.jwpconsulting.net"
+      }
+  ],
   "devDependencies": {
     "@babel/parser": "^7.22.5",
     "@babel/types": "^7.22.5",
