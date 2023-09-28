@@ -1,7 +1,14 @@
 // File Dependencies
-import { WS_EVENT_NAMES, DATA_STORAGE_TYPES, DEFAULT_EVENT_LISTENERS_OBJECT } from "./lib/constants";
+import {
+  WS_EVENT_NAMES,
+  DATA_STORAGE_TYPES,
+  DEFAULT_EVENT_LISTENERS_OBJECT,
+} from "./lib/constants";
 import { serialize, deserialize } from "./lib/dataTransformer";
-import { PartialEventListenersInterface, EventListenersInterface } from "./lib/validators";
+import {
+  PartialEventListenersInterface,
+  EventListenersInterface,
+} from "./lib/validators";
 
 interface StorageParams {
   storageType: string;
@@ -93,7 +100,7 @@ export default class Sarus {
       retryProcessTimePeriod, // TODO - write a test case to check this
       retryConnectionDelay,
       storageType = "memory",
-      storageKey = "sarus"
+      storageKey = "sarus",
     } = props;
 
     this.eventListeners = this.auditEventListeners(eventListeners);
@@ -246,15 +253,14 @@ export default class Sarus {
       error: [],
       close: [],
     };
-  
+
     const mergedEventListeners: EventListenersInterface = {
       ...defaultEventListeners,
       ...eventListeners,
     } as EventListenersInterface; // Type assertion added here
-  
+
     return mergedEventListeners;
   }
-  
 
   /**
    * Connects the WebSocket client, and attaches event listeners
@@ -310,7 +316,7 @@ export default class Sarus {
     const eventFunctions = this.eventListeners[eventName];
     if (eventFunctions && eventFunctions.indexOf(eventFunc) !== -1) {
       throw new Error(
-        `${eventFunc.name} has already been added to this event Listener`
+        `${eventFunc.name} has already been added to this event Listener`,
       );
     }
     if (eventFunctions && eventFunctions instanceof Array) {
@@ -347,7 +353,7 @@ export default class Sarus {
       | {
           doNotThrowError: boolean;
         }
-      | undefined
+      | undefined,
   ) {
     if (!existingFunc) {
       if (!(opts && opts.doNotThrowError)) {
@@ -366,7 +372,7 @@ export default class Sarus {
   off(
     eventName: string,
     eventFuncOrName: Function | string,
-    opts?: { doNotThrowError: boolean } | undefined
+    opts?: { doNotThrowError: boolean } | undefined,
   ) {
     const existingFunc = this.findFunction(eventName, eventFuncOrName);
     if (existingFunc) {
@@ -421,7 +427,7 @@ export default class Sarus {
    */
   attachEventListeners() {
     const self: any = this;
-    WS_EVENT_NAMES.forEach(eventName => {
+    WS_EVENT_NAMES.forEach((eventName) => {
       self.ws[`on${eventName}`] = (e: Function) => {
         self.eventListeners[eventName].forEach((f: Function) => f(e));
         if (eventName === "close" && self.reconnectAutomatically) {
@@ -433,16 +439,16 @@ export default class Sarus {
   }
 
   /**
-   * Removes the event listeners from a closed WebSocket instance, so that 
+   * Removes the event listeners from a closed WebSocket instance, so that
    * they are cleaned up
    */
   removeEventListeners() {
     const self: any = this;
-    WS_EVENT_NAMES.forEach(eventName => {
+    WS_EVENT_NAMES.forEach((eventName) => {
       if (self.ws.listeners && self.ws.listeners[eventName]) {
-        self.ws.listeners[eventName].forEach((iel:Function) => {
+        self.ws.listeners[eventName].forEach((iel: Function) => {
           self.ws.removeEventListener(eventName, iel);
-        })
+        });
       }
     });
   }

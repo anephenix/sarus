@@ -10,7 +10,7 @@ export const WS_EVENT_NAMES: Array<string> = [
   "open",
   "close",
   "message",
-  "error"
+  "error",
 ];
 
 /**
@@ -34,5 +34,5 @@ export const DEFAULT_EVENT_LISTENERS_OBJECT: EventListenersInterface = {
   open: [],
   message: [],
   error: [],
-  close: []
+  close: [],
 };
