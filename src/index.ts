@@ -115,7 +115,7 @@ export default class Sarus {
     this.protocols = protocols;
 
     /*
-      When attempting to re-send a message when the WebSocket connection is 
+      When attempting to re-send a message when the WebSocket connection is
       not open, there is a retry process time period of 50ms. It can be set
       to another value by the developer.
     */
@@ -130,14 +130,14 @@ export default class Sarus {
 
     /*
       This handles whether to add a time delay to reconnecting the WebSocket
-      client. If true, a 1000ms delay is added. If a number, that number (as 
+      client. If true, a 1000ms delay is added. If a number, that number (as
       miliseconds) is used as the delay. Default is true.
     */
     this.retryConnectionDelay = retryConnectionDelay || true;
 
     /*
       Sets the storage type for the messages in the message queue. By default
-      it is an in-memory option, but can also be set as 'session' for 
+      it is an in-memory option, but can also be set as 'session' for
       sessionStorage or 'local' for localStorage data persistence.
     */
     this.storageType = storageType;
@@ -145,17 +145,17 @@ export default class Sarus {
     /*
       When using 'session' or 'local' as the storageType, the storage key is
       used as the key for calls to sessionStorage/localStorage getItem/setItem.
-      
+
       It can also be configured by the developer during initialization.
     */
     this.storageKey = storageKey;
 
     /*
       When initializing the client, if we are using sessionStorage/localStorage
-      for storing messages in the messageQueue, then we want to retrieve any 
+      for storing messages in the messageQueue, then we want to retrieve any
       that might have been persisted there.
-      
-      Say the user has done a page refresh, we want to make sure that messages 
+
+      Say the user has done a page refresh, we want to make sure that messages
       that were meant to be sent to the server make their way there.
 
       If no messages were persisted, or we are using in-memory message storage,
@@ -170,7 +170,7 @@ export default class Sarus {
     this.connect();
   }
 
-  /* 
+  /*
     Gets the messages from the message queue.
   */
 
