@@ -42,8 +42,8 @@
     "watch": "npx tsc --project tsconfig.json --watch",
     "cover": "npx jest --coverage --coverageReporters=text-lcov | coveralls",
     "test": "npx jest --coverage",
-    "prettier": "prettier src --write",
-    "check-prettier": "prettier src --check"
+    "prettier": "prettier src __tests__ --write",
+    "check-prettier": "prettier src __tests__ --check"
   },
   "repository": {
     "type": "git",

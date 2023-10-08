@@ -49,7 +49,7 @@ describe("message queue", () => {
 
   const applyStorageTest = async (
     storageType: any,
-    sarusConfig: SarusClassParams
+    sarusConfig: SarusClassParams,
   ) => {
     storageType.clear();
     const server: WS = new WS(url);
@@ -84,7 +84,7 @@ describe("message queue", () => {
     const sarus: Sarus = new Sarus({
       url,
       storageType: "local",
-      storageKey: "sarusWS"
+      storageKey: "sarusWS",
     });
     expect(sarus.storageKey).toBe("sarusWS");
   });
@@ -101,7 +101,7 @@ describe("message queue", () => {
   };
 
   const processExistingMessagesFromStorage = async (
-    sarusConfig: SarusClassParams
+    sarusConfig: SarusClassParams,
   ) => {
     const sarusTwo = retrieveMessagesFromStorage(sarusConfig);
     const server: WS = new WS(url);
@@ -127,7 +127,7 @@ describe("message queue", () => {
     await processExistingMessagesFromStorage({
       url,
       storageType: "session",
-      reconnectAutomatically: true
+      reconnectAutomatically: true,
     });
   });
 
@@ -135,7 +135,7 @@ describe("message queue", () => {
     await processExistingMessagesFromStorage({
       url,
       storageType: "local",
-      reconnectAutomatically: true
+      reconnectAutomatically: true,
     });
   });
 });

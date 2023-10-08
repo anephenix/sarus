@@ -17,8 +17,8 @@ describe("eventListeners", () => {
         open: [mockOpen],
         message: [mockParseMessage],
         close: [mockClose],
-        error: [mockError]
-      }
+        error: [mockError],
+      },
     });
     await server.connected;
     expect(mockOpen).toBeCalledTimes(1);
@@ -51,8 +51,8 @@ describe("eventListeners", () => {
         open: [],
         error: [],
         close: [],
-        message: [myFunc]
-      }
+        message: [myFunc],
+      },
     });
     expect(sarus.eventListeners.open).toEqual([]);
     expect(sarus.eventListeners.message).toEqual([myFunc]);
@@ -65,8 +65,8 @@ describe("eventListeners", () => {
     const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
-        message: [myFunc]
-      }
+        message: [myFunc],
+      },
     });
     expect(sarus.eventListeners.open).toEqual([]);
     expect(sarus.eventListeners.message).toEqual([myFunc]);
@@ -82,8 +82,8 @@ describe("eventListeners", () => {
         open: [],
         error: [],
         close: [],
-        message: [myFunc]
-      }
+        message: [myFunc],
+      },
     });
 
     const addAnExistingListener = () => {
@@ -101,8 +101,8 @@ describe("eventListeners", () => {
         open: [],
         error: [],
         close: [],
-        message: [myFunc]
-      }
+        message: [myFunc],
+      },
     });
 
     sarus.on("message", anotherFunc);
@@ -119,8 +119,8 @@ describe("eventListeners", () => {
         open: [],
         error: [],
         close: [],
-        message: [myFunc]
-      }
+        message: [myFunc],
+      },
     });
     await server.connected;
     server.send("hello world");
@@ -141,8 +141,8 @@ describe("eventListeners", () => {
         open: [],
         error: [],
         close: [],
-        message: [myFunc]
-      }
+        message: [myFunc],
+      },
     });
 
     sarus.off("message", myFunc.name);
@@ -157,8 +157,8 @@ describe("eventListeners", () => {
         open: [],
         error: [],
         close: [],
-        message: [myFunc]
-      }
+        message: [myFunc],
+      },
     });
 
     sarus.off("message", myFunc);
@@ -174,8 +174,8 @@ describe("eventListeners", () => {
         open: [],
         error: [],
         close: [],
-        message: [myFunc]
-      }
+        message: [myFunc],
+      },
     });
 
     const removeANonExistentListener = () => {
@@ -193,8 +193,8 @@ describe("eventListeners", () => {
         open: [],
         error: [],
         close: [],
-        message: [myFunc]
-      }
+        message: [myFunc],
+      },
     });
 
     const removeANonExistentListener = () => {
@@ -212,8 +212,8 @@ describe("eventListeners", () => {
         open: [],
         error: [],
         close: [],
-        message: [myFunc]
-      }
+        message: [myFunc],
+      },
     });
 
     sarus.off("message", anotherFunc, { doNotThrowError: true });

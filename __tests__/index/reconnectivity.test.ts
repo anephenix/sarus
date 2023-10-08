@@ -1,7 +1,7 @@
 // File Dependencies
 import Sarus from "../../src/index";
 import { WS } from "jest-websocket-mock";
-import { delay} from '../helpers/delay';
+import { delay } from "../helpers/delay";
 
 const url: string = "ws://localhost:1234";
 
@@ -22,7 +22,7 @@ describe("automatic reconnectivity", () => {
     const mockConnect = jest.fn();
     const sarus: Sarus = new Sarus({
       url,
-      reconnectAutomatically: false
+      reconnectAutomatically: false,
     });
     await server.connected;
     sarus.connect = mockConnect;
@@ -30,8 +30,8 @@ describe("automatic reconnectivity", () => {
     expect(sarus.connect).toBeCalledTimes(0);
   });
 
-  describe('if a websocket is closed and meant to reconnect automatically', () => {
-    it('should remove all eventListeners on the closed websocket before reconnecting', async () => {
+  describe("if a websocket is closed and meant to reconnect automatically", () => {
+    it("should remove all eventListeners on the closed websocket before reconnecting", async () => {
       const server: WS = new WS(url);
       const mockReconnect = jest.fn();
       const sarus: Sarus = new Sarus({
@@ -47,11 +47,9 @@ describe("automatic reconnectivity", () => {
       // @ts-ignore
       expect(sarus.ws?.listeners?.message?.length).toBe(0);
       // @ts-ignore
-      expect(sarus.ws?.listeners?.error?.length).toBe(0);  
+      expect(sarus.ws?.listeners?.error?.length).toBe(0);
       // @ts-ignore
-      expect(sarus.ws?.listeners?.close?.length).toBe(0);  
+      expect(sarus.ws?.listeners?.close?.length).toBe(0);
     });
-  })
-
-
+  });
 });

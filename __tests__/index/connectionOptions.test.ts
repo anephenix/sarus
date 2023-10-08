@@ -40,5 +40,5 @@ describe("connection options", () => {
     const sarus: Sarus = new Sarus({ url, binaryType: binaryTypes[0] });
     await server.connected;
     expect(sarus.ws?.binaryType).toBe(binaryTypes[0]);
-  })
+  });
 });
