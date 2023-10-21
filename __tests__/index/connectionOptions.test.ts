@@ -18,6 +18,26 @@ describe("connection options", () => {
     server.close();
   });
 
+  it("should correctly validate invalid WebSocket URLs", () => {
+    // Testing with jest-websocket-mock will not give us a TypeError here.
+    // We re-throw the error therefore. Testing it in a browser we can
+    // see that a TypeError is handled correctly.
+    expect(() => {
+      new Sarus({ url: "invalid-url" });
+    }).toThrow("invalid");
+
+    expect(() => {
+      new Sarus({ url: "http://wrong-protocol" });
+    }).toThrow("have protocol");
+
+    expect(() => {
+      new Sarus({ url: "https://also-wrong-protocol" });
+    }).toThrow("have protocol");
+
+    new Sarus({ url: "ws://this-will-pass" });
+    new Sarus({ url: "wss://this-too-shall-pass" });
+  });
+
   it("should set the WebSocket protocols value to an empty string if nothing is passed", async () => {
     const sarus: Sarus = new Sarus({ url });
     await server.connected;

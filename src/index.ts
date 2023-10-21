@@ -1,5 +1,6 @@
 // File Dependencies
 import {
+  ALLOWED_PROTOCOLS,
   WS_EVENT_NAMES,
   DATA_STORAGE_TYPES,
   DEFAULT_EVENT_LISTENERS_OBJECT,
@@ -46,6 +47,32 @@ const getMessagesFromStore = ({ storageType, storageKey }: StorageParams) => {
   }
 };
 
+const validateWebSocketUrl = (rawUrl: string): URL => {
+  let url: URL;
+  try {
+    // Alternatively, we can also check with URL.canParse(), but since we need
+    // the URL object anyway to validate the protocol, we go ahead and parse it
+    // here.
+    url = new URL(rawUrl);
+  } catch (e) {
+    // TypeError, as specified by WHATWG URL Standard:
+    // https://url.spec.whatwg.org/#url-class (see constructor steps)
+    if (!(e instanceof TypeError)) {
+      throw e;
+    }
+    // Untested - our URL mock does not give us an instance of TypeError
+    const { message } = e;
+    throw new Error(`The WebSocket URL is not valid: ${message}`);
+  }
+  const { protocol } = url;
+  if (!ALLOWED_PROTOCOLS.includes(protocol)) {
+    throw new Error(
+      `Expected the WebSocket URL to have protocol 'ws:' or 'wss:', got '${protocol}' instead.`,
+    );
+  }
+  return url;
+};
+
 export interface SarusClassParams {
   url: string;
   binaryType?: BinaryType;
@@ -75,7 +102,7 @@ export interface SarusClassParams {
  */
 export default class Sarus {
   // Constructor params
-  url: string;
+  url: URL;
   binaryType?: BinaryType;
   protocols?: string | Array<string>;
   eventListeners: EventListenersInterface;
@@ -106,7 +133,7 @@ export default class Sarus {
     this.eventListeners = this.auditEventListeners(eventListeners);
 
     // Sets the WebSocket server url for the client to connect to.
-    this.url = url;
+    this.url = validateWebSocketUrl(url);
 
     // Sets the binaryType of the data being sent over the connection
     this.binaryType = binaryType;

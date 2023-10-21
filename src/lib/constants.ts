@@ -1,6 +1,8 @@
 // Dependencies
 import { EventListenersInterface } from "./validators";
 
+export const ALLOWED_PROTOCOLS: Array<string> = ["ws:", "wss:"];
+
 /**
  * A definitive list of events for a WebSocket client to listen on
  * @constant
