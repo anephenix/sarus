@@ -12,9 +12,11 @@ describe("automatic reconnectivity", () => {
     const sarus: Sarus = new Sarus({ url });
     await server.connected;
     sarus.connect = mockConnect;
+    const setTimeout = jest.spyOn(window, "setTimeout");
     server.close();
     await delay(1000);
     expect(sarus.connect).toBeCalled();
+    expect(setTimeout).toHaveBeenCalledTimes(2);
   });
 
   it("should not reconnect if automatic reconnection is disabled", async () => {
