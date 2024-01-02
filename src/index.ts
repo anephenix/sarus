@@ -117,24 +117,27 @@ export default class Sarus {
   ws: WebSocket | undefined;
   /*
    * Track the current state of the Sarus object. See the diagram below.
-   *          connect()        this.ws.onopen
-   * ┌───────┐ │  ┌──────────┐      │    ┌─────────┐
-   * │created│─┴─►│connecting│──────┴───►│connected│ ◄───────────────────┐
-   * └───────┘    └──────────┘           └─────────┘                     │
-   *                 disconnect()          │ ▲    │                      │
-   *      ┌────────────────────────────────┘ │    │ this.ws.onclose      │
-   *      ▼                                  │    ▼                      │
-   * ┌────────────┐    connect()             │ ┌──────┐                  │
-   * │disconnected│──────────────────────────┘ │closed│ ─────────────────┘
-   * └────────────┘                            └──────┘   this.reconnect()
+   *
+   *                       reconnect()    ┌──────┐
+   *      ┌───────────────────────────────│closed│
+   *      │                               └──────┘
+   *      │                                  ▲
+   *      ▼                                  │ this.ws.onclose
+   * ┌──────────┐    this.ws.onopen      ┌───┴─────┐
+   * │connecting├───────────────────────►│connected│
+   * └──────────┘                        └───┬─────┘
+   *      ▲                                  │ disconnect()
+   *      │                                  ▼
+   *      │            reconnect()      ┌────────────┐
+   *      └─────────────────────────────┤disconnected│
+   *                                    └────────────┘
    *
    * connect(), disconnect() are generally called by the user
    *
    * this.reconnect() is called internally when automatic reconnection is
    * enabled, but can also be called by the user
    */
-  state: "created" | "connecting" | "connected" | "disconnected" | "closed" =
-    "created";
+  state: "connecting" | "connected" | "disconnected" | "closed" = "connecting";
 
   constructor(props: SarusClassParams) {
     // Extract the properties that are passed to the class
