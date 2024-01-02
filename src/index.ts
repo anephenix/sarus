@@ -73,6 +73,11 @@ const validateWebSocketUrl = (rawUrl: string): URL => {
   return url;
 };
 
+export interface ExponentialBackoffParams {
+  backoffRate: number;
+  backoffLimit: number;
+}
+
 export interface SarusClassParams {
   url: string;
   binaryType?: BinaryType;
@@ -81,6 +86,7 @@ export interface SarusClassParams {
   retryProcessTimePeriod?: number;
   reconnectAutomatically?: boolean;
   retryConnectionDelay?: boolean | number;
+  exponentialBackoff?: ExponentialBackoffParams;
   storageType?: string;
   storageKey?: string;
 }
@@ -95,7 +101,8 @@ export interface SarusClassParams {
  * @param {object} param0.eventListeners - An optional object containing event listener functions keyed to websocket events
  * @param {boolean} param0.reconnectAutomatically - An optional boolean flag to indicate whether to reconnect automatically when a websocket connection is severed
  * @param {number} param0.retryProcessTimePeriod - An optional number for how long the time period between retrying to send a messgae to a WebSocket server should be
- * @param {number} param0.retryConnectionDelay - A parameter for the amount of time to delay a reconnection attempt by, in miliseconds.
+ * @param {boolean|number} param0.retryConnectionDelay - An optional parameter for whether to delay WebSocket reconnection attempts by a time period. If true, the delay is 1000ms, otherwise it is the number passed. The default value when this parameter is undefined will be interpreted as 1000ms.
+ * @param {ExponentialBackoffParams} param0.exponentialBackoff - An optional containing configuration for exponential backoff. If this parameter is undefined, exponential backoff is disabled. The minimum delay is determined by retryConnectionDelay. If retryConnectionDelay is set is false, this setting will not be in effect.
  * @param {string} param0.storageType - An optional string specifying the type of storage to use for persisting messages in the message queue
  * @param {string} param0.storageKey - An optional string specifying the key used to store the messages data against in sessionStorage/localStorage
  * @returns {object} The class instance
@@ -109,6 +116,7 @@ export default class Sarus {
   retryProcessTimePeriod?: number;
   reconnectAutomatically?: boolean;
   retryConnectionDelay: number;
+  exponentialBackoff?: ExponentialBackoffParams;
   storageType: string;
   storageKey: string;
 
@@ -164,6 +172,7 @@ export default class Sarus {
       reconnectAutomatically,
       retryProcessTimePeriod, // TODO - write a test case to check this
       retryConnectionDelay,
+      exponentialBackoff,
       storageType = "memory",
       storageKey = "sarus",
     } = props;
@@ -207,6 +216,13 @@ export default class Sarus {
       (typeof retryConnectionDelay === "boolean"
         ? undefined
         : retryConnectionDelay) ?? 1000;
+
+    /*
+      When a exponential backoff parameter object is provided, reconnection
+      attemptions will be increasingly delayed by an exponential factor.
+      This feature is disabled by default.
+    */
+    this.exponentialBackoff = exponentialBackoff;
 
     /*
       Sets the storage type for the messages in the message queue. By default
