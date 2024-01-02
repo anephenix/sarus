@@ -313,6 +313,7 @@ export default class Sarus {
    * Connects the WebSocket client, and attaches event listeners
    */
   connect() {
+    this.state = "connecting";
     this.ws = new WebSocket(this.url, this.protocols);
     this.setBinaryType();
     this.attachEventListeners();
@@ -346,6 +347,7 @@ export default class Sarus {
    * @param {boolean} overrideDisableReconnect
    */
   disconnect(overrideDisableReconnect?: boolean) {
+    this.state = "disconnected";
     const self = this;
     // We do this to prevent automatic reconnections;
     if (!overrideDisableReconnect) {
@@ -477,7 +479,10 @@ export default class Sarus {
     WS_EVENT_NAMES.forEach((eventName) => {
       self.ws[`on${eventName}`] = (e: Function) => {
         self.eventListeners[eventName].forEach((f: Function) => f(e));
-        if (eventName === "close" && self.reconnectAutomatically) {
+        if (eventName === "open") {
+          self.state = "connected";
+        } else if (eventName === "close" && self.reconnectAutomatically) {
+          self.state = "closed";
           self.removeEventListeners();
           self.reconnect();
         }
