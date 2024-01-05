@@ -38,10 +38,10 @@
     "typescript": "^5.1.3"
   },
   "scripts": {
-    "build": "npx tsc --project tsconfig.json",
-    "watch": "npx tsc --project tsconfig.json --watch",
-    "cover": "npx jest --coverage --coverageReporters=text-lcov | coveralls",
-    "test": "npx jest --coverage",
+    "build": "tsc --project tsconfig.json",
+    "watch": "tsc --project tsconfig.json --watch",
+    "cover": "jest --coverage --coverageReporters=text-lcov | coveralls",
+    "test": "jest --coverage",
     "prettier": "prettier src __tests__ --write",
     "check-prettier": "prettier src __tests__ --check"
   },
