@@ -95,7 +95,7 @@ export interface SarusClassParams {
  * @param {object} param0.eventListeners - An optional object containing event listener functions keyed to websocket events
  * @param {boolean} param0.reconnectAutomatically - An optional boolean flag to indicate whether to reconnect automatically when a websocket connection is severed
  * @param {number} param0.retryProcessTimePeriod - An optional number for how long the time period between retrying to send a messgae to a WebSocket server should be
- * @param {boolean|number} param0.retryConnectionDelay - An optional parameter for whether to delay WebSocket reconnection attempts by a time period. If true, the delay is 1000ms, otherwise it is the number passed
+ * @param {boolean|number} param0.retryConnectionDelay - An optional parameter for whether to delay WebSocket reconnection attempts by a time period. If true, the delay is 1000ms, otherwise it is the number passed. The default value when this parameter is undefined will be interpreted as 1000ms.
  * @param {string} param0.storageType - An optional string specifying the type of storage to use for persisting messages in the message queue
  * @param {string} param0.storageKey - An optional string specifying the key used to store the messages data against in sessionStorage/localStorage
  * @returns {object} The class instance
@@ -108,7 +108,7 @@ export default class Sarus {
   eventListeners: EventListenersInterface;
   retryProcessTimePeriod?: number;
   reconnectAutomatically?: boolean;
-  retryConnectionDelay?: boolean | number;
+  retryConnectionDelay: number;
   storageType: string;
   storageKey: string;
 
@@ -160,7 +160,15 @@ export default class Sarus {
       client. If true, a 1000ms delay is added. If a number, that number (as
       miliseconds) is used as the delay. Default is true.
     */
-    this.retryConnectionDelay = retryConnectionDelay || true;
+    // Either retryConnectionDelay is
+    // undefined => default to 1000
+    // true => default to 1000
+    // false => default to 1000
+    // a number => set it to that number
+    this.retryConnectionDelay =
+      (typeof retryConnectionDelay === "boolean"
+        ? undefined
+        : retryConnectionDelay) ?? 1000;
 
     /*
       Sets the storage type for the messages in the message queue. By default
@@ -305,18 +313,7 @@ export default class Sarus {
   reconnect() {
     const self = this;
     const { retryConnectionDelay } = self;
-    switch (typeof retryConnectionDelay) {
-      case "boolean":
-        if (retryConnectionDelay) {
-          setTimeout(self.connect, 1000);
-        } else {
-          self.connect(); // NOTE - this line is not tested
-        }
-        break;
-      case "number":
-        setTimeout(self.connect, retryConnectionDelay);
-        break;
-    }
+    setTimeout(self.connect, retryConnectionDelay);
   }
 
   /**
