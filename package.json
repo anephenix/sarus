@@ -3,6 +3,7 @@
   "version": "0.4.6",
   "description": "A WebSocket JavaScript library",
   "main": "dist/index.js",
+  "type": "module",
   "contributors": [
       {
           "name": "Paul Jensen",
