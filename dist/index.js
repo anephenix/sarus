@@ -20,6 +20,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.calculateRetryDelayFactor = void 0;
 // File Dependencies
 var constants_1 = require("./lib/constants");
 var dataTransformer_1 = require("./lib/dataTransformer");
@@ -52,6 +53,38 @@ var getMessagesFromStore = function (_a) {
         return (0, dataTransformer_1.deserialize)(rawData) || [];
     }
 };
+var validateWebSocketUrl = function (rawUrl) {
+    var url;
+    try {
+        // Alternatively, we can also check with URL.canParse(), but since we need
+        // the URL object anyway to validate the protocol, we go ahead and parse it
+        // here.
+        url = new URL(rawUrl);
+    }
+    catch (e) {
+        // TypeError, as specified by WHATWG URL Standard:
+        // https://url.spec.whatwg.org/#url-class (see constructor steps)
+        if (!(e instanceof TypeError)) {
+            throw e;
+        }
+        // Untested - our URL mock does not give us an instance of TypeError
+        var message = e.message;
+        throw new Error("The WebSocket URL is not valid: ".concat(message));
+    }
+    var protocol = url.protocol;
+    if (!constants_1.ALLOWED_PROTOCOLS.includes(protocol)) {
+        throw new Error("Expected the WebSocket URL to have protocol 'ws:' or 'wss:', got '".concat(protocol, "' instead."));
+    }
+    return url;
+};
+/*
+ * Calculate the exponential backoff delay for a given number of connection
+ * attempts.
+ */
+function calculateRetryDelayFactor(params, initialDelay, connectionAttempts) {
+    return Math.min(initialDelay * Math.pow(params.backoffRate, connectionAttempts), params.backoffLimit);
+}
+exports.calculateRetryDelayFactor = calculateRetryDelayFactor;
 /**
  * The Sarus client class
  * @constructor
@@ -62,19 +95,21 @@ var getMessagesFromStore = function (_a) {
  * @param {object} param0.eventListeners - An optional object containing event listener functions keyed to websocket events
  * @param {boolean} param0.reconnectAutomatically - An optional boolean flag to indicate whether to reconnect automatically when a websocket connection is severed
  * @param {number} param0.retryProcessTimePeriod - An optional number for how long the time period between retrying to send a messgae to a WebSocket server should be
- * @param {boolean|number} param0.retryConnectionDelay - An optional parameter for whether to delay WebSocket reconnection attempts by a time period. If true, the delay is 1000ms, otherwise it is the number passed
+ * @param {boolean|number} param0.retryConnectionDelay - An optional parameter for whether to delay WebSocket reconnection attempts by a time period. If true, the delay is 1000ms, otherwise it is the number passed. The default value when this parameter is undefined will be interpreted as 1000ms.
+ * @param {ExponentialBackoffParams} param0.exponentialBackoff - An optional containing configuration for exponential backoff. If this parameter is undefined, exponential backoff is disabled. The minimum delay is determined by retryConnectionDelay. If retryConnectionDelay is set is false, this setting will not be in effect.
  * @param {string} param0.storageType - An optional string specifying the type of storage to use for persisting messages in the message queue
  * @param {string} param0.storageKey - An optional string specifying the key used to store the messages data against in sessionStorage/localStorage
  * @returns {object} The class instance
  */
 var Sarus = /** @class */ (function () {
     function Sarus(props) {
+        var _a;
         // Extract the properties that are passed to the class
-        var url = props.url, binaryType = props.binaryType, protocols = props.protocols, _a = props.eventListeners, eventListeners = _a === void 0 ? constants_1.DEFAULT_EVENT_LISTENERS_OBJECT : _a, reconnectAutomatically = props.reconnectAutomatically, retryProcessTimePeriod = props.retryProcessTimePeriod, // TODO - write a test case to check this
-        retryConnectionDelay = props.retryConnectionDelay, _b = props.storageType, storageType = _b === void 0 ? "memory" : _b, _c = props.storageKey, storageKey = _c === void 0 ? "sarus" : _c;
+        var url = props.url, binaryType = props.binaryType, protocols = props.protocols, _b = props.eventListeners, eventListeners = _b === void 0 ? constants_1.DEFAULT_EVENT_LISTENERS_OBJECT : _b, reconnectAutomatically = props.reconnectAutomatically, retryProcessTimePeriod = props.retryProcessTimePeriod, // TODO - write a test case to check this
+        retryConnectionDelay = props.retryConnectionDelay, exponentialBackoff = props.exponentialBackoff, _c = props.storageType, storageType = _c === void 0 ? "memory" : _c, _d = props.storageKey, storageKey = _d === void 0 ? "sarus" : _d;
         this.eventListeners = this.auditEventListeners(eventListeners);
         // Sets the WebSocket server url for the client to connect to.
-        this.url = url;
+        this.url = validateWebSocketUrl(url);
         // Sets the binaryType of the data being sent over the connection
         this.binaryType = binaryType;
         // Sets an optional protocols value, which can be either a string or an array of strings
@@ -96,7 +131,21 @@ var Sarus = /** @class */ (function () {
           client. If true, a 1000ms delay is added. If a number, that number (as
           miliseconds) is used as the delay. Default is true.
         */
-        this.retryConnectionDelay = retryConnectionDelay || true;
+        // Either retryConnectionDelay is
+        // undefined => default to 1000
+        // true => default to 1000
+        // false => default to 1000
+        // a number => set it to that number
+        this.retryConnectionDelay =
+            (_a = (typeof retryConnectionDelay === "boolean"
+                ? undefined
+                : retryConnectionDelay)) !== null && _a !== void 0 ? _a : 1000;
+        /*
+          When a exponential backoff parameter object is provided, reconnection
+          attemptions will be increasingly delayed by an exponential factor.
+          This feature is disabled by default.
+        */
+        this.exponentialBackoff = exponentialBackoff;
         /*
           Sets the storage type for the messages in the message queue. By default
           it is an in-memory option, but can also be set as 'session' for
@@ -106,7 +155,7 @@ var Sarus = /** @class */ (function () {
         /*
           When using 'session' or 'local' as the storageType, the storage key is
           used as the key for calls to sessionStorage/localStorage getItem/setItem.
-          
+    
           It can also be configured by the developer during initialization.
         */
         this.storageKey = storageKey;
@@ -114,7 +163,7 @@ var Sarus = /** @class */ (function () {
           When initializing the client, if we are using sessionStorage/localStorage
           for storing messages in the messageQueue, then we want to retrieve any
           that might have been persisted there.
-          
+    
           Say the user has done a page refresh, we want to make sure that messages
           that were meant to be sent to the server make their way there.
     
@@ -224,24 +273,18 @@ var Sarus = /** @class */ (function () {
             this.process();
     };
     /**
-     * Reconnects the WebSocket client based on the retryConnectionDelay setting.
+     * Reconnects the WebSocket client based on the retryConnectionDelay and
+     * ExponentialBackoffParam setting.
      */
     Sarus.prototype.reconnect = function () {
         var self = this;
-        var retryConnectionDelay = self.retryConnectionDelay;
-        switch (typeof retryConnectionDelay) {
-            case "boolean":
-                if (retryConnectionDelay) {
-                    setTimeout(self.connect, 1000);
-                }
-                else {
-                    self.connect(); // NOTE - this line is not tested
-                }
-                break;
-            case "number":
-                setTimeout(self.connect, retryConnectionDelay);
-                break;
-        }
+        var retryConnectionDelay = self.retryConnectionDelay, exponentialBackoff = self.exponentialBackoff;
+        // If no exponential backoff is enabled, retryConnectionDelay will
+        // be scaled by a factor of 1 and it will stay the original value.
+        var delay = exponentialBackoff
+            ? calculateRetryDelayFactor(exponentialBackoff, retryConnectionDelay, 0)
+            : retryConnectionDelay;
+        setTimeout(self.connect, delay);
     };
     /**
      * Disconnects the WebSocket client from the server, and changes the

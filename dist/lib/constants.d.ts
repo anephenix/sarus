@@ -1,4 +1,5 @@
 import { EventListenersInterface } from "./validators";
+export declare const ALLOWED_PROTOCOLS: Array<string>;
 /**
  * A definitive list of events for a WebSocket client to listen on
  * @constant

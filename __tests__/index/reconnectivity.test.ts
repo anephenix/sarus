@@ -1,5 +1,7 @@
 // File Dependencies
 import Sarus from "../../src/index";
+import { calculateRetryDelayFactor } from "../../src/index";
+import type { ExponentialBackoffParams } from "../../src/index";
 import { WS } from "jest-websocket-mock";
 import { delay } from "../helpers/delay";
 
@@ -53,5 +55,32 @@ describe("automatic reconnectivity", () => {
       // @ts-ignore
       expect(sarus.ws?.listeners?.close?.length).toBe(0);
     });
+  });
+});
+
+describe("Exponential backoff", () => {
+  describe("binary backoff", () => {
+    // The initial delay shall be 1 s
+    const initialDelay = 1000;
+    const exponentialBackoffParams: ExponentialBackoffParams = {
+      backoffRate: 2,
+      // We put the ceiling at exactly 8000 ms
+      backoffLimit: 8000,
+    };
+    expect(
+      calculateRetryDelayFactor(exponentialBackoffParams, initialDelay, 0),
+    ).toBe(1000);
+    expect(
+      calculateRetryDelayFactor(exponentialBackoffParams, initialDelay, 1),
+    ).toBe(2000);
+    expect(
+      calculateRetryDelayFactor(exponentialBackoffParams, initialDelay, 2),
+    ).toBe(4000);
+    expect(
+      calculateRetryDelayFactor(exponentialBackoffParams, initialDelay, 3),
+    ).toBe(8000);
+    expect(
+      calculateRetryDelayFactor(exponentialBackoffParams, initialDelay, 4),
+    ).toBe(8000);
   });
 });

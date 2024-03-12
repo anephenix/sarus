@@ -1,4 +1,9 @@
 import { PartialEventListenersInterface, EventListenersInterface } from "./lib/validators";
+export interface ExponentialBackoffParams {
+    backoffRate: number;
+    backoffLimit: number;
+}
+export declare function calculateRetryDelayFactor(params: ExponentialBackoffParams, initialDelay: number, connectionAttempts: number): number;
 export interface SarusClassParams {
     url: string;
     binaryType?: BinaryType;
@@ -7,6 +12,7 @@ export interface SarusClassParams {
     retryProcessTimePeriod?: number;
     reconnectAutomatically?: boolean;
     retryConnectionDelay?: boolean | number;
+    exponentialBackoff?: ExponentialBackoffParams;
     storageType?: string;
     storageKey?: string;
 }
@@ -20,19 +26,21 @@ export interface SarusClassParams {
  * @param {object} param0.eventListeners - An optional object containing event listener functions keyed to websocket events
  * @param {boolean} param0.reconnectAutomatically - An optional boolean flag to indicate whether to reconnect automatically when a websocket connection is severed
  * @param {number} param0.retryProcessTimePeriod - An optional number for how long the time period between retrying to send a messgae to a WebSocket server should be
- * @param {boolean|number} param0.retryConnectionDelay - An optional parameter for whether to delay WebSocket reconnection attempts by a time period. If true, the delay is 1000ms, otherwise it is the number passed
+ * @param {boolean|number} param0.retryConnectionDelay - An optional parameter for whether to delay WebSocket reconnection attempts by a time period. If true, the delay is 1000ms, otherwise it is the number passed. The default value when this parameter is undefined will be interpreted as 1000ms.
+ * @param {ExponentialBackoffParams} param0.exponentialBackoff - An optional containing configuration for exponential backoff. If this parameter is undefined, exponential backoff is disabled. The minimum delay is determined by retryConnectionDelay. If retryConnectionDelay is set is false, this setting will not be in effect.
  * @param {string} param0.storageType - An optional string specifying the type of storage to use for persisting messages in the message queue
  * @param {string} param0.storageKey - An optional string specifying the key used to store the messages data against in sessionStorage/localStorage
  * @returns {object} The class instance
  */
 export default class Sarus {
-    url: string;
+    url: URL;
     binaryType?: BinaryType;
     protocols?: string | Array<string>;
     eventListeners: EventListenersInterface;
     retryProcessTimePeriod?: number;
     reconnectAutomatically?: boolean;
-    retryConnectionDelay?: boolean | number;
+    retryConnectionDelay: number;
+    exponentialBackoff?: ExponentialBackoffParams;
     storageType: string;
     storageKey: string;
     messageStore: any;
@@ -81,7 +89,8 @@ export default class Sarus {
      */
     connect(): void;
     /**
-     * Reconnects the WebSocket client based on the retryConnectionDelay setting.
+     * Reconnects the WebSocket client based on the retryConnectionDelay and
+     * ExponentialBackoffParam setting.
      */
     reconnect(): void;
     /**
