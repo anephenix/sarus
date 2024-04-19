@@ -15,7 +15,12 @@ describe("state machine", () => {
 
     // In the beginning, the state is "connecting"
     const sarus: Sarus = new Sarus(sarusConfig);
-    expect(sarus.state.kind).toBe("connecting");
+    // Since Sarus jumps into connecting directly, 1 connection attempt is made
+    // right in the beginning, but none have failed
+    expect(sarus.state).toStrictEqual({
+      kind: "connecting",
+      failedConnectionAttempts: 0,
+    });
 
     // We wait until we are connected, and see a "connected" state
     await server.connected;
@@ -24,14 +29,22 @@ describe("state machine", () => {
     // When the connection drops, the state will be "closed"
     server.close();
     await server.closed;
-    expect(sarus.state.kind).toBe("closed");
-
-    // Restart server
-    server = new WS(url);
+    expect(sarus.state).toStrictEqual({
+      kind: "closed",
+      failedConnectionAttempts: 0,
+    });
 
     // We wait a while, and the status is "connecting" again
     await delay(1);
-    expect(sarus.state.kind).toBe("connecting");
+    // In the beginning, no connection attempts have been made, since in the
+    // case of a closed connection, we wait a bit until we try to connect again.
+    expect(sarus.state).toStrictEqual({
+      kind: "connecting",
+      failedConnectionAttempts: 0,
+    });
+
+    // We restart the server and let the Sarus instance reconnect:
+    server = new WS(url);
 
     // When we connect in our mock server, we are "connected" again
     await server.connected;

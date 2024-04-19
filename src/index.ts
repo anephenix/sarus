@@ -179,10 +179,16 @@ export default class Sarus {
    * after the constructor wraps up.
    */
   state:
-    | { kind: "connecting" }
+    | { kind: "connecting"; failedConnectionAttempts: number }
     | { kind: "connected" }
     | { kind: "disconnected" }
-    | { kind: "closed" } = { kind: "connecting" };
+    /**
+     * The closed state carries of the number of failed connection attempts
+     */
+    | { kind: "closed"; failedConnectionAttempts: number } = {
+    kind: "connecting",
+    failedConnectionAttempts: 0,
+  };
 
   constructor(props: SarusClassParams) {
     // Extract the properties that are passed to the class
@@ -377,7 +383,19 @@ export default class Sarus {
    * Connects the WebSocket client, and attaches event listeners
    */
   connect() {
-    this.state = { kind: "connecting" };
+    if (this.state.kind === "closed") {
+      this.state = {
+        kind: "connecting",
+        failedConnectionAttempts: this.state.failedConnectionAttempts,
+      };
+    } else if (
+      this.state.kind === "connected" ||
+      this.state.kind === "disconnected"
+    ) {
+      this.state = { kind: "connecting", failedConnectionAttempts: 0 };
+    } else {
+      // This is a NOOP, we are already connecting
+    }
     this.ws = new WebSocket(this.url, this.protocols);
     this.setBinaryType();
     this.attachEventListeners();
@@ -391,11 +409,22 @@ export default class Sarus {
   reconnect() {
     const self = this;
     const { retryConnectionDelay, exponentialBackoff } = self;
+    // If we are already in a "connecting" state, we need to refer to the
+    // current amount of connection attemps to correctly calculate the
+    // exponential delay -- if exponential backoff is enabled.
+    const failedConnectionAttempts =
+      self.state.kind === "connecting"
+        ? self.state.failedConnectionAttempts
+        : 0;
 
     // If no exponential backoff is enabled, retryConnectionDelay will
     // be scaled by a factor of 1 and it will stay the original value.
     const delay = exponentialBackoff
-      ? calculateRetryDelayFactor(exponentialBackoff, retryConnectionDelay, 0)
+      ? calculateRetryDelayFactor(
+          exponentialBackoff,
+          retryConnectionDelay,
+          failedConnectionAttempts,
+        )
       : retryConnectionDelay;
 
     setTimeout(self.connect, delay);
@@ -543,7 +572,22 @@ export default class Sarus {
         if (eventName === "open") {
           self.state = { kind: "connected" };
         } else if (eventName === "close" && self.reconnectAutomatically) {
-          self.state = { kind: "closed" };
+          const { state } = self;
+          // If we have previously been "connecting", we carry over the amount
+          // of failed connection attempts and add 1, since the current
+          // connection attempt failed. We stay "connecting" instead of
+          // "closed", since we've never been fully "connected" in the first
+          // place.
+          if (state.kind === "connecting") {
+            self.state = {
+              kind: "connecting",
+              failedConnectionAttempts: state.failedConnectionAttempts + 1,
+            };
+          } else {
+            // If we were in a different state, we assume that our connection
+            // freshly closed and have not made any failed connection attempts.
+            self.state = { kind: "closed", failedConnectionAttempts: 0 };
+          }
           self.removeEventListeners();
           self.reconnect();
         }
