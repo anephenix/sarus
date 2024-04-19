@@ -78,6 +78,28 @@ export interface ExponentialBackoffParams {
   backoffLimit: number;
 }
 
+/*
+ * Calculate the exponential backoff delay for a given number of connection
+ * attempts.
+ * @param {ExponentialBackoffParams} params - configuration parameters for
+ * exponential backoff.
+ * @param {number} initialDelay - the initial delay before any backoff is
+ * applied
+ * @param {number} failedConnectionAttempts - the number of connection attempts
+ * that have previously failed
+ * @returns {void} - set does not return
+ */
+export function calculateRetryDelayFactor(
+  params: ExponentialBackoffParams,
+  initialDelay: number,
+  failedConnectionAttempts: number,
+): number {
+  return Math.min(
+    initialDelay * Math.pow(params.backoffRate, failedConnectionAttempts),
+    params.backoffLimit,
+  );
+}
+
 export interface SarusClassParams {
   url: string;
   binaryType?: BinaryType;
@@ -363,12 +385,20 @@ export default class Sarus {
   }
 
   /**
-   * Reconnects the WebSocket client based on the retryConnectionDelay setting.
+   * Reconnects the WebSocket client based on the retryConnectionDelay and
+   * ExponentialBackoffParam setting.
    */
   reconnect() {
     const self = this;
-    const { retryConnectionDelay } = self;
-    setTimeout(self.connect, retryConnectionDelay);
+    const { retryConnectionDelay, exponentialBackoff } = self;
+
+    // If no exponential backoff is enabled, retryConnectionDelay will
+    // be scaled by a factor of 1 and it will stay the original value.
+    const delay = exponentialBackoff
+      ? calculateRetryDelayFactor(exponentialBackoff, retryConnectionDelay, 0)
+      : retryConnectionDelay;
+
+    setTimeout(self.connect, delay);
   }
 
   /**

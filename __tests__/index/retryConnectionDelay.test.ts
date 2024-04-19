@@ -1,6 +1,8 @@
 // File Dependencies
 import Sarus from "../../src/index";
 import { WS } from "jest-websocket-mock";
+import { calculateRetryDelayFactor } from "../../src/index";
+import type { ExponentialBackoffParams } from "../../src/index";
 
 const url = "ws://localhost:1234";
 
@@ -59,5 +61,32 @@ describe("retry connection delay", () => {
         return newServer.close();
       });
     });
+  });
+});
+
+describe("Exponential backoff delay", () => {
+  it("will never be more than 8000 ms with rate set to 2", () => {
+    // The initial delay shall be 1 s
+    const initialDelay = 1000;
+    const exponentialBackoffParams: ExponentialBackoffParams = {
+      backoffRate: 2,
+      // We put the ceiling at exactly 8000 ms
+      backoffLimit: 8000,
+    };
+    expect(
+      calculateRetryDelayFactor(exponentialBackoffParams, initialDelay, 0),
+    ).toBe(1000);
+    expect(
+      calculateRetryDelayFactor(exponentialBackoffParams, initialDelay, 1),
+    ).toBe(2000);
+    expect(
+      calculateRetryDelayFactor(exponentialBackoffParams, initialDelay, 2),
+    ).toBe(4000);
+    expect(
+      calculateRetryDelayFactor(exponentialBackoffParams, initialDelay, 3),
+    ).toBe(8000);
+    expect(
+      calculateRetryDelayFactor(exponentialBackoffParams, initialDelay, 4),
+    ).toBe(8000);
   });
 });
