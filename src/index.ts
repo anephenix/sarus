@@ -492,7 +492,7 @@ export default class Sarus {
   attachEventListeners() {
     const self: any = this;
     WS_EVENT_NAMES.forEach((eventName) => {
-      self.ws[`on${eventName}`] = (e: Function) => {
+      self.ws[`on${eventName}`] = (e: Event | CloseEvent | MessageEvent) => {
         self.eventListeners[eventName].forEach((f: Function) => f(e));
         if (eventName === "open") {
           self.state = { kind: "connected" };
