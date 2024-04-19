@@ -134,10 +134,25 @@ export default class Sarus {
    *
    * connect(), disconnect() are generally called by the user
    *
-   * this.reconnect() is called internally when automatic reconnection is
-   * enabled, but can also be called by the user
+   * When disconnected by the WebSocket itself (i.e., this.ws.onclose),
+   * this.reconnect() is called automatically if reconnection is enabled.
+   * this.reconnect() can also be called by the user, for example if
+   * this.disconnect() was purposefully called and reconnection is desired.
+   *
+   * The current state is specified by the 'kind' property of state
+   * Each state can have additional data contained in properties other than
+   * 'kind'. Those properties might be unique to one state, or contained in
+   * several states. To access a property, it might be necessary to narrow down
+   * the 'kind' of state.
+   *
+   * The initial state is connecting, as a Sarus client tries to connect right
+   * after the constructor wraps up.
    */
-  state: "connecting" | "connected" | "disconnected" | "closed" = "connecting";
+  state:
+    | { kind: "connecting" }
+    | { kind: "connected" }
+    | { kind: "disconnected" }
+    | { kind: "closed" } = { kind: "connecting" };
 
   constructor(props: SarusClassParams) {
     // Extract the properties that are passed to the class
@@ -324,7 +339,7 @@ export default class Sarus {
    * Connects the WebSocket client, and attaches event listeners
    */
   connect() {
-    this.state = "connecting";
+    this.state = { kind: "connecting" };
     this.ws = new WebSocket(this.url, this.protocols);
     this.setBinaryType();
     this.attachEventListeners();
@@ -347,7 +362,7 @@ export default class Sarus {
    * @param {boolean} overrideDisableReconnect
    */
   disconnect(overrideDisableReconnect?: boolean) {
-    this.state = "disconnected";
+    this.state = { kind: "disconnected" };
     const self = this;
     // We do this to prevent automatic reconnections;
     if (!overrideDisableReconnect) {
@@ -480,9 +495,9 @@ export default class Sarus {
       self.ws[`on${eventName}`] = (e: Function) => {
         self.eventListeners[eventName].forEach((f: Function) => f(e));
         if (eventName === "open") {
-          self.state = "connected";
+          self.state = { kind: "connected" };
         } else if (eventName === "close" && self.reconnectAutomatically) {
-          self.state = "closed";
+          self.state = { kind: "closed" };
           self.removeEventListeners();
           self.reconnect();
         }
