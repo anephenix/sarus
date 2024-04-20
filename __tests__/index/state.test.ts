@@ -31,7 +31,6 @@ describe("state machine", () => {
     await server.closed;
     expect(sarus.state).toStrictEqual({
       kind: "closed",
-      failedConnectionAttempts: 0,
     });
 
     // We wait a while, and the status is "connecting" again

@@ -182,10 +182,7 @@ export default class Sarus {
     | { kind: "connecting"; failedConnectionAttempts: number }
     | { kind: "connected" }
     | { kind: "disconnected" }
-    /**
-     * The closed state carries of the number of failed connection attempts
-     */
-    | { kind: "closed"; failedConnectionAttempts: number } = {
+    | { kind: "closed" } = {
     kind: "connecting",
     failedConnectionAttempts: 0,
   };
@@ -383,18 +380,9 @@ export default class Sarus {
    * Connects the WebSocket client, and attaches event listeners
    */
   connect() {
-    if (this.state.kind === "closed") {
-      this.state = {
-        kind: "connecting",
-        failedConnectionAttempts: this.state.failedConnectionAttempts,
-      };
-    } else if (
-      this.state.kind === "connected" ||
-      this.state.kind === "disconnected"
-    ) {
+    // If we aren't already connecting, we are now
+    if (this.state.kind !== "connecting") {
       this.state = { kind: "connecting", failedConnectionAttempts: 0 };
-    } else {
-      // This is a NOOP, we are already connecting
     }
     this.ws = new WebSocket(this.url, this.protocols);
     this.setBinaryType();
@@ -586,7 +574,7 @@ export default class Sarus {
           } else {
             // If we were in a different state, we assume that our connection
             // freshly closed and have not made any failed connection attempts.
-            self.state = { kind: "closed", failedConnectionAttempts: 0 };
+            self.state = { kind: "closed" };
           }
           self.removeEventListeners();
           self.reconnect();

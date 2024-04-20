@@ -119,7 +119,6 @@ describe("Exponential backoff delay", () => {
       instance.onclose(new CloseEvent("close"));
       expect(sarus.state).toStrictEqual({
         kind: "closed",
-        failedConnectionAttempts: 0,
       });
 
       let cb: Sarus["connect"];
