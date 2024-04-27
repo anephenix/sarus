@@ -1,5 +1,18 @@
 # CHANGELOG
 
+### 0.5.0 - Saturday 27th April, 2024
+
+-   Tidied up some missplaced development dependencies
+-   Track current connection state internally
+-   Made retryConnectionDelay a required parameter, and restricted type to number
+-   Cleaned up running commands without using npx
+-   Validate URLS when constructing a Sarus instance
+-   Updated License, authors and populated contributors
+-   Changed node build targets to latest LTS and current (18 & 20)
+-   Added Prettier Github Workflow
+-   Formatted code using Prettier
+-   Updated dependencies
+
 ### 0.4.6 - Sunday 18th June, 2023
 
 - Remove string typing on messages sent via WebSocket, to align with TypeScript any type
