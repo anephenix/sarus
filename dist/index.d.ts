@@ -20,23 +20,24 @@ export interface SarusClassParams {
  * @param {object} param0.eventListeners - An optional object containing event listener functions keyed to websocket events
  * @param {boolean} param0.reconnectAutomatically - An optional boolean flag to indicate whether to reconnect automatically when a websocket connection is severed
  * @param {number} param0.retryProcessTimePeriod - An optional number for how long the time period between retrying to send a messgae to a WebSocket server should be
- * @param {boolean|number} param0.retryConnectionDelay - An optional parameter for whether to delay WebSocket reconnection attempts by a time period. If true, the delay is 1000ms, otherwise it is the number passed
+ * @param {number} param0.retryConnectionDelay - A parameter for the amount of time to delay a reconnection attempt by, in miliseconds.
  * @param {string} param0.storageType - An optional string specifying the type of storage to use for persisting messages in the message queue
  * @param {string} param0.storageKey - An optional string specifying the key used to store the messages data against in sessionStorage/localStorage
  * @returns {object} The class instance
  */
 export default class Sarus {
-    url: string;
+    url: URL;
     binaryType?: BinaryType;
     protocols?: string | Array<string>;
     eventListeners: EventListenersInterface;
     retryProcessTimePeriod?: number;
     reconnectAutomatically?: boolean;
-    retryConnectionDelay?: boolean | number;
+    retryConnectionDelay: number;
     storageType: string;
     storageKey: string;
     messageStore: any;
     ws: WebSocket | undefined;
+    state: "connecting" | "connected" | "disconnected" | "closed";
     constructor(props: SarusClassParams);
     /**
      * Fetches the messages from the message queue

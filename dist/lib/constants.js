@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DEFAULT_EVENT_LISTENERS_OBJECT = exports.DATA_STORAGE_TYPES = exports.WS_EVENT_NAMES = void 0;
+exports.DEFAULT_EVENT_LISTENERS_OBJECT = exports.DATA_STORAGE_TYPES = exports.WS_EVENT_NAMES = exports.ALLOWED_PROTOCOLS = void 0;
+exports.ALLOWED_PROTOCOLS = ["ws:", "wss:"];
 /**
  * A definitive list of events for a WebSocket client to listen on
  * @constant
@@ -10,7 +11,7 @@ exports.WS_EVENT_NAMES = [
     "open",
     "close",
     "message",
-    "error"
+    "error",
 ];
 /**
  * Persistent data storage types
@@ -32,5 +33,5 @@ exports.DEFAULT_EVENT_LISTENERS_OBJECT = {
     open: [],
     message: [],
     error: [],
-    close: []
+    close: [],
 };
