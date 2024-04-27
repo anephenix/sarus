@@ -4,30 +4,32 @@
   "description": "A WebSocket JavaScript library",
   "main": "dist/index.js",
   "contributors": [
-      {
-          "name": "Paul Jensen",
-          "email": "paulbjensen@gmail.com",
-          "url": "https://paulbjensen.co.uk"
-      },
-      {
-          "name": "Chris Lajoie",
-          "email": "chris@ettaviation.com"
-      },
-      {
-          "name": "Justus Perlwitz",
-          "email": "justus@jwpconsulting.net",
-          "url": "https://www.jwpconsulting.net"
-      }
+    {
+      "name": "Paul Jensen",
+      "email": "paulbjensen@gmail.com",
+      "url": "https://paulbjensen.co.uk"
+    },
+    {
+      "name": "Chris Lajoie",
+      "email": "chris@ettaviation.com"
+    },
+    {
+      "name": "Justus Perlwitz",
+      "email": "justus@jwpconsulting.net",
+      "url": "https://www.jwpconsulting.net"
+    }
   ],
   "devDependencies": {
     "@babel/parser": "^7.22.5",
     "@babel/types": "^7.22.5",
     "@types/jest": "^29.5.2",
     "@types/websocket": "^1.0.5",
+    "@types/window-or-global": "^1.0.6",
     "coveralls": "^3.1.1",
     "dom-storage": "^2.1.0",
     "ip-regex": "^5.0.0",
     "jest": "29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "jest-websocket-mock": "^2.4.0",
     "jsdoc": "^4.0.2",
     "jsdom": "^24.0.0",
@@ -57,9 +59,5 @@
   "bugs": {
     "url": "https://github.com/anephenix/sarus/issues"
   },
-  "homepage": "https://github.com/anephenix/sarus#readme",
-  "dependencies": {
-    "@types/window-or-global": "^1.0.4",
-    "jest-environment-jsdom": "^29.5.0"
-  }
+  "homepage": "https://github.com/anephenix/sarus#readme"
 }
