@@ -2,7 +2,7 @@
 
 A WebSocket JavaScript library.
 
-[![npm version](https://badge.fury.io/js/%40anephenix%2Fsarus.svg)](https://badge.fury.io/js/%40anephenix%2Fsarus) ![example workflow](https://github.com/anephenix/sarus/actions/workflows/node.js.yml/badge.svg) [![Maintainability](https://api.codeclimate.com/v1/badges/0671cfc9630a97854b30/maintainability)](https://codeclimate.com/github/anephenix/sarus/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/0671cfc9630a97854b30/test_coverage)](https://codeclimate.com/github/anephenix/sarus/test_coverage)
+[![npm version](https://badge.fury.io/js/%40anephenix%2Fsarus.svg)](https://badge.fury.io/js/%40anephenix%2Fsarus) ![example workflow](https://github.com/anephenix/sarus/actions/workflows/node.js.yml/badge.svg) [![Maintainability](https://api.codeclimate.com/v1/badges/0671cfc9630a97854b30/maintainability)](https://codeclimate.com/github/anephenix/sarus/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/0671cfc9630a97854b30/test_coverage)](https://codeclimate.com/github/anephenix/sarus/test_coverage) [![Socket Badge](https://socket.dev/api/badge/npm/package/@anephenix/sarus)](https://socket.dev/npm/package/@anephenix/sarus)
 
 ### Features
 
