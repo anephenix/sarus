@@ -352,6 +352,68 @@ If you think that there is a potential case for you ending up queuing at least
 wrap `sarus.send` function calls in a try/catch statement, so as to handle
 those messages, should they occur.
 
+### Exponential backoff
+
+Configure exponential backoff like so:
+
+```typescript
+import Sarus from '@anephenix/sarus';
+
+const sarus = new Sarus({
+    url: 'wss://ws.anephenix.com',
+    exponentialBackoff: {
+        // Exponential factor, here 2 will result in
+        // 1 s, 2 s, 4 s, and so on increasing delays
+        backoffRate: 2,
+        // Never wait more than 2000 seconds
+        backoffLimit: 2000,
+    },
+});
+```
+
+When a connection attempt repeatedly fails, decreasing the delay
+exponentially between each subsequent reconnection attempt is called
+[Exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff). The
+idea is that if a connection attempt failed after 1 second, and 2 seconds, then it is
+not necessary to check it on the 3rd second, since the probability of a
+reconnection succeeding on the third attempt is most likely not going up.
+Therefore, increasing the delay between each attempt factors in the assumption
+that a connection is not more likely to succeed by repeatedly probing in regular
+intervals.
+
+This decreases both the load on the client, as well as on the server. For
+a client, fewer websocket connection attempts decrease the load on the client
+and on the network connection. For the server, should websocket requests fail
+within, then the load for handling repeatedly failing requests will fall
+as well. Furthermore, the burden on the network will also be decreased. Should
+for example a server refuse to accept websocket connections for one client,
+then there is the possibility that other clients will also not be able to connect.
+
+Sarus implements _truncated exponential backoff_, meaning that the maximum
+reconnection delay is capped by another factor `backoffLimit` and will never
+exceed it. The exponential backoff rate itself is determined by `backoffRate`.
+If `backoffRate` is 2, then the delays will be 1 s, 2 s, 4 s, and so on.
+
+The algorithm for reconnection looks like this in pseudocode:
+
+```javascript
+// Configurable
+const backoffRate = 2;
+// The maximum delay will be 400s
+const backoffLimit = 400;
+let notConnected = false;
+let connectionAttempts = 1;
+while (notConnected) {
+    const delay = Math.min(
+        Math.pow(connectionAttempts, backoffRate),
+        backoffLimit,
+    );
+    await delay(delay);
+    notConnected = tryToConnect();
+    connectionAttempts += 1;
+}
+```
+
 ### Advanced options
 
 Sarus has a number of other options that you can pass to the client during
