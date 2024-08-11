@@ -73,6 +73,33 @@ const validateWebSocketUrl = (rawUrl: string): URL => {
   return url;
 };
 
+export interface ExponentialBackoffParams {
+  backoffRate: number;
+  backoffLimit: number;
+}
+
+/*
+ * Calculate the exponential backoff delay for a given number of connection
+ * attempts.
+ * @param {ExponentialBackoffParams} params - configuration parameters for
+ * exponential backoff.
+ * @param {number} initialDelay - the initial delay before any backoff is
+ * applied
+ * @param {number} failedConnectionAttempts - the number of connection attempts
+ * that have previously failed
+ * @returns {void} - set does not return
+ */
+export function calculateRetryDelayFactor(
+  params: ExponentialBackoffParams,
+  initialDelay: number,
+  failedConnectionAttempts: number,
+): number {
+  return Math.min(
+    initialDelay * Math.pow(params.backoffRate, failedConnectionAttempts),
+    params.backoffLimit,
+  );
+}
+
 export interface SarusClassParams {
   url: string;
   binaryType?: BinaryType;
@@ -81,6 +108,7 @@ export interface SarusClassParams {
   retryProcessTimePeriod?: number;
   reconnectAutomatically?: boolean;
   retryConnectionDelay?: boolean | number;
+  exponentialBackoff?: ExponentialBackoffParams;
   storageType?: string;
   storageKey?: string;
 }
@@ -95,7 +123,8 @@ export interface SarusClassParams {
  * @param {object} param0.eventListeners - An optional object containing event listener functions keyed to websocket events
  * @param {boolean} param0.reconnectAutomatically - An optional boolean flag to indicate whether to reconnect automatically when a websocket connection is severed
  * @param {number} param0.retryProcessTimePeriod - An optional number for how long the time period between retrying to send a messgae to a WebSocket server should be
- * @param {number} param0.retryConnectionDelay - A parameter for the amount of time to delay a reconnection attempt by, in miliseconds.
+ * @param {boolean|number} param0.retryConnectionDelay - An optional parameter for whether to delay WebSocket reconnection attempts by a time period. If true, the delay is 1000ms, otherwise it is the number passed. The default value when this parameter is undefined will be interpreted as 1000ms.
+ * @param {ExponentialBackoffParams} param0.exponentialBackoff - An optional containing configuration for exponential backoff. If this parameter is undefined, exponential backoff is disabled. The minimum delay is determined by retryConnectionDelay. If retryConnectionDelay is set is false, this setting will not be in effect.
  * @param {string} param0.storageType - An optional string specifying the type of storage to use for persisting messages in the message queue
  * @param {string} param0.storageKey - An optional string specifying the key used to store the messages data against in sessionStorage/localStorage
  * @returns {object} The class instance
@@ -109,6 +138,7 @@ export default class Sarus {
   retryProcessTimePeriod?: number;
   reconnectAutomatically?: boolean;
   retryConnectionDelay: number;
+  exponentialBackoff?: ExponentialBackoffParams;
   storageType: string;
   storageKey: string;
 
@@ -134,10 +164,28 @@ export default class Sarus {
    *
    * connect(), disconnect() are generally called by the user
    *
-   * this.reconnect() is called internally when automatic reconnection is
-   * enabled, but can also be called by the user
+   * When disconnected by the WebSocket itself (i.e., this.ws.onclose),
+   * this.reconnect() is called automatically if reconnection is enabled.
+   * this.reconnect() can also be called by the user, for example if
+   * this.disconnect() was purposefully called and reconnection is desired.
+   *
+   * The current state is specified by the 'kind' property of state
+   * Each state can have additional data contained in properties other than
+   * 'kind'. Those properties might be unique to one state, or contained in
+   * several states. To access a property, it might be necessary to narrow down
+   * the 'kind' of state.
+   *
+   * The initial state is connecting, as a Sarus client tries to connect right
+   * after the constructor wraps up.
    */
-  state: "connecting" | "connected" | "disconnected" | "closed" = "connecting";
+  state:
+    | { kind: "connecting"; failedConnectionAttempts: number }
+    | { kind: "connected" }
+    | { kind: "disconnected" }
+    | { kind: "closed" } = {
+    kind: "connecting",
+    failedConnectionAttempts: 0,
+  };
 
   constructor(props: SarusClassParams) {
     // Extract the properties that are passed to the class
@@ -149,6 +197,7 @@ export default class Sarus {
       reconnectAutomatically,
       retryProcessTimePeriod, // TODO - write a test case to check this
       retryConnectionDelay,
+      exponentialBackoff,
       storageType = "memory",
       storageKey = "sarus",
     } = props;
@@ -192,6 +241,13 @@ export default class Sarus {
       (typeof retryConnectionDelay === "boolean"
         ? undefined
         : retryConnectionDelay) ?? 1000;
+
+    /*
+      When a exponential backoff parameter object is provided, reconnection
+      attemptions will be increasingly delayed by an exponential factor.
+      This feature is disabled by default.
+    */
+    this.exponentialBackoff = exponentialBackoff;
 
     /*
       Sets the storage type for the messages in the message queue. By default
@@ -324,7 +380,10 @@ export default class Sarus {
    * Connects the WebSocket client, and attaches event listeners
    */
   connect() {
-    this.state = "connecting";
+    // If we aren't already connecting, we are now
+    if (this.state.kind !== "connecting") {
+      this.state = { kind: "connecting", failedConnectionAttempts: 0 };
+    }
     this.ws = new WebSocket(this.url, this.protocols);
     this.setBinaryType();
     this.attachEventListeners();
@@ -332,12 +391,31 @@ export default class Sarus {
   }
 
   /**
-   * Reconnects the WebSocket client based on the retryConnectionDelay setting.
+   * Reconnects the WebSocket client based on the retryConnectionDelay and
+   * ExponentialBackoffParam setting.
    */
   reconnect() {
     const self = this;
-    const { retryConnectionDelay } = self;
-    setTimeout(self.connect, retryConnectionDelay);
+    const { retryConnectionDelay, exponentialBackoff } = self;
+    // If we are already in a "connecting" state, we need to refer to the
+    // current amount of connection attemps to correctly calculate the
+    // exponential delay -- if exponential backoff is enabled.
+    const failedConnectionAttempts =
+      self.state.kind === "connecting"
+        ? self.state.failedConnectionAttempts
+        : 0;
+
+    // If no exponential backoff is enabled, retryConnectionDelay will
+    // be scaled by a factor of 1 and it will stay the original value.
+    const delay = exponentialBackoff
+      ? calculateRetryDelayFactor(
+          exponentialBackoff,
+          retryConnectionDelay,
+          failedConnectionAttempts,
+        )
+      : retryConnectionDelay;
+
+    setTimeout(self.connect, delay);
   }
 
   /**
@@ -347,7 +425,7 @@ export default class Sarus {
    * @param {boolean} overrideDisableReconnect
    */
   disconnect(overrideDisableReconnect?: boolean) {
-    this.state = "disconnected";
+    this.state = { kind: "disconnected" };
     const self = this;
     // We do this to prevent automatic reconnections;
     if (!overrideDisableReconnect) {
@@ -477,12 +555,27 @@ export default class Sarus {
   attachEventListeners() {
     const self: any = this;
     WS_EVENT_NAMES.forEach((eventName) => {
-      self.ws[`on${eventName}`] = (e: Function) => {
+      self.ws[`on${eventName}`] = (e: Event | CloseEvent | MessageEvent) => {
         self.eventListeners[eventName].forEach((f: Function) => f(e));
         if (eventName === "open") {
-          self.state = "connected";
+          self.state = { kind: "connected" };
         } else if (eventName === "close" && self.reconnectAutomatically) {
-          self.state = "closed";
+          const { state } = self;
+          // If we have previously been "connecting", we carry over the amount
+          // of failed connection attempts and add 1, since the current
+          // connection attempt failed. We stay "connecting" instead of
+          // "closed", since we've never been fully "connected" in the first
+          // place.
+          if (state.kind === "connecting") {
+            self.state = {
+              kind: "connecting",
+              failedConnectionAttempts: state.failedConnectionAttempts + 1,
+            };
+          } else {
+            // If we were in a different state, we assume that our connection
+            // freshly closed and have not made any failed connection attempts.
+            self.state = { kind: "closed" };
+          }
           self.removeEventListeners();
           self.reconnect();
         }
