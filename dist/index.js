@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
         if (ar || !(i in from)) {
@@ -118,8 +107,9 @@ var Sarus = /** @class */ (function () {
          */
         this.state = "connecting";
         // Extract the properties that are passed to the class
-        var url = props.url, binaryType = props.binaryType, protocols = props.protocols, _b = props.eventListeners, eventListeners = _b === void 0 ? constants_1.DEFAULT_EVENT_LISTENERS_OBJECT : _b, reconnectAutomatically = props.reconnectAutomatically, retryProcessTimePeriod = props.retryProcessTimePeriod, // TODO - write a test case to check this
-        retryConnectionDelay = props.retryConnectionDelay, _c = props.storageType, storageType = _c === void 0 ? "memory" : _c, _d = props.storageKey, storageKey = _d === void 0 ? "sarus" : _d;
+        var url = props.url, binaryType = props.binaryType, protocols = props.protocols, eventListeners = props.eventListeners, // = DEFAULT_EVENT_LISTENERS_OBJECT,
+        reconnectAutomatically = props.reconnectAutomatically, retryProcessTimePeriod = props.retryProcessTimePeriod, // TODO - write a test case to check this
+        retryConnectionDelay = props.retryConnectionDelay, _b = props.storageType, storageType = _b === void 0 ? "memory" : _b, _c = props.storageKey, storageKey = _c === void 0 ? "sarus" : _c;
         this.eventListeners = this.auditEventListeners(eventListeners);
         // Sets the WebSocket server url for the client to connect to.
         this.url = validateWebSocketUrl(url);
@@ -260,14 +250,12 @@ var Sarus = /** @class */ (function () {
      * @returns {object} The eventListeners object parameter, with any missing events prefilled in
      */
     Sarus.prototype.auditEventListeners = function (eventListeners) {
-        var defaultEventListeners = {
-            open: [],
-            message: [],
-            error: [],
-            close: [],
+        return {
+            open: (eventListeners === null || eventListeners === void 0 ? void 0 : eventListeners.open) || [],
+            message: (eventListeners === null || eventListeners === void 0 ? void 0 : eventListeners.message) || [],
+            error: (eventListeners === null || eventListeners === void 0 ? void 0 : eventListeners.error) || [],
+            close: (eventListeners === null || eventListeners === void 0 ? void 0 : eventListeners.close) || [],
         };
-        var mergedEventListeners = __assign(__assign({}, defaultEventListeners), eventListeners); // Type assertion added here
-        return mergedEventListeners;
     };
     /**
      * Connects the WebSocket client, and attaches event listeners
