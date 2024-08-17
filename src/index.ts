@@ -145,7 +145,7 @@ export default class Sarus {
       url,
       binaryType,
       protocols,
-      eventListeners,// = DEFAULT_EVENT_LISTENERS_OBJECT,
+      eventListeners, // = DEFAULT_EVENT_LISTENERS_OBJECT,
       reconnectAutomatically,
       retryProcessTimePeriod, // TODO - write a test case to check this
       retryConnectionDelay,
@@ -304,13 +304,15 @@ export default class Sarus {
    * @param {object} eventListeners - The eventListeners object parameter
    * @returns {object} The eventListeners object parameter, with any missing events prefilled in
    */
-  auditEventListeners(eventListeners: PartialEventListenersInterface | undefined) {
+  auditEventListeners(
+    eventListeners: PartialEventListenersInterface | undefined,
+  ) {
     return {
       open: eventListeners?.open || [],
       message: eventListeners?.message || [],
       error: eventListeners?.error || [],
       close: eventListeners?.close || [],
-    }
+    };
   }
 
   /**
