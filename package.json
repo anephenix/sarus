@@ -1,6 +1,6 @@
 {
   "name": "@anephenix/sarus",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A WebSocket JavaScript library",
   "main": "dist/index.js",
   "contributors": [

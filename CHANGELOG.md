@@ -1,5 +1,12 @@
 # CHANGELOG
 
+### 0.6.0 - Saturday 17th August, 2024
+
+-   Fixed a performance regression relating to the auditEventListeners function (PR#461)
+-   Minimize production dependencies by removing current package.json dependencies (PR#424)
+=   Added support for Exponential backoff on reconnection attempts (PR#403) 
+-   Updated dependencies
+
 ### 0.5.0 - Saturday 27th April, 2024
 
 -   Tidied up some missplaced development dependencies
