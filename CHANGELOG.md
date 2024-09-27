@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.6.1 - Friday 27th September, 2024
+
+- Dependency updates
+
 ### 0.6.0 - Saturday 17th August, 2024
 
 -   Fixed a performance regression relating to the auditEventListeners function (PR#461)
