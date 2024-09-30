@@ -39,6 +39,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Update Changelog
+        run: npm run update-changelog
+
       - name: Publish to npm
         run: npm publish
         env:
