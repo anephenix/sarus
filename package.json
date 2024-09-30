@@ -43,6 +43,7 @@
     "check-prettier": "prettier src __tests__ --check",
     "prepare-patch-release": "npm run update-changelog && git add CHANGELOG.md && git commit -m \"Updated changelog\" && npm version patch",
     "prettier": "prettier src __tests__ --write",
+    "publish-patch-release": "npm run prepare-patch-release && git push origin master && git push --tags",
     "test": "jest --coverage",
     "update-changelog": "npx ts-node scripts/update-changelog.ts",
     "watch": "tsc --project tsconfig.json --watch"
