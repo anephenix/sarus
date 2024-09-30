@@ -2,8 +2,8 @@ name: Publish to npm
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'  # Triggers only for tags that start with 'v' (e.g., v1.0, v1.1.0)
   workflow_dispatch:
 
 jobs:
