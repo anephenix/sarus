@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.6.3 - Monday 30th September, 2024
+
+- Added more scripts for automation
+- Updated the push script to trigger automatically on pushing tags
+
 ### 0.6.2 - Monday 30th September, 2024
 
 - Tweaks to the prepare-patch-release command
