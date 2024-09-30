@@ -1,5 +1,15 @@
 # CHANGELOG
 
+### 0.6.2 - Monday 30th September, 2024
+
+- Tweaks to the prepare-patch-release command
+- Use a script to prepare the patch release
+- A workaround for the GitHub action to fetch tags
+- Running publish will update the changelog automatically
+- Small tweak to the changelog script
+- Added a script to generate updates for the changelog
+- Updated Changelog
+
 ### 0.6.1 - Friday 27th September, 2024
 
 - Dependency updates
