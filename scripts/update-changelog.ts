@@ -10,6 +10,10 @@ const changelogPath = join(__dirname, '../CHANGELOG.md');
 const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
 const currentVersion = packageJson.version;
 
+// Bump patch version
+const [major, minor, patch] = currentVersion.split('.').map(Number);
+const nextVersion = `${major}.${minor}.${patch + 1}`;
+
 // Get previous version from git tags
 const previousVersion = execSync('git describe --tags --abbrev=0 HEAD^').toString().trim();
 
@@ -51,7 +55,7 @@ const currentDate = formatDateToString();
 const changelogContent = readFileSync(changelogPath, 'utf-8');
 
 // Create new changelog entry
-const newChangelogEntry = `### ${currentVersion} - ${currentDate}
+const newChangelogEntry = `### ${nextVersion} - ${currentDate}
 
 ${commitMessages}
 `;
