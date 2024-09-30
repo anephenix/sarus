@@ -35,14 +35,16 @@
     "mock-socket": "^9.2.1",
     "prettier": "^3.0.3",
     "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.1.3"
   },
   "scripts": {
     "build": "tsc --project tsconfig.json",
-    "watch": "tsc --project tsconfig.json --watch",
-    "test": "jest --coverage",
+    "check-prettier": "prettier src __tests__ --check",
     "prettier": "prettier src __tests__ --write",
-    "check-prettier": "prettier src __tests__ --check"
+    "test": "jest --coverage",
+    "update-changelog": "npx ts-node scripts/update-changelog.ts",
+    "watch": "tsc --project tsconfig.json --watch"
   },
   "repository": {
     "type": "git",
