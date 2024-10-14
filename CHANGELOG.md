@@ -1,5 +1,12 @@
 # CHANGELOG
 
+### 0.6.5 - Monday 14th October, 2024
+
+- Merge pull request #475 from anephenix/dependabot/npm_and_yarn/babel/parser-7.25.8
+- Merge pull request #474 from anephenix/dependabot/npm_and_yarn/babel/types-7.25.8
+- Bump @babel/parser from 7.25.7 to 7.25.8
+- Bump @babel/types from 7.25.7 to 7.25.8
+
 ### 0.6.4 - Wednesday 9th October, 2024
 
 - Merge pull request #473 from anephenix/dependabot/npm_and_yarn/typescript-5.6.3
