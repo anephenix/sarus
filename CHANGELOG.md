@@ -1,5 +1,16 @@
 # CHANGELOG
 
+### 0.6.6 - Monday 28th October, 2024
+
+- Merge pull request #481 from anephenix/dependabot/npm_and_yarn/babel/types-7.26.0
+- Merge pull request #480 from anephenix/dependabot/npm_and_yarn/babel/parser-7.26.1
+- Merge pull request #478 from anephenix/dependabot/npm_and_yarn/types/jest-29.5.14
+- Merge pull request #476 from anephenix/dependabot/npm_and_yarn/jsdoc-4.0.4
+- Bump @babel/types from 7.25.8 to 7.26.0
+- Bump @babel/parser from 7.25.8 to 7.26.1
+- Bump @types/jest from 29.5.13 to 29.5.14
+- Bump jsdoc from 4.0.3 to 4.0.4
+
 ### 0.6.5 - Monday 14th October, 2024
 
 - Merge pull request #475 from anephenix/dependabot/npm_and_yarn/babel/parser-7.25.8
