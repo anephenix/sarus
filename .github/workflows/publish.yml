@@ -33,7 +33,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'  # or the node version you're using
+          node-version: '22'  # or the node version you're using
           registry-url: 'https://registry.npmjs.org/'
 
       - name: Install dependencies
