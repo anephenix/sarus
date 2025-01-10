@@ -31,7 +31,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-websocket-mock": "^2.4.0",
     "jsdoc": "^4.0.2",
-    "jsdom": "^25.0.0",
+    "jsdom": "^26.0.0",
     "mock-socket": "^9.2.1",
     "prettier": "^3.0.3",
     "ts-jest": "^29.1.0",
