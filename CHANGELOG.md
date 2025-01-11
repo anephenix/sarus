@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### 0.6.8 - Saturday 11th January, 2025
+
+- More tweaks
+- More husky configuration
+- Added husky pre-commit hooks
+
 ### 0.6.7 - Saturday 11th January, 2025
 
 - Updated dependencies and package.json metadata
