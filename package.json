@@ -56,6 +56,12 @@
     "websocket"
   ],
   "author": "Paul Jensen <paul@anephenix.com>",
+  "maintainers": [
+    {
+      "name": "Paul Jensen",
+      "email": "paul@anephenix.com"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/anephenix/sarus/issues"
