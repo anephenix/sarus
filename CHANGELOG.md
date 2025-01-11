@@ -1,5 +1,26 @@
 # CHANGELOG
 
+### 0.6.7 - Saturday 11th January, 2025
+
+- Updated dependencies and package.json metadata
+- Updated dependencies
+- Merge pull request #489 from anephenix/dependabot/npm_and_yarn/typescript-5.7.3
+- Merge pull request #488 from anephenix/dependabot/npm_and_yarn/jsdom-26.0.0
+- Bump typescript from 5.7.2 to 5.7.3
+- Bump jsdom from 25.0.1 to 26.0.0
+- Merge branch 'master' of github.com:anephenix/sarus
+- Updated Node.js version in publish action to latest LTS
+- Merge pull request #486 from anephenix/dependabot/npm_and_yarn/prettier-3.4.2
+- Merge pull request #485 from anephenix/dependabot/npm_and_yarn/babel/parser-7.26.3
+- Bump prettier from 3.4.1 to 3.4.2
+- Bump @babel/parser from 7.26.2 to 7.26.3
+- Merge pull request #484 from anephenix/dependabot/npm_and_yarn/prettier-3.4.1
+- Merge pull request #483 from anephenix/dependabot/npm_and_yarn/typescript-5.7.2
+- Bump prettier from 3.3.3 to 3.4.1
+- Bump typescript from 5.6.3 to 5.7.2
+- Merge pull request #482 from anephenix/dependabot/npm_and_yarn/babel/parser-7.26.2
+- Bump @babel/parser from 7.26.1 to 7.26.2
+
 ### 0.6.6 - Monday 28th October, 2024
 
 - Merge pull request #481 from anephenix/dependabot/npm_and_yarn/babel/types-7.26.0
