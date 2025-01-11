@@ -47,7 +47,8 @@
     "publish-patch-release": "npm run prepare-patch-release && git push origin master && git push --tags",
     "test": "jest --coverage",
     "update-changelog": "npx ts-node scripts/update-changelog.ts",
-    "watch": "tsc --project tsconfig.json --watch"
+    "watch": "tsc --project tsconfig.json --watch",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -72,5 +73,5 @@
     "hooks": {
       "pre-commit": "npm run build && npm run prettier && git add . && npm t"
     }
-  },
+  }
 }
