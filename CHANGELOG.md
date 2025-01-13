@@ -1,5 +1,12 @@
 # CHANGELOG
 
+### 0.6.9 - Monday 13th January, 2025
+
+- Merge pull request #491 from anephenix/dependabot/npm_and_yarn/babel/types-7.26.5
+- Merge pull request #490 from anephenix/dependabot/npm_and_yarn/babel/parser-7.26.5
+- Bump @babel/types from 7.26.3 to 7.26.5
+- Bump @babel/parser from 7.26.3 to 7.26.5
+
 ### 0.6.8 - Saturday 11th January, 2025
 
 - More tweaks
