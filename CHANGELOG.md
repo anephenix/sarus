@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.6.10 - Tuesday 14th January, 2025
+
+- Merge pull request #492 from anephenix/dependabot/npm_and_yarn/types/node-22.10.6
+- Bump @types/node from 22.10.5 to 22.10.6
+
 ### 0.6.9 - Monday 13th January, 2025
 
 - Merge pull request #491 from anephenix/dependabot/npm_and_yarn/babel/types-7.26.5
