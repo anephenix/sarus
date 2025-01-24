@@ -1,5 +1,15 @@
 # CHANGELOG
 
+### 0.6.11 - Friday 24th January, 2025
+
+- Updated dependencies
+- Merge pull request #495 from anephenix/dependabot/npm_and_yarn/types/node-22.10.10
+- Bump @types/node from 22.10.8 to 22.10.10
+- Merge pull request #494 from anephenix/dependabot/npm_and_yarn/types/node-22.10.8
+- Bump @types/node from 22.10.7 to 22.10.8
+- Merge pull request #493 from anephenix/dependabot/npm_and_yarn/types/node-22.10.7
+- Bump @types/node from 22.10.6 to 22.10.7
+
 ### 0.6.10 - Tuesday 14th January, 2025
 
 - Merge pull request #492 from anephenix/dependabot/npm_and_yarn/types/node-22.10.6
