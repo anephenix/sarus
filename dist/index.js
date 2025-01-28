@@ -13,6 +13,7 @@ exports.calculateRetryDelayFactor = calculateRetryDelayFactor;
 // File Dependencies
 var constants_1 = require("./lib/constants");
 var dataTransformer_1 = require("./lib/dataTransformer");
+var utils_1 = require("./lib/utils");
 /**
  * Retrieves the storage API for the browser
  * @param {string} storageType - The storage type (local or session)
@@ -41,30 +42,6 @@ var getMessagesFromStore = function (_a) {
         var rawData = (storage && storage.getItem(storageKey)) || null;
         return (0, dataTransformer_1.deserialize)(rawData) || [];
     }
-};
-var validateWebSocketUrl = function (rawUrl) {
-    var url;
-    try {
-        // Alternatively, we can also check with URL.canParse(), but since we need
-        // the URL object anyway to validate the protocol, we go ahead and parse it
-        // here.
-        url = new URL(rawUrl);
-    }
-    catch (e) {
-        // TypeError, as specified by WHATWG URL Standard:
-        // https://url.spec.whatwg.org/#url-class (see constructor steps)
-        if (!(e instanceof TypeError)) {
-            throw e;
-        }
-        // Untested - our URL mock does not give us an instance of TypeError
-        var message = e.message;
-        throw new Error("The WebSocket URL is not valid: ".concat(message));
-    }
-    var protocol = url.protocol;
-    if (!constants_1.ALLOWED_PROTOCOLS.includes(protocol)) {
-        throw new Error("Expected the WebSocket URL to have protocol 'ws:' or 'wss:', got '".concat(protocol, "' instead."));
-    }
-    return url;
 };
 /*
  * Calculate the exponential backoff delay for a given number of connection
@@ -142,7 +119,7 @@ var Sarus = /** @class */ (function () {
         retryConnectionDelay = props.retryConnectionDelay, exponentialBackoff = props.exponentialBackoff, _b = props.storageType, storageType = _b === void 0 ? "memory" : _b, _c = props.storageKey, storageKey = _c === void 0 ? "sarus" : _c;
         this.eventListeners = this.auditEventListeners(eventListeners);
         // Sets the WebSocket server url for the client to connect to.
-        this.url = validateWebSocketUrl(url);
+        this.url = (0, utils_1.validateWebSocketUrl)(url);
         // Sets the binaryType of the data being sent over the connection
         this.binaryType = binaryType;
         // Sets an optional protocols value, which can be either a string or an array of strings

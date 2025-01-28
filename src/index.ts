@@ -1,15 +1,11 @@
 // File Dependencies
-import {
-  ALLOWED_PROTOCOLS,
-  WS_EVENT_NAMES,
-  DATA_STORAGE_TYPES,
-  DEFAULT_EVENT_LISTENERS_OBJECT,
-} from "./lib/constants";
+import { WS_EVENT_NAMES, DATA_STORAGE_TYPES } from "./lib/constants";
 import { serialize, deserialize } from "./lib/dataTransformer";
 import {
   PartialEventListenersInterface,
   EventListenersInterface,
 } from "./lib/validators";
+import { validateWebSocketUrl } from "./lib/utils";
 
 interface StorageParams {
   storageType: string;
@@ -45,32 +41,6 @@ const getMessagesFromStore = ({ storageType, storageKey }: StorageParams) => {
       (storage && storage.getItem(storageKey)) || null;
     return deserialize(rawData) || [];
   }
-};
-
-const validateWebSocketUrl = (rawUrl: string): URL => {
-  let url: URL;
-  try {
-    // Alternatively, we can also check with URL.canParse(), but since we need
-    // the URL object anyway to validate the protocol, we go ahead and parse it
-    // here.
-    url = new URL(rawUrl);
-  } catch (e) {
-    // TypeError, as specified by WHATWG URL Standard:
-    // https://url.spec.whatwg.org/#url-class (see constructor steps)
-    if (!(e instanceof TypeError)) {
-      throw e;
-    }
-    // Untested - our URL mock does not give us an instance of TypeError
-    const { message } = e;
-    throw new Error(`The WebSocket URL is not valid: ${message}`);
-  }
-  const { protocol } = url;
-  if (!ALLOWED_PROTOCOLS.includes(protocol)) {
-    throw new Error(
-      `Expected the WebSocket URL to have protocol 'ws:' or 'wss:', got '${protocol}' instead.`,
-    );
-  }
-  return url;
 };
 
 export interface ExponentialBackoffParams {
