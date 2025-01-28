@@ -21,4 +21,3 @@ function validateWebSocketUrl(rawUrl) {
     }
     return url;
 }
-;

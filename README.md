@@ -461,4 +461,4 @@ This will run tests using jest and with code coverage enabled.
 
 ### License and Credits
 
-&copy; 2020 Anephenix OÜ. Sarus is licensed under the MIT License.
+&copy; 2025 Anephenix OÜ. Sarus is licensed under the MIT License.
