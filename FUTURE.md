@@ -14,6 +14,9 @@ Feature:
 Scenario: You want attempts to reconnect to the server to have some form
 of exponential backoff.
 
+This feels like a feature that could be supported by [Hub](https://github.com/anephenix/hub), 
+as that is where WebSocket server logic is kept to support this.
+
 Feature:
 
 - Introduce an exponential back-off strategy to Sarus in the near future.
