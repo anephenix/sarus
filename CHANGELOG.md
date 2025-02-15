@@ -1,5 +1,29 @@
 # CHANGELOG
 
+### 0.6.12 - Saturday 15th February, 2025
+
+- Added notes to FUTURE.md file
+- Merge pull request #503 from anephenix/dependabot/npm_and_yarn/types/node-22.13.4
+- Merge pull request #504 from anephenix/dependabot/npm_and_yarn/prettier-3.5.1
+- Bump prettier from 3.5.0 to 3.5.1
+- Bump @types/node from 22.13.2 to 22.13.4
+- Merge pull request #502 from anephenix/dependabot/npm_and_yarn/types/node-22.13.2
+- Bump @types/node from 22.13.1 to 22.13.2
+- Merge pull request #501 from anephenix/dependabot/npm_and_yarn/babel/parser-7.26.8
+- Merge pull request #500 from anephenix/dependabot/npm_and_yarn/prettier-3.5.0
+- Merge pull request #499 from anephenix/dependabot/npm_and_yarn/babel/types-7.26.8
+- Bump @babel/parser from 7.26.7 to 7.26.8
+- Bump prettier from 3.4.2 to 3.5.0
+- Bump @babel/types from 7.26.7 to 7.26.8
+- Merge pull request #498 from anephenix/dependabot/npm_and_yarn/types/node-22.13.1
+- Bump @types/node from 22.13.0 to 22.13.1
+- Merge pull request #497 from anephenix/dependabot/npm_and_yarn/types/node-22.13.0
+- Bump @types/node from 22.12.0 to 22.13.0
+- Updated Readme
+- Adjusted some code and add size-limit checks
+- Merge pull request #496 from anephenix/dependabot/npm_and_yarn/types/node-22.12.0
+- Bump @types/node from 22.10.10 to 22.12.0
+
 ### 0.6.11 - Friday 24th January, 2025
 
 - Updated dependencies
