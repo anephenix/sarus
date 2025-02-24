@@ -1,5 +1,20 @@
 # CHANGELOG
 
+### 0.6.13 - Monday 24th February, 2025
+
+- Merge pull request #511 from anephenix/dependabot/npm_and_yarn/types/node-22.13.5
+- Merge pull request #509 from anephenix/dependabot/npm_and_yarn/ts-jest-29.2.6
+- Merge pull request #510 from anephenix/dependabot/npm_and_yarn/prettier-3.5.2
+- Bump @types/node from 22.13.4 to 22.13.5
+- Bump prettier from 3.5.1 to 3.5.2
+- Bump ts-jest from 29.2.5 to 29.2.6
+- Merge pull request #507 from anephenix/dependabot/npm_and_yarn/size-limit/preset-small-lib-11.2.0
+- Bump @size-limit/preset-small-lib from 11.1.6 to 11.2.0
+- Merge pull request #506 from anephenix/dependabot/npm_and_yarn/babel/parser-7.26.9
+- Merge pull request #505 from anephenix/dependabot/npm_and_yarn/babel/types-7.26.9
+- Bump @babel/parser from 7.26.8 to 7.26.9
+- Bump @babel/types from 7.26.8 to 7.26.9
+
 ### 0.6.12 - Saturday 15th February, 2025
 
 - Added notes to FUTURE.md file
