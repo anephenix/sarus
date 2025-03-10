@@ -1,5 +1,18 @@
 # CHANGELOG
 
+### 0.6.14 - Monday 10th March, 2025
+
+- Merge pull request #516 from anephenix/dependabot/npm_and_yarn/types/node-22.13.10
+- Bump @types/node from 22.13.9 to 22.13.10
+- Merge pull request #515 from anephenix/dependabot/npm_and_yarn/types/node-22.13.9
+- Bump @types/node from 22.13.8 to 22.13.9
+- Merge pull request #514 from anephenix/dependabot/npm_and_yarn/prettier-3.5.3
+- Merge pull request #513 from anephenix/dependabot/npm_and_yarn/types/node-22.13.8
+- Merge pull request #512 from anephenix/dependabot/npm_and_yarn/typescript-5.8.2
+- Bump prettier from 3.5.2 to 3.5.3
+- Bump @types/node from 22.13.5 to 22.13.8
+- Bump typescript from 5.7.3 to 5.8.2
+
 ### 0.6.13 - Monday 24th February, 2025
 
 - Merge pull request #511 from anephenix/dependabot/npm_and_yarn/types/node-22.13.5
