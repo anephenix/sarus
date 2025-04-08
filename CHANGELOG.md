@@ -1,5 +1,34 @@
 # CHANGELOG
 
+### 0.6.15 - Tuesday 8th April, 2025
+
+- Updated dependencies
+- Merge pull request #528 from anephenix/dependabot/npm_and_yarn/typescript-5.8.3
+- Bump typescript from 5.8.2 to 5.8.3
+- Merge pull request #527 from anephenix/dependabot/npm_and_yarn/types/node-22.14.0
+- Bump @types/node from 22.13.17 to 22.14.0
+- Merge pull request #526 from anephenix/dependabot/npm_and_yarn/types/node-22.13.17
+- Bump @types/node from 22.13.14 to 22.13.17
+- Merge pull request #525 from anephenix/dependabot/npm_and_yarn/ts-jest-29.3.1
+- Bump ts-jest from 29.3.0 to 29.3.1
+- Merge pull request #524 from anephenix/dependabot/npm_and_yarn/types/node-22.13.14
+- Bump @types/node from 22.13.13 to 22.13.14
+- Marked a TODO as complete, as it is functionality implemented by Hub
+- Merge pull request #523 from anephenix/dependabot/npm_and_yarn/types/node-22.13.13
+- Merge pull request #522 from anephenix/dependabot/npm_and_yarn/babel/parser-7.27.0
+- Merge pull request #521 from anephenix/dependabot/npm_and_yarn/babel/types-7.27.0
+- Merge pull request #520 from anephenix/dependabot/npm_and_yarn/ts-jest-29.3.0
+- Bump @types/node from 22.13.11 to 22.13.13
+- Bump @babel/parser from 7.26.10 to 7.27.0
+- Bump @babel/types from 7.26.10 to 7.27.0
+- Bump ts-jest from 29.2.6 to 29.3.0
+- Merge pull request #519 from anephenix/dependabot/npm_and_yarn/types/node-22.13.11
+- Bump @types/node from 22.13.10 to 22.13.11
+- Merge pull request #518 from anephenix/dependabot/npm_and_yarn/babel/parser-7.26.10
+- Merge pull request #517 from anephenix/dependabot/npm_and_yarn/babel/types-7.26.10
+- Bump @babel/parser from 7.26.9 to 7.26.10
+- Bump @babel/types from 7.26.9 to 7.26.10
+
 ### 0.6.14 - Monday 10th March, 2025
 
 - Merge pull request #516 from anephenix/dependabot/npm_and_yarn/types/node-22.13.10
