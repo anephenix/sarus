@@ -398,6 +398,14 @@ var Sarus = /** @class */ (function () {
      */
     Sarus.prototype.processMessage = function (data) {
         var self = this;
+        // If the message is a base64-wrapped object (from legacy or manual insert), decode it
+        if (data &&
+            typeof data === "object" &&
+            data.__sarus_type === "binary" &&
+            typeof data.data === "string") {
+            // Reuse the deserializer for a single message
+            data = require("./lib/dataTransformer").deserialize(JSON.stringify(data));
+        }
         self.ws.send(data);
         self.removeMessage();
         if (self.messages.length > 0)
