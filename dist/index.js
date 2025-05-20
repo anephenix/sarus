@@ -394,7 +394,7 @@ var Sarus = /** @class */ (function () {
     /**
      * Sends a message over the WebSocket, removes the message from the queue,
      * and calls proces again if there is another message to process.
-     * @param {unknown} data - The data payload to send over the WebSocket
+     * @param {string | ArrayBuffer | Uint8Array} data - The data payload to send over the WebSocket
      */
     Sarus.prototype.processMessage = function (data) {
         var self = this;
