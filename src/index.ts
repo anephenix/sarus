@@ -492,6 +492,16 @@ export default class Sarus {
    */
   processMessage(data: unknown) {
     const self: any = this;
+    // If the message is a base64-wrapped object (from legacy or manual insert), decode it
+    if (
+      data &&
+      typeof data === 'object' &&
+      (data as any).__sarus_type === 'binary' &&
+      typeof (data as any).data === 'string'
+    ) {
+      // Reuse the deserializer for a single message
+      data = (require('./lib/dataTransformer') as any).deserialize(JSON.stringify(data));
+    }
     self.ws.send(data);
     self.removeMessage();
     if (self.messages.length > 0) this.process();
