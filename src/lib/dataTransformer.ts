@@ -27,7 +27,9 @@ function base64ToBuffer(base64: string): ArrayBuffer {
 
 // Helper: Blob to base64 (async, but we use ArrayBuffer for storage)
 
-export const serialize = (data: string | object | number |  ArrayBuffer | Uint8Array) => {
+export const serialize = (
+  data: string | object | number | ArrayBuffer | Uint8Array,
+) => {
   // If it's an array, serialize each element
   if (Array.isArray(data)) {
     return JSON.stringify(data.map(serializeSingle));
