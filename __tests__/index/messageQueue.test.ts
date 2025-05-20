@@ -48,7 +48,7 @@ describe("message queue", () => {
   });
 
   const applyStorageTest = async (
-    storageType: any,
+    storageType: Storage,
     sarusConfig: SarusClassParams,
   ) => {
     storageType.clear();
