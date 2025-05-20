@@ -1,5 +1,46 @@
 # CHANGELOG
 
+### 0.6.16 - Tuesday 20th May, 2025
+
+- Merge pull request #547 from anephenix/feature/#546-binary-support-in-message-queue
+- Linting fixes and moved test code to right location
+- Added support for storing binary messages in the message queue
+- Merge pull request #545 from anephenix/dependabot/npm_and_yarn/types/node-22.15.19
+- Merge pull request #544 from anephenix/dependabot/npm_and_yarn/ts-jest-29.3.4
+- Bump @types/node from 22.15.18 to 22.15.19
+- Bump ts-jest from 29.3.3 to 29.3.4
+- Merge pull request #543 from anephenix/dependabot/npm_and_yarn/ts-jest-29.3.3
+- Bump ts-jest from 29.3.2 to 29.3.3
+- Removed an unnecessary dependency
+- Merge pull request #542 from anephenix/dependabot/npm_and_yarn/types/node-22.15.18
+- Bump @types/node from 22.15.17 to 22.15.18
+- Merge pull request #541 from anephenix/dependabot/npm_and_yarn/types/node-22.15.17
+- Bump @types/node from 22.15.16 to 22.15.17
+- Merge pull request #540 from anephenix/dependabot/npm_and_yarn/types/node-22.15.16
+- Bump @types/node from 22.15.14 to 22.15.16
+- Merge pull request #539 from anephenix/dependabot/npm_and_yarn/babel/parser-7.27.2
+- Merge pull request #538 from anephenix/dependabot/npm_and_yarn/types/node-22.15.14
+- Bump @babel/parser from 7.27.1 to 7.27.2
+- Bump @types/node from 22.15.11 to 22.15.14
+- Merge pull request #537 from anephenix/dependabot/npm_and_yarn/types/node-22.15.11
+- Bump @types/node from 22.15.3 to 22.15.11
+- Merge pull request #536 from anephenix/dependabot/npm_and_yarn/babel/parser-7.27.1
+- Merge pull request #535 from anephenix/dependabot/npm_and_yarn/babel/types-7.27.1
+- Bump @babel/parser from 7.27.0 to 7.27.1
+- Bump @babel/types from 7.27.0 to 7.27.1
+- Merge pull request #534 from anephenix/dependabot/npm_and_yarn/types/node-22.15.3
+- Bump @types/node from 22.15.2 to 22.15.3
+- Merge pull request #533 from anephenix/dependabot/npm_and_yarn/types/node-22.15.2
+- Bump @types/node from 22.15.1 to 22.15.2
+- Merge pull request #532 from anephenix/dependabot/npm_and_yarn/types/node-22.15.1
+- Bump @types/node from 22.14.1 to 22.15.1
+- Merge pull request #531 from anephenix/dependabot/npm_and_yarn/jsdom-26.1.0
+- Merge pull request #530 from anephenix/dependabot/npm_and_yarn/types/node-22.14.1
+- Merge pull request #529 from anephenix/dependabot/npm_and_yarn/ts-jest-29.3.2
+- Bump jsdom from 26.0.0 to 26.1.0
+- Bump @types/node from 22.14.0 to 22.14.1
+- Bump ts-jest from 29.3.1 to 29.3.2
+
 ### 0.6.15 - Tuesday 8th April, 2025
 
 - Updated dependencies
