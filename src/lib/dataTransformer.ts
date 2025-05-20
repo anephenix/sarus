@@ -5,7 +5,7 @@
  */
 // Helper: ArrayBuffer/Uint8Array to base64
 function bufferToBase64(buffer: ArrayBuffer): string {
-  let binary = '';
+  let binary = "";
   const bytes = new Uint8Array(buffer);
   const len = bytes.byteLength;
   for (let i = 0; i < len; i++) {
@@ -38,20 +38,22 @@ export const serialize = (data: unknown) => {
 function serializeSingle(data: unknown): any {
   if (data instanceof ArrayBuffer) {
     return {
-      __sarus_type: 'binary',
-      format: 'arraybuffer',
+      __sarus_type: "binary",
+      format: "arraybuffer",
       data: bufferToBase64(data),
     };
   }
   if (data instanceof Uint8Array) {
     return {
-      __sarus_type: 'binary',
-      format: 'uint8array',
+      __sarus_type: "binary",
+      format: "uint8array",
       data: bufferToBase64(data.buffer),
     };
   }
-  if (typeof Blob !== 'undefined' && data instanceof Blob) {
-    throw new Error('Blob serialization is not supported synchronously. Convert Blob to ArrayBuffer or Uint8Array before sending.');
+  if (typeof Blob !== "undefined" && data instanceof Blob) {
+    throw new Error(
+      "Blob serialization is not supported synchronously. Convert Blob to ArrayBuffer or Uint8Array before sending.",
+    );
   }
   return data;
 }
@@ -71,11 +73,11 @@ export const deserialize = (data: string | null) => {
 };
 
 function deserializeSingle(parsed: any): any {
-  if (parsed && parsed.__sarus_type === 'binary') {
-    if (parsed.format === 'arraybuffer') {
+  if (parsed && parsed.__sarus_type === "binary") {
+    if (parsed.format === "arraybuffer") {
       return base64ToBuffer(parsed.data);
     }
-    if (parsed.format === 'uint8array') {
+    if (parsed.format === "uint8array") {
       return new Uint8Array(base64ToBuffer(parsed.data));
     }
   }

@@ -1,60 +1,3 @@
-  it("should queue and deliver ArrayBuffer messages", async () => {
-    const server: WS = new WS(url);
-    const sarus: Sarus = new Sarus({ url });
-    await server.connected;
-    const buffer = new Uint8Array([1, 2, 3, 4]).buffer;
-    sarus.send(buffer);
-    const received = await server.nextMessage;
-    // WebSocket mock returns ArrayBuffer for binary
-    expect(received instanceof ArrayBuffer).toBe(true);
-    expect(new Uint8Array(received as ArrayBuffer)).toEqual(new Uint8Array([1, 2, 3, 4]));
-    await server.close();
-  });
-
-  it("should queue and deliver Uint8Array messages", async () => {
-    const server: WS = new WS(url);
-    const sarus: Sarus = new Sarus({ url });
-    await server.connected;
-    const arr = new Uint8Array([5, 6, 7, 8]);
-    sarus.send(arr);
-    const received = await server.nextMessage;
-    // Always expect ArrayBuffer for binary
-    // Just check that it can be wrapped and matches
-    expect(new Uint8Array(received as ArrayBuffer)).toEqual(arr);
-    await server.close();
-  });
-
-  it("should persist and restore ArrayBuffer messages in localStorage", async () => {
-    localStorage.clear();
-    const sarus: Sarus = new Sarus({ url, storageType: "local" });
-    const buffer = new Uint8Array([9, 10, 11]).buffer;
-    sarus.send(buffer);
-    sarus.disconnect();
-    // Simulate page reload
-    const sarus2: Sarus = new Sarus({ url, storageType: "local" });
-    expect(sarus2.messages.length).toBe(1);
-    expect(new Uint8Array(sarus2.messages[0] as ArrayBuffer)).toEqual(new Uint8Array([9, 10, 11]));
-    localStorage.clear();
-  });
-
-  it("should persist and restore Uint8Array messages in sessionStorage", async () => {
-    sessionStorage.clear();
-    const sarus: Sarus = new Sarus({ url, storageType: "session" });
-    const arr = new Uint8Array([12, 13, 14]);
-    sarus.send(arr);
-    sarus.disconnect();
-    // Simulate page reload
-    const sarus2: Sarus = new Sarus({ url, storageType: "session" });
-    expect(sarus2.messages.length).toBe(1);
-    expect(new Uint8Array(sarus2.messages[0] as ArrayBuffer)).toEqual(arr);
-    sessionStorage.clear();
-  });
-// Ensure mock server is closed between tests to avoid port conflicts
-afterEach(() => {
-  WS.clean();
-  localStorage.clear();
-  sessionStorage.clear();
-});
 // File Dependencies
 import Sarus, { SarusClassParams } from "../../src/index";
 import { WS } from "jest-websocket-mock";
@@ -194,5 +137,68 @@ describe("message queue", () => {
       storageType: "local",
       reconnectAutomatically: true,
     });
+  });
+
+  it("should queue and deliver ArrayBuffer messages", async () => {
+    const server: WS = new WS(url);
+    const sarus: Sarus = new Sarus({ url });
+    await server.connected;
+    const buffer = new Uint8Array([1, 2, 3, 4]).buffer;
+    sarus.send(buffer);
+    const received = await server.nextMessage;
+    // WebSocket mock returns ArrayBuffer for binary
+    expect(received instanceof ArrayBuffer).toBe(true);
+    expect(new Uint8Array(received as ArrayBuffer)).toEqual(
+      new Uint8Array([1, 2, 3, 4]),
+    );
+    await server.close();
+  });
+
+  it("should queue and deliver Uint8Array messages", async () => {
+    const server: WS = new WS(url);
+    const sarus: Sarus = new Sarus({ url });
+    await server.connected;
+    const arr = new Uint8Array([5, 6, 7, 8]);
+    sarus.send(arr);
+    const received = await server.nextMessage;
+    // Always expect ArrayBuffer for binary
+    // Just check that it can be wrapped and matches
+    expect(new Uint8Array(received as ArrayBuffer)).toEqual(arr);
+    await server.close();
+  });
+
+  it("should persist and restore ArrayBuffer messages in localStorage", async () => {
+    localStorage.clear();
+    const sarus: Sarus = new Sarus({ url, storageType: "local" });
+    const buffer = new Uint8Array([9, 10, 11]).buffer;
+    sarus.send(buffer);
+    sarus.disconnect();
+    // Simulate page reload
+    const sarus2: Sarus = new Sarus({ url, storageType: "local" });
+    expect(sarus2.messages.length).toBe(1);
+    expect(new Uint8Array(sarus2.messages[0] as ArrayBuffer)).toEqual(
+      new Uint8Array([9, 10, 11]),
+    );
+    localStorage.clear();
+  });
+
+  it("should persist and restore Uint8Array messages in sessionStorage", async () => {
+    sessionStorage.clear();
+    const sarus: Sarus = new Sarus({ url, storageType: "session" });
+    const arr = new Uint8Array([12, 13, 14]);
+    sarus.send(arr);
+    sarus.disconnect();
+    // Simulate page reload
+    const sarus2: Sarus = new Sarus({ url, storageType: "session" });
+    expect(sarus2.messages.length).toBe(1);
+    expect(new Uint8Array(sarus2.messages[0] as ArrayBuffer)).toEqual(arr);
+    sessionStorage.clear();
+  });
+
+  // Ensure mock server is closed between tests to avoid port conflicts
+  afterEach(() => {
+    WS.clean();
+    localStorage.clear();
+    sessionStorage.clear();
   });
 });
