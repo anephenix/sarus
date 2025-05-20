@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### 0.6.17 - Tuesday 20th May, 2025
+
+- Merge pull request #549 from anephenix/enhancement/replace-any-unknown-types
+- Small prettier fix
+- Some tweaks
+- Replaced any/unknown data types with more defined types
+- Updated the TODO
+
 ### 0.6.16 - Tuesday 20th May, 2025
 
 - Merge pull request #547 from anephenix/feature/#546-binary-support-in-message-queue
