@@ -1,13 +1,11 @@
 name: Lint
+permissions: read-all
 
 on:
   push:
     branches:
       - master
   pull_request:
-
-permissions:
-  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
