@@ -1,5 +1,6 @@
 name: Lint
-permissions: read-all
+permissions:
+    contents: read
 
 on:
   push:
