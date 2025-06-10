@@ -16,18 +16,11 @@ jobs:
         env:
             CC_TEST_REPORTER_ID: 3a5853627354f7cd705f3d9dc81fb83028c8a901a950a3d0d38a090776f8c5ce
         runs-on: ubuntu-latest
-
-        strategy:
-            matrix:
-                node-version: [18.x, 20.x]
-                # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
         steps:
             - uses: actions/checkout@v2
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v1
+            - uses: actions/setup-node@v4
               with:
-                  node-version: ${{ matrix.node-version }}
+                node-version-file: '.nvmrc'
             - run: npm i
             - run: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             - run: chmod +x ./cc-test-reporter
