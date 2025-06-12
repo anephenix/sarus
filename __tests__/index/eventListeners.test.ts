@@ -21,13 +21,13 @@ describe("eventListeners", () => {
       },
     });
     await server.connected;
-    expect(mockOpen).toBeCalledTimes(1);
+    expect(mockOpen).toHaveBeenCalledTimes(1);
     server.send("hello world");
-    expect(mockParseMessage).toBeCalledTimes(1);
+    expect(mockParseMessage).toHaveBeenCalledTimes(1);
     server.error();
-    expect(mockError).toBeCalledTimes(1);
+    expect(mockError).toHaveBeenCalledTimes(1);
     server.close();
-    expect(mockClose).toBeCalledTimes(1);
+    expect(mockClose).toHaveBeenCalledTimes(1);
   });
 
   // it("should prevent invalid eventListener names being passed during initialization", () => {
@@ -44,7 +44,7 @@ describe("eventListeners", () => {
   // });
 
   it("should prefill any missing eventListener events during initialization", () => {
-    const myFunc: Function = () => {};
+    const myFunc: () => void = () => {};
     const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
@@ -61,7 +61,7 @@ describe("eventListeners", () => {
   });
 
   it("should allow an eventListener object to pass in some events but omit others", () => {
-    const myFunc: Function = () => {};
+    const myFunc: () => void = () => {};
     const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
@@ -89,12 +89,12 @@ describe("eventListeners", () => {
     const addAnExistingListener = () => {
       sarus.on("message", myFunc);
     };
-    expect(addAnExistingListener).toThrowError();
+    expect(addAnExistingListener).toThrow();
   });
 
   it("should allow an event listener to be added after initialization", () => {
-    const myFunc: Function = () => {};
-    const anotherFunc: Function = () => {};
+    const myFunc: () => void = () => {};
+    const anotherFunc: () => void = () => {};
     const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
@@ -124,17 +124,17 @@ describe("eventListeners", () => {
     });
     await server.connected;
     server.send("hello world");
-    expect(myFunc).toBeCalledTimes(1);
+    expect(myFunc).toHaveBeenCalledTimes(1);
     sarus.on("message", anotherFunc);
     expect(sarus.eventListeners.message).toEqual([myFunc, anotherFunc]);
     server.send("hello world");
-    expect(myFunc).toBeCalledTimes(2);
-    expect(anotherFunc).toBeCalledTimes(1);
+    expect(myFunc).toHaveBeenCalledTimes(2);
+    expect(anotherFunc).toHaveBeenCalledTimes(1);
     server.close();
   });
 
   it("should allow an event listener to be removed by passing the function name", () => {
-    const myFunc: Function = () => {};
+    const myFunc: () => void = () => {};
     const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
@@ -150,7 +150,7 @@ describe("eventListeners", () => {
   });
 
   it("should allow an event listener to be removed by passing the function", () => {
-    const myFunc: Function = () => {};
+    const myFunc: () => void = () => {};
     const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
@@ -166,8 +166,8 @@ describe("eventListeners", () => {
   });
 
   it("should throw an error if a function cannot be found when trying to remove it from an event listener", () => {
-    const myFunc: Function = () => {};
-    const anotherFunc: Function = () => {};
+    const myFunc: () => void = () => {};
+    const anotherFunc: () => void = () => {};
     const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
@@ -181,12 +181,12 @@ describe("eventListeners", () => {
     const removeANonExistentListener = () => {
       sarus.off("message", anotherFunc);
     };
-    expect(removeANonExistentListener).toThrowError();
+    expect(removeANonExistentListener).toThrow();
   });
 
   it("should throw an error if a function name cannot be found when trying to remove it from an event listener", () => {
-    const myFunc: Function = () => {};
-    const anotherFunc: Function = () => {};
+    const myFunc: () => void = () => {};
+    const anotherFunc: () => void = () => {};
     const sarus: Sarus = new Sarus({
       url,
       eventListeners: {
@@ -200,12 +200,12 @@ describe("eventListeners", () => {
     const removeANonExistentListener = () => {
       sarus.off("message", anotherFunc.name);
     };
-    expect(removeANonExistentListener).toThrowError();
+    expect(removeANonExistentListener).toThrow();
   });
 
   it("should not throw an error, if a function cannot be found when trying to remove it from an event listener, and additional doNotThrowError is passed", () => {
-    const myFunc: Function = () => {};
-    const anotherFunc: Function = () => {};
+    const myFunc: () => void = () => {};
+    const anotherFunc: () => void = () => {};
     const sarus: Sarus = new Sarus({
       url,
       eventListeners: {

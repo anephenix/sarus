@@ -15,7 +15,7 @@ describe("automatic reconnectivity", () => {
     const setTimeout = jest.spyOn(window, "setTimeout");
     server.close();
     await delay(1000);
-    expect(sarus.connect).toBeCalled();
+    expect(sarus.connect).toHaveBeenCalled();
     expect(setTimeout).toHaveBeenCalledTimes(2);
   });
 
@@ -29,7 +29,7 @@ describe("automatic reconnectivity", () => {
     await server.connected;
     sarus.connect = mockConnect;
     server.close();
-    expect(sarus.connect).toBeCalledTimes(0);
+    expect(sarus.connect).toHaveBeenCalledTimes(0);
   });
 
   describe("if a websocket is closed and meant to reconnect automatically", () => {
@@ -43,7 +43,7 @@ describe("automatic reconnectivity", () => {
       sarus.reconnect = mockReconnect;
       server.close();
       await delay(1000);
-      expect(sarus.reconnect).toBeCalled();
+      expect(sarus.reconnect).toHaveBeenCalled();
       // @ts-ignore
       expect(sarus.ws?.listeners?.open?.length).toBe(0);
       // @ts-ignore
