@@ -23,7 +23,7 @@
     "@babel/parser": "^7.22.5",
     "@babel/types": "^7.22.5",
     "@size-limit/preset-small-lib": "^11.1.6",
-    "@types/jest": "^29.5.2",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.0.0",
     "@types/websocket": "^1.0.5",
     "@types/window-or-global": "^1.0.6",
