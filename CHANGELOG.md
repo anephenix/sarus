@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.7.5 - Saturday 21st June, 2025
+
+- More tweaks to the GitHub workflow for publishing the NPM package
+
 ### 0.7.4 - Saturday 21st June, 2025
 
 - Small tweak to workflow for build
