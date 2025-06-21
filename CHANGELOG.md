@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.7.4 - Saturday 21st June, 2025
+
+- Small tweak to workflow for build
+
 ### 0.7.3 - Saturday 21st June, 2025
 
 - More workflow tweaking
