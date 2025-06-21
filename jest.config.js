@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	preset: 'ts-jest/presets/default-esm',
 	extensionsToTreatAsEsm: ['.ts'],
 	testEnvironment: 'jsdom',
@@ -9,6 +9,6 @@ module.exports = {
 	},
 	testPathIgnorePatterns: ['/__tests__/helpers/delay.ts'],
 	moduleNameMapper: {
-		'^(\\.{1,2}/.*)\\.js$': '$1', // 👈 key fix: remove `.js` at runtime in Jest
+		'^(\\.{1,2}/.*)\\.js$': '$1',
 	},
 };

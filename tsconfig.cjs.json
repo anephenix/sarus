@@ -1,11 +1,12 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-      "outDir": "./dist/cjs",
-      "module": "CommonJS",
-      "target": "ES2020",
-      "moduleResolution": "node",
-      "declaration": true,
-      "declarationMap": true
-    }
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "outDir": "./dist/cjs",
+    "declaration": false,
+    "allowJs": false,
+    "emitDeclarationOnly": false,
+    "noEmit": false,
+    "sourceMap": true,
   }
+}

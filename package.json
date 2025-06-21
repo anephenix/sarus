@@ -2,7 +2,20 @@
   "name": "@anephenix/sarus",
   "version": "0.6.17",
   "description": "A WebSocket JavaScript library",
-  "main": "dist/index.js",
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js"
+    }
+  },
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "contributors": [
     {
       "name": "Paul Jensen",
@@ -44,7 +57,9 @@
     "typescript": "^5.7.3"
   },
   "scripts": {
-    "build": "tsc --project tsconfig.json",
+    "build:esm": "tsc --project tsconfig.json",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build": "npm run build:esm && npm run build:cjs && node scripts/create-package-json-for-commonjs.cjs && npm run verify-build",
     "check-prettier": "prettier src __tests__ --check",
     "prepare-patch-release": "npm run update-changelog && git add CHANGELOG.md && git commit -m \"Updated changelog\" && npm version patch",
     "prettier": "prettier src __tests__ --write",
@@ -53,7 +68,8 @@
     "test": "jest --coverage",
     "update-changelog": "npx ts-node scripts/update-changelog.ts",
     "watch": "tsc --project tsconfig.json --watch",
-    "prepare": "husky"
+    "prepare": "husky",
+    "verify-build": "node --experimental-strip-types scripts/check-esm-works.ts && node scripts/check-commonjs-works.cjs"
   },
   "repository": {
     "type": "git",
@@ -71,7 +87,7 @@
   ],
   "size-limit": [
     {
-      "path": "dist/index.js",
+      "path": "dist/**/*.js",
       "limit": "10 kB"
     }
   ],

@@ -1,0 +1,1 @@
+const Sarus = require('../dist/cjs/index.js');
