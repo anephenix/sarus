@@ -43,7 +43,7 @@ const getMessagesFromStore = ({ storageType, storageKey, }) => {
  * @returns {void} - set does not return
  */
 export function calculateRetryDelayFactor(params, initialDelay, failedConnectionAttempts) {
-    return Math.min(initialDelay * Math.pow(params.backoffRate, failedConnectionAttempts), params.backoffLimit);
+    return Math.min(initialDelay * params.backoffRate ** failedConnectionAttempts, params.backoffLimit);
 }
 /**
  * The Sarus client class
