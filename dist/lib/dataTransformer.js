@@ -1,8 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.deserialize = exports.serialize = void 0;
-exports.serializeSingle = serializeSingle;
-exports.deserializeSingle = deserializeSingle;
 /**
  * Serializes the data for storing in sessionStorage/localStorage
  * @param {*} data - the data that we want to serialize
@@ -29,15 +24,14 @@ function base64ToBuffer(base64) {
     return bytes.buffer;
 }
 // Helper: Blob to base64 (async, but we use ArrayBuffer for storage)
-const serialize = (data) => {
+export const serialize = (data) => {
     // If it's an array, serialize each element
     if (Array.isArray(data)) {
         return JSON.stringify(data.map(serializeSingle));
     }
     return JSON.stringify(serializeSingle(data));
 };
-exports.serialize = serialize;
-function serializeSingle(data) {
+export function serializeSingle(data) {
     if (data instanceof ArrayBuffer) {
         return {
             __sarus_type: "binary",
@@ -62,7 +56,7 @@ function serializeSingle(data) {
  * @param {string} data - the data that we want to deserialize
  * @returns {*} The deserialized data
  */
-const deserialize = (data) => {
+export const deserialize = (data) => {
     if (!data)
         return null;
     const parsed = JSON.parse(data);
@@ -71,8 +65,7 @@ const deserialize = (data) => {
     }
     return deserializeSingle(parsed);
 };
-exports.deserialize = deserialize;
-function deserializeSingle(parsed) {
+export function deserializeSingle(parsed) {
     if (typeof parsed === "object" &&
         parsed !== null &&
         parsed.__sarus_type === "binary") {

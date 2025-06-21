@@ -1,10 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.calculateRetryDelayFactor = calculateRetryDelayFactor;
 // File Dependencies
-const constants_1 = require("./lib/constants");
-const dataTransformer_1 = require("./lib/dataTransformer");
-const utils_1 = require("./lib/utils");
+import { DATA_STORAGE_TYPES } from "./lib/constants";
+import { serialize, deserialize } from "./lib/dataTransformer";
+import { validateWebSocketUrl } from "./lib/utils";
 /**
  * Retrieves the storage API for the browser
  * @param {string} storageType - The storage type (local or session)
@@ -26,11 +23,11 @@ const getStorage = (storageType) => {
  * @param {string} param0.storageType - The type of storage used
  * @returns {*}
  */
-const getMessagesFromStore = ({ storageType, storageKey }) => {
-    if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
+const getMessagesFromStore = ({ storageType, storageKey, }) => {
+    if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
         const storage = getStorage(storageType);
         const rawData = (storage === null || storage === void 0 ? void 0 : storage.getItem(storageKey)) || null;
-        const result = (0, dataTransformer_1.deserialize)(rawData);
+        const result = deserialize(rawData);
         return Array.isArray(result) ? result : [];
     }
 };
@@ -45,14 +42,8 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
  * that have previously failed
  * @returns {void} - set does not return
  */
-function calculateRetryDelayFactor(params, initialDelay, failedConnectionAttempts) {
+export function calculateRetryDelayFactor(params, initialDelay, failedConnectionAttempts) {
     return Math.min(initialDelay * Math.pow(params.backoffRate, failedConnectionAttempts), params.backoffLimit);
-}
-function isValidWebSocketData(data) {
-    return (typeof data === "string" ||
-        data instanceof ArrayBuffer ||
-        ArrayBuffer.isView(data) ||
-        (typeof Blob !== "undefined" && data instanceof Blob));
 }
 /**
  * The Sarus client class
@@ -70,7 +61,7 @@ function isValidWebSocketData(data) {
  * @param {string} param0.storageKey - An optional string specifying the key used to store the messages data against in sessionStorage/localStorage
  * @returns {object} The class instance
  */
-class Sarus {
+export default class Sarus {
     constructor(props) {
         var _a;
         /*
@@ -116,7 +107,7 @@ class Sarus {
         retryConnectionDelay, exponentialBackoff, storageType = "memory", storageKey = "sarus", } = props;
         this.eventListeners = this.auditEventListeners(eventListeners);
         // Sets the WebSocket server url for the client to connect to.
-        this.url = (0, utils_1.validateWebSocketUrl)(url);
+        this.url = validateWebSocketUrl(url);
         // Sets the binaryType of the data being sent over the connection
         this.binaryType = binaryType;
         // Sets an optional protocols value, which can be either a string or an array of strings
@@ -203,10 +194,10 @@ class Sarus {
      */
     set messages(data) {
         const { storageType, storageKey } = this;
-        if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
+        if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
             const storage = getStorage(storageType);
             if (storage)
-                storage.setItem(storageKey, (0, dataTransformer_1.serialize)(data));
+                storage.setItem(storageKey, serialize(data));
         }
         if (storageType === "memory") {
             this.messageStore = data;
@@ -219,7 +210,7 @@ class Sarus {
      */
     addMessageToStore(data) {
         const { messages, storageType } = this;
-        if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) === -1)
+        if (DATA_STORAGE_TYPES.indexOf(storageType) === -1)
             return null;
         this.messages = [...messages, data];
         return this.messages;
@@ -246,7 +237,7 @@ class Sarus {
      */
     removeMessage() {
         const { messages, storageType } = this;
-        if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) === -1) {
+        if (DATA_STORAGE_TYPES.indexOf(storageType) === -1) {
             return this.messages.shift();
         }
         this.removeMessageFromStore(messages);
@@ -390,18 +381,7 @@ class Sarus {
     processMessage(data) {
         var _a;
         // If the message is a base64-wrapped object (from legacy or manual insert), decode it
-        let dataToSend = data;
-        if (data &&
-            typeof data === "object" &&
-            data.__sarus_type === "binary" &&
-            typeof data.data === "string") {
-            // Reuse the deserializer for a single message
-            const maybeData = (0, dataTransformer_1.deserialize)(JSON.stringify(data));
-            if (!isValidWebSocketData(maybeData))
-                return;
-            dataToSend = maybeData;
-        }
-        (_a = this.ws) === null || _a === void 0 ? void 0 : _a.send(dataToSend);
+        (_a = this.ws) === null || _a === void 0 ? void 0 : _a.send(data);
         this.removeMessage();
         if (this.messages.length > 0)
             this.process();
@@ -489,4 +469,3 @@ class Sarus {
             this.ws.binaryType = binaryType;
     }
 }
-exports.default = Sarus;

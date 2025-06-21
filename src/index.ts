@@ -75,17 +75,6 @@ export function calculateRetryDelayFactor(
   );
 }
 
-function isValidWebSocketData(
-  data: unknown,
-): data is string | ArrayBufferLike | ArrayBufferView | Blob {
-  return (
-    typeof data === "string" ||
-    data instanceof ArrayBuffer ||
-    ArrayBuffer.isView(data) ||
-    (typeof Blob !== "undefined" && data instanceof Blob)
-  );
-}
-
 export interface SarusClassParams {
   url: string;
   binaryType?: BinaryType;
@@ -507,19 +496,7 @@ export default class Sarus {
    */
   processMessage(data: string | ArrayBufferLike | Blob | ArrayBufferView) {
     // If the message is a base64-wrapped object (from legacy or manual insert), decode it
-    let dataToSend = data;
-    if (
-      data &&
-      typeof data === "object" &&
-      (data as any).__sarus_type === "binary" &&
-      typeof (data as any).data === "string"
-    ) {
-      // Reuse the deserializer for a single message
-      const maybeData = deserialize(JSON.stringify(data));
-      if (!isValidWebSocketData(maybeData)) return;
-      dataToSend = maybeData;
-    }
-    this.ws?.send(dataToSend);
+    this.ws?.send(data);
     this.removeMessage();
     if (this.messages.length > 0) this.process();
   }
