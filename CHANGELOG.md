@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.7.2 - Saturday 21st June, 2025
+
+- Fixes for workflows
+
 ### 0.7.1 - Saturday 21st June, 2025
 
 - Set .nvmrc to 22
