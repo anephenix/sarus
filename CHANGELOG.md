@@ -1,5 +1,63 @@
 # CHANGELOG
 
+### 0.7.0 - Saturday 21st June, 2025
+
+- Sarus now supports both CommonJS and ESModule
+- Changed target to ES2017 and module to ESNext
+- Some more change to make Sarus compatible with Hub
+- More TypeScript fixes
+- A few more TypeScript fixes
+- Refining typescript types across the codebase
+- TypeScript fixes
+- Merge pull request #572 from anephenix/dependabot/npm_and_yarn/jest-30.0.2
+- Bump jest from 30.0.1 to 30.0.2
+- Merge pull request #571 from anephenix/dependabot/npm_and_yarn/jest-environment-jsdom-30.0.2
+- Bump jest-environment-jsdom from 30.0.1 to 30.0.2
+- Merge pull request #570 from anephenix/dependabot/npm_and_yarn/jest-environment-jsdom-30.0.1
+- Merge pull request #569 from anephenix/dependabot/npm_and_yarn/jest-30.0.1
+- Bump jest-environment-jsdom from 30.0.0 to 30.0.1
+- Bump jest from 30.0.0 to 30.0.1
+- Merge pull request #568 from anephenix/dependabot/npm_and_yarn/types/jest-30.0.0
+- Merge pull request #567 from anephenix/dependabot/npm_and_yarn/types/node-24.0.3
+- Bump @types/jest from 29.5.14 to 30.0.0
+- Bump @types/node from 24.0.1 to 24.0.3
+- Updated dependencies
+- Removed CodeClimate and updated dependencies
+- Merge pull request #562 from anephenix/dependabot/npm_and_yarn/jest-30.0.0
+- Updated deprecated function calls in the tests
+- Bump jest from 29.7.0 to 30.0.0
+- Merge pull request #566 from anephenix/dependabot/npm_and_yarn/ts-jest-29.4.0
+- Merge pull request #565 from anephenix/dependabot/npm_and_yarn/types/node-24.0.1
+- Bump ts-jest from 29.3.4 to 29.4.0
+- Bump @types/node from 24.0.0 to 24.0.1
+- Updated the Node.js version that is used for running GitHub workflows, and added .nvmrc file
+- Merge pull request #563 from anephenix/dependabot/npm_and_yarn/jest-environment-jsdom-30.0.0
+- Merge pull request #564 from anephenix/dependabot/npm_and_yarn/types/node-24.0.0
+- Bump @types/node from 22.15.30 to 24.0.0
+- Bump jest-environment-jsdom from 29.7.0 to 30.0.0
+- Merge pull request #561 from anephenix/dependabot/npm_and_yarn/babel/types-7.27.6
+- Merge pull request #560 from anephenix/dependabot/npm_and_yarn/types/node-22.15.30
+- Bump @babel/types from 7.27.3 to 7.27.6
+- Bump @types/node from 22.15.29 to 22.15.30
+- Merge pull request #559 from anephenix/dependabot/npm_and_yarn/babel/parser-7.27.5
+- Bump @babel/parser from 7.27.4 to 7.27.5
+- Modified GitHub workflow permissions
+- Adjusted permissions for GitHub workflows
+- Merge pull request #558 from anephenix/dependabot/npm_and_yarn/types/node-22.15.29
+- Merge pull request #557 from anephenix/dependabot/npm_and_yarn/babel/parser-7.27.4
+- Bump @types/node from 22.15.26 to 22.15.29
+- Bump @babel/parser from 7.27.3 to 7.27.4
+- Merge pull request #556 from anephenix/dependabot/npm_and_yarn/types/node-22.15.26
+- Bump @types/node from 22.15.24 to 22.15.26
+- Merge pull request #555 from anephenix/dependabot/npm_and_yarn/types/node-22.15.24
+- Bump @types/node from 22.15.23 to 22.15.24
+- Merge pull request #553 from anephenix/dependabot/npm_and_yarn/types/node-22.15.23
+- Merge pull request #552 from anephenix/dependabot/npm_and_yarn/babel/parser-7.27.3
+- Bump @types/node from 22.15.21 to 22.15.23
+- Bump @babel/parser from 7.27.2 to 7.27.3
+- Merge pull request #550 from anephenix/dependabot/npm_and_yarn/types/node-22.15.21
+- Bump @types/node from 22.15.19 to 22.15.21
+
 ### 0.6.17 - Tuesday 20th May, 2025
 
 - Merge pull request #549 from anephenix/enhancement/replace-any-unknown-types
