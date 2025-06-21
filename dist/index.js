@@ -1,7 +1,7 @@
 // File Dependencies
-import { DATA_STORAGE_TYPES } from "./lib/constants";
-import { serialize, deserialize } from "./lib/dataTransformer";
-import { validateWebSocketUrl } from "./lib/utils";
+import { DATA_STORAGE_TYPES } from "./lib/constants.js";
+import { serialize, deserialize } from "./lib/dataTransformer.js";
+import { validateWebSocketUrl } from "./lib/utils.js";
 /**
  * Retrieves the storage API for the browser
  * @param {string} storageType - The storage type (local or session)

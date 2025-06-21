@@ -1,4 +1,4 @@
-import type { GenericFunction } from "./types";
+import type { GenericFunction } from "./types.js";
 export interface EventListenersInterface {
     open: GenericFunction[];
     message: GenericFunction[];

@@ -1,4 +1,4 @@
-import { ALLOWED_PROTOCOLS } from "./constants";
+import { ALLOWED_PROTOCOLS } from "./constants.js";
 
 function validateWebSocketUrl(rawUrl: string) {
   // Alternatively, we can also check with URL.canParse(), but since we need

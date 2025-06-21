@@ -1,4 +1,4 @@
-import type { EventListenersInterface } from "./validators";
+import type { EventListenersInterface } from "./validators.js";
 export declare const ALLOWED_PROTOCOLS: Array<string>;
 /**
  * A definitive list of events for a WebSocket client to listen on

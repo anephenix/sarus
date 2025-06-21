@@ -1,12 +1,12 @@
 // File Dependencies
-import { DATA_STORAGE_TYPES } from "./lib/constants";
-import { serialize, deserialize } from "./lib/dataTransformer";
+import { DATA_STORAGE_TYPES } from "./lib/constants.js";
+import { serialize, deserialize } from "./lib/dataTransformer.js";
 import type {
   PartialEventListenersInterface,
   EventListenersInterface,
-} from "./lib/validators";
-import type { GenericFunction } from "./lib/types";
-import { validateWebSocketUrl } from "./lib/utils";
+} from "./lib/validators.js";
+import type { GenericFunction } from "./lib/types.js";
+import { validateWebSocketUrl } from "./lib/utils.js";
 import type { LocalStorage } from "node-localstorage";
 
 interface StorageParams {

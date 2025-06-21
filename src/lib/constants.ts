@@ -1,5 +1,5 @@
 // Dependencies
-import type { EventListenersInterface } from "./validators";
+import type { EventListenersInterface } from "./validators.js";
 
 export const ALLOWED_PROTOCOLS: Array<string> = ["ws:", "wss:"];
 
