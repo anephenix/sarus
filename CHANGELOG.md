@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.7.1 - Saturday 21st June, 2025
+
+- Set .nvmrc to 22
+
 ### 0.7.0 - Saturday 21st June, 2025
 
 - Sarus now supports both CommonJS and ESModule
