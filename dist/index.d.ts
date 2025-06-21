@@ -1,4 +1,4 @@
-import { PartialEventListenersInterface, EventListenersInterface } from "./lib/validators";
+import type { PartialEventListenersInterface, EventListenersInterface } from "./lib/validators";
 export interface ExponentialBackoffParams {
     backoffRate: number;
     backoffLimit: number;

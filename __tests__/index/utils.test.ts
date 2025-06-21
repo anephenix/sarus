@@ -19,9 +19,9 @@ describe("validateWebsocketUrl", () => {
         },
       ];
 
-      scenarios.forEach(({ url, message }) => {
+      for (const { url, message } of scenarios) {
         expect(() => validateWebSocketUrl(url)).toThrow(message);
-      });
+      }
     });
   });
 });

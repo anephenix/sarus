@@ -6,10 +6,9 @@ import type { ExponentialBackoffParams } from "../../src/index";
 
 const url = "ws://localhost:1234";
 
-const condition = (func: Function) => {
+const condition = (func: () => boolean) => {
   return new Promise<void>((resolve) => {
-    let check: Function;
-    check = () => {
+    const check = () => {
       if (func()) return resolve();
       setTimeout(check, 10);
     };
@@ -27,13 +26,13 @@ describe("retry connection delay", () => {
       await condition(() => {
         return sarus.ws?.readyState === 3;
       });
-      const timeThen: any = new Date();
+      const timeThen: number = Date.now();
       const newServer = new WS(url);
       await newServer.connected;
       await condition(() => {
         return sarus.ws?.readyState === 1;
       });
-      const timeNow: any = new Date();
+      const timeNow: number = Date.now();
       expect(timeNow - timeThen).toBeGreaterThanOrEqual(1000);
       expect(timeNow - timeThen).toBeLessThan(3000);
       return newServer.close();
@@ -48,14 +47,14 @@ describe("retry connection delay", () => {
         await condition(() => {
           return sarus.ws?.readyState === 3;
         });
-        const timeThen: any = new Date();
+        const timeThen: number = Date.now();
         const newServer = new WS(url);
         await newServer.connected;
         await condition(() => {
           return sarus.ws?.readyState === 1;
         });
         expect(sarus.ws?.readyState).toBe(1);
-        const timeNow: any = new Date();
+        const timeNow: number = Date.now();
         expect(timeNow - timeThen).toBeGreaterThanOrEqual(400);
         expect(timeNow - timeThen).toBeLessThan(1000);
         return newServer.close();
@@ -81,7 +80,7 @@ describe("Exponential backoff delay", () => {
       [8000, 4],
     ];
     it("will never be more than 8000 ms with rate set to 2", () => {
-      attempts.forEach(([delay, failedAttempts]) => {
+      for (const [delay, failedAttempts] of attempts) {
         expect(
           calculateRetryDelayFactor(
             exponentialBackoff,
@@ -89,15 +88,14 @@ describe("Exponential backoff delay", () => {
             failedAttempts,
           ),
         ).toBe(delay);
-      });
+      }
     });
 
     it("should delay reconnection attempts exponentially", async () => {
-      // Somehow we need to convincen typescript here that "WebSocket" is
+      // Somehow we need to convince typescript here that "WebSocket" is
       // totally valid. Could be because it doesn't assume WebSocket is part of
       // global / the index key is missing
-      const webSocketSpy = jest.spyOn(global, "WebSocket" as any);
-      webSocketSpy.mockImplementation(() => {});
+      const webSocketSpy = jest.spyOn(global, "WebSocket");
       const setTimeoutSpy = jest.spyOn(global, "setTimeout");
       const sarus = new Sarus({ url, exponentialBackoff });
       expect(sarus.state).toStrictEqual({
@@ -124,7 +122,7 @@ describe("Exponential backoff delay", () => {
       let cb: Sarus["connect"];
       // We iteratively call sarus.connect() and let it fail, seeing
       // if it reaches 8000 as a delay and stays there
-      attempts.forEach(([delay, failedAttempts]) => {
+      for (const [delay, failedAttempts] of attempts) {
         const call =
           setTimeoutSpy.mock.calls[setTimeoutSpy.mock.calls.length - 1];
         if (!call) {
@@ -145,7 +143,7 @@ describe("Exponential backoff delay", () => {
           kind: "connecting",
           failedConnectionAttempts: failedAttempts + 1,
         });
-      });
+      }
     });
   });
 });

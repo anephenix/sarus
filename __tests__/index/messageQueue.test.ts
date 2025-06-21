@@ -1,5 +1,5 @@
 // File Dependencies
-import Sarus, { SarusClassParams } from "../../src/index";
+import Sarus, { type SarusClassParams } from "../../src/index";
 import { WS } from "jest-websocket-mock";
 import { delay } from "../helpers/delay";
 
@@ -90,7 +90,7 @@ describe("message queue", () => {
   });
 
   const retrieveMessagesFromStorage = (sarusConfig: SarusClassParams) => {
-    let sarusOne: Sarus = new Sarus(sarusConfig);
+    const sarusOne: Sarus = new Sarus(sarusConfig);
     expect(sarusOne.messages).toEqual([]);
     sarusOne.send("Hello world");
     sarusOne.send("Hello again");

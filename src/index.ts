@@ -1,7 +1,7 @@
 // File Dependencies
 import { WS_EVENT_NAMES, DATA_STORAGE_TYPES } from "./lib/constants";
 import { serialize, deserialize } from "./lib/dataTransformer";
-import {
+import type {
   PartialEventListenersInterface,
   EventListenersInterface,
 } from "./lib/validators";
