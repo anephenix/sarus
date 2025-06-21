@@ -11,7 +11,7 @@
       "import": "./dist/esm/index.js"
     }
   },
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/types/esm/index.d.ts",
   "files": [
     "dist",
     "README.md"
