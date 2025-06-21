@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.7.6 - Sunday 22nd June, 2025
+
+- Fix for loading types correctly
+- Potentially a change needed for the github workflow to work fine
+
 ### 0.7.5 - Saturday 21st June, 2025
 
 - More tweaks to the GitHub workflow for publishing the NPM package
