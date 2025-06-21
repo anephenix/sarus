@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.7.3 - Saturday 21st June, 2025
+
+- More workflow tweaking
+
 ### 0.7.2 - Saturday 21st June, 2025
 
 - Fixes for workflows
