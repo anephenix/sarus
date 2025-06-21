@@ -6,7 +6,7 @@ export declare const ALLOWED_PROTOCOLS: Array<string>;
  * @type {array}
  */
 export declare const WS_EVENT_NAMES: readonly ["open", "close", "message", "error"];
-export type WsEventName = typeof WS_EVENT_NAMES[number];
+export type WsEventName = (typeof WS_EVENT_NAMES)[number];
 /**
  * Persistent data storage types
  * @constant

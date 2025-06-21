@@ -67,7 +67,9 @@ export function serializeSingle(
  * @param {string} data - the data that we want to deserialize
  * @returns {*} The deserialized data
  */
-export const deserialize = (data: string | null) => {
+export const deserialize = (
+  data: string | null,
+): unknown[] | unknown | null => {
   if (!data) return null;
   const parsed = JSON.parse(data);
   if (Array.isArray(parsed)) {
@@ -76,14 +78,41 @@ export const deserialize = (data: string | null) => {
   return deserializeSingle(parsed);
 };
 
-export function deserializeSingle(parsed: any): any {
-  if (parsed && parsed.__sarus_type === "binary") {
-    if (parsed.format === "arraybuffer") {
-      return base64ToBuffer(parsed.data);
-    }
-    if (parsed.format === "uint8array") {
-      return new Uint8Array(base64ToBuffer(parsed.data));
-    }
+export type Base64EncodedData = {
+  __sarus_type: "binary";
+  format: "arraybuffer" | "uint8array";
+  data: string;
+};
+
+type DeserializeSingleParms =
+  | string
+  | object
+  | number
+  | Base64EncodedData
+  | null
+  | boolean;
+type DeserializeSingleReturn =
+  | string
+  | object
+  | number
+  | ArrayBuffer
+  | Uint8Array
+  | null
+  | boolean;
+
+export function deserializeSingle(
+  parsed: DeserializeSingleParms,
+): DeserializeSingleReturn {
+  if (
+    typeof parsed === "object" &&
+    parsed !== null &&
+    (parsed as Base64EncodedData).__sarus_type === "binary"
+  ) {
+    const { format, data } = parsed as Base64EncodedData;
+
+    const buffer = base64ToBuffer(data);
+    if (format === "arraybuffer") return buffer;
+    if (format === "uint8array") return new Uint8Array(buffer);
   }
   return parsed;
 }

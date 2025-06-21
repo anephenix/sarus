@@ -36,11 +36,15 @@ const getStorage = (storageType: string) => {
  * @param {string} param0.storageType - The type of storage used
  * @returns {*}
  */
-const getMessagesFromStore = ({ storageType, storageKey }: StorageParams) => {
+const getMessagesFromStore = ({
+  storageType,
+  storageKey,
+}: StorageParams): unknown[] | undefined => {
   if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
     const storage = getStorage(storageType);
     const rawData: null | string = storage?.getItem(storageKey) || null;
-    return deserialize(rawData) || [];
+    const result = deserialize(rawData);
+    return Array.isArray(result) ? result : [];
   }
 };
 
@@ -68,6 +72,17 @@ export function calculateRetryDelayFactor(
   return Math.min(
     initialDelay * params.backoffRate ** failedConnectionAttempts,
     params.backoffLimit,
+  );
+}
+
+function isValidWebSocketData(
+  data: unknown,
+): data is string | ArrayBufferLike | ArrayBufferView | Blob {
+  return (
+    typeof data === "string" ||
+    data instanceof ArrayBuffer ||
+    ArrayBuffer.isView(data) ||
+    (typeof Blob !== "undefined" && data instanceof Blob)
   );
 }
 
@@ -265,7 +280,8 @@ export default class Sarus {
    */
   get messages() {
     const { storageType, storageKey, messageStore } = this;
-    return getMessagesFromStore({ storageType, storageKey }) || messageStore;
+    return (getMessagesFromStore({ storageType, storageKey }) ??
+      messageStore) as unknown[];
   }
 
   /**
@@ -478,7 +494,7 @@ export default class Sarus {
    * Puts data on a message queue, and then processes the message queue to get the data sent to the WebSocket server
    * @param {*} data - The data payload to put the on message queue
    */
-  send(data: string | ArrayBuffer | Uint8Array) {
+  send(data: string | ArrayBufferLike | Blob | ArrayBufferView) {
     const callProcessAfterwards = this.messages.length === 0;
     this.addMessage(data);
     if (callProcessAfterwards) this.process();
@@ -489,7 +505,7 @@ export default class Sarus {
    * and calls proces again if there is another message to process.
    * @param {string | ArrayBuffer | Uint8Array} data - The data payload to send over the WebSocket
    */
-  processMessage(data: string | ArrayBuffer | Uint8Array) {
+  processMessage(data: string | ArrayBufferLike | Blob | ArrayBufferView) {
     // If the message is a base64-wrapped object (from legacy or manual insert), decode it
     let dataToSend = data;
     if (
@@ -499,7 +515,9 @@ export default class Sarus {
       typeof (data as any).data === "string"
     ) {
       // Reuse the deserializer for a single message
-      dataToSend = deserialize(JSON.stringify(data));
+      const maybeData = deserialize(JSON.stringify(data));
+      if (!isValidWebSocketData(maybeData)) return;
+      dataToSend = maybeData;
     }
     this.ws?.send(dataToSend);
     this.removeMessage();
@@ -512,7 +530,11 @@ export default class Sarus {
    */
   process() {
     const { messages } = this;
-    const data = messages[0] as string | ArrayBuffer | Uint8Array;
+    const data = messages[0] as
+      | string
+      | ArrayBufferLike
+      | Blob
+      | ArrayBufferView;
     if (!data && messages.length === 0) return;
     if (this.ws && this.ws.readyState === 1) {
       this.processMessage(data);

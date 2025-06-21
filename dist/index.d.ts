@@ -153,13 +153,13 @@ export default class Sarus {
      * Puts data on a message queue, and then processes the message queue to get the data sent to the WebSocket server
      * @param {*} data - The data payload to put the on message queue
      */
-    send(data: string | ArrayBuffer | Uint8Array): void;
+    send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void;
     /**
      * Sends a message over the WebSocket, removes the message from the queue,
      * and calls proces again if there is another message to process.
      * @param {string | ArrayBuffer | Uint8Array} data - The data payload to send over the WebSocket
      */
-    processMessage(data: string | ArrayBuffer | Uint8Array): void;
+    processMessage(data: string | ArrayBufferLike | Blob | ArrayBufferView): void;
     /**
      * Processes messages that are on the message queue. Handles looping through the list, as well as retrying message
      * dispatch if the WebSocket connection is not open.

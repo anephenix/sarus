@@ -30,7 +30,8 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
     if (constants_1.DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
         const storage = getStorage(storageType);
         const rawData = (storage === null || storage === void 0 ? void 0 : storage.getItem(storageKey)) || null;
-        return (0, dataTransformer_1.deserialize)(rawData) || [];
+        const result = (0, dataTransformer_1.deserialize)(rawData);
+        return Array.isArray(result) ? result : [];
     }
 };
 /*
@@ -46,6 +47,12 @@ const getMessagesFromStore = ({ storageType, storageKey }) => {
  */
 function calculateRetryDelayFactor(params, initialDelay, failedConnectionAttempts) {
     return Math.min(initialDelay * Math.pow(params.backoffRate, failedConnectionAttempts), params.backoffLimit);
+}
+function isValidWebSocketData(data) {
+    return (typeof data === "string" ||
+        data instanceof ArrayBuffer ||
+        ArrayBuffer.isView(data) ||
+        (typeof Blob !== "undefined" && data instanceof Blob));
 }
 /**
  * The Sarus client class
@@ -185,8 +192,9 @@ class Sarus {
      * @returns {array} the messages in the message queue, as an array
      */
     get messages() {
+        var _a;
         const { storageType, storageKey, messageStore } = this;
-        return getMessagesFromStore({ storageType, storageKey }) || messageStore;
+        return ((_a = getMessagesFromStore({ storageType, storageKey })) !== null && _a !== void 0 ? _a : messageStore);
     }
     /**
      * Sets the messages to store in the message queue
@@ -388,7 +396,10 @@ class Sarus {
             data.__sarus_type === "binary" &&
             typeof data.data === "string") {
             // Reuse the deserializer for a single message
-            dataToSend = (0, dataTransformer_1.deserialize)(JSON.stringify(data));
+            const maybeData = (0, dataTransformer_1.deserialize)(JSON.stringify(data));
+            if (!isValidWebSocketData(maybeData))
+                return;
+            dataToSend = maybeData;
         }
         (_a = this.ws) === null || _a === void 0 ? void 0 : _a.send(dataToSend);
         this.removeMessage();

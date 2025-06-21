@@ -73,13 +73,15 @@ const deserialize = (data) => {
 };
 exports.deserialize = deserialize;
 function deserializeSingle(parsed) {
-    if (parsed && parsed.__sarus_type === "binary") {
-        if (parsed.format === "arraybuffer") {
-            return base64ToBuffer(parsed.data);
-        }
-        if (parsed.format === "uint8array") {
-            return new Uint8Array(base64ToBuffer(parsed.data));
-        }
+    if (typeof parsed === "object" &&
+        parsed !== null &&
+        parsed.__sarus_type === "binary") {
+        const { format, data } = parsed;
+        const buffer = base64ToBuffer(data);
+        if (format === "arraybuffer")
+            return buffer;
+        if (format === "uint8array")
+            return new Uint8Array(buffer);
     }
     return parsed;
 }
