@@ -30,19 +30,6 @@ describe("eventListeners", () => {
     expect(mockClose).toHaveBeenCalledTimes(1);
   });
 
-  // it("should prevent invalid eventListener names being passed during initialization", () => {
-  //   const initializeBadConfig = () => {
-  //     return new Sarus({
-  //       url,
-  //       eventListeners: {
-  //         // There isn't a connect event on a WebSocket client, so an error should be thrown
-  //         connect: []
-  //       }
-  //     });
-  //   };
-  //   expect(initializeBadConfig).toThrowError();
-  // });
-
   it("should prefill any missing eventListener events during initialization", () => {
     const myFunc: () => void = () => {};
     const sarus: Sarus = new Sarus({

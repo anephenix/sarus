@@ -1,11 +1,12 @@
-import { EventListenersInterface } from "./validators";
+import type { EventListenersInterface } from "./validators";
 export declare const ALLOWED_PROTOCOLS: Array<string>;
 /**
  * A definitive list of events for a WebSocket client to listen on
  * @constant
  * @type {array}
  */
-export declare const WS_EVENT_NAMES: Array<string>;
+export declare const WS_EVENT_NAMES: readonly ["open", "close", "message", "error"];
+export type WsEventName = typeof WS_EVENT_NAMES[number];
 /**
  * Persistent data storage types
  * @constant

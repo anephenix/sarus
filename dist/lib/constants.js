@@ -7,12 +7,7 @@ exports.ALLOWED_PROTOCOLS = ["ws:", "wss:"];
  * @constant
  * @type {array}
  */
-exports.WS_EVENT_NAMES = [
-    "open",
-    "close",
-    "message",
-    "error",
-];
+exports.WS_EVENT_NAMES = ['open', 'close', 'message', 'error'];
 /**
  * Persistent data storage types
  * @constant

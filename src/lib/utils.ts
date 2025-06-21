@@ -1,17 +1,12 @@
 import { ALLOWED_PROTOCOLS } from "./constants";
 
 function validateWebSocketUrl(rawUrl: string) {
-  let url: URL;
-  try {
-    // Alternatively, we can also check with URL.canParse(), but since we need
-    // the URL object anyway to validate the protocol, we go ahead and parse it
-    // here.
-    url = new URL(rawUrl);
-  } catch (e) {
-    // TypeError, as specified by WHATWG URL Standard:
-    // https://url.spec.whatwg.org/#url-class (see constructor steps)
-    throw e;
-  }
+  // Alternatively, we can also check with URL.canParse(), but since we need
+  // the URL object anyway to validate the protocol, we go ahead and parse it
+  // here.
+  const url: URL = new URL(rawUrl);
+  // TypeError, as specified by WHATWG URL Standard:
+  // https://url.spec.whatwg.org/#url-class (see constructor steps)
   const { protocol } = url;
   if (!ALLOWED_PROTOCOLS.includes(protocol)) {
     throw new Error(

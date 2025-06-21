@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deserialize = exports.serialize = void 0;
+exports.serializeSingle = serializeSingle;
+exports.deserializeSingle = deserializeSingle;
 /**
  * Serializes the data for storing in sessionStorage/localStorage
  * @param {*} data - the data that we want to serialize
@@ -8,26 +10,26 @@ exports.deserialize = exports.serialize = void 0;
  */
 // Helper: ArrayBuffer/Uint8Array to base64
 function bufferToBase64(buffer) {
-    var binary = "";
-    var bytes = new Uint8Array(buffer);
-    var len = bytes.byteLength;
-    for (var i = 0; i < len; i++) {
+    let binary = "";
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
         binary += String.fromCharCode(bytes[i]);
     }
     return btoa(binary);
 }
 // Helper: base64 to ArrayBuffer
 function base64ToBuffer(base64) {
-    var binary = atob(base64);
-    var len = binary.length;
-    var bytes = new Uint8Array(len);
-    for (var i = 0; i < len; i++) {
+    const binary = atob(base64);
+    const len = binary.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
         bytes[i] = binary.charCodeAt(i);
     }
     return bytes.buffer;
 }
 // Helper: Blob to base64 (async, but we use ArrayBuffer for storage)
-var serialize = function (data) {
+const serialize = (data) => {
     // If it's an array, serialize each element
     if (Array.isArray(data)) {
         return JSON.stringify(data.map(serializeSingle));
@@ -60,10 +62,10 @@ function serializeSingle(data) {
  * @param {string} data - the data that we want to deserialize
  * @returns {*} The deserialized data
  */
-var deserialize = function (data) {
+const deserialize = (data) => {
     if (!data)
         return null;
-    var parsed = JSON.parse(data);
+    const parsed = JSON.parse(data);
     if (Array.isArray(parsed)) {
         return parsed.map(deserializeSingle);
     }

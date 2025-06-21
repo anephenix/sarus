@@ -1,4 +1,6 @@
 import type { PartialEventListenersInterface, EventListenersInterface } from "./lib/validators";
+import type { GenericFunction } from "./lib/types";
+import type { LocalStorage } from "node-localstorage";
 export interface ExponentialBackoffParams {
     backoffRate: number;
     backoffLimit: number;
@@ -43,8 +45,8 @@ export default class Sarus {
     exponentialBackoff?: ExponentialBackoffParams;
     storageType: string;
     storageKey: string;
-    messageStore: any;
-    ws: WebSocket | undefined;
+    messageStore: LocalStorage | unknown[];
+    ws: WebSocket;
     state: {
         kind: "connecting";
         failedConnectionAttempts: number;
@@ -60,33 +62,33 @@ export default class Sarus {
      * Fetches the messages from the message queue
      * @returns {array} the messages in the message queue, as an array
      */
-    get messages(): any;
+    get messages(): unknown[];
     /**
      * Sets the messages to store in the message queue
      * @param {*} data - the data payload to set for the messages in the message queue
      * @returns {void} - set does not return
      */
-    set messages(data: any);
+    set messages(data: unknown[]);
     /**
      * Adds a message to the messages in the message queue that are kept in persistent storage
      * @param {*} data - the message
      * @returns {array} the messages in the message queue
      */
-    addMessageToStore(data: any): any[] | null;
+    addMessageToStore(data: unknown): unknown[] | null;
     /**
      * Adds a messge to the message queue
      * @param {*} data - the data payload to put on the message queue
      */
-    addMessage(data: any): void;
+    addMessage(data: unknown): void;
     /**
      * Removes a message from the message queue that is in persistent storage
      * @param {*} messages - the messages in the message queue
      */
-    removeMessageFromStore(messages: any): void;
+    removeMessageFromStore(messages: unknown[]): void;
     /**
      * Removes a message from the message queue
      */
-    removeMessage(): any;
+    removeMessage(): unknown;
     /**
      * Audits the eventListeners object parameter with validations, and a prefillMissingEvents step
      * This ensures that the eventListeners object is the right format for binding events to WebSocket clients
@@ -94,10 +96,10 @@ export default class Sarus {
      * @returns {object} The eventListeners object parameter, with any missing events prefilled in
      */
     auditEventListeners(eventListeners: PartialEventListenersInterface | undefined): {
-        open: Function[];
-        message: Function[];
-        error: Function[];
-        close: Function[];
+        open: GenericFunction[];
+        message: GenericFunction[];
+        error: GenericFunction[];
+        close: GenericFunction[];
     };
     /**
      * Connects the WebSocket client, and attaches event listeners
@@ -120,21 +122,21 @@ export default class Sarus {
      * @param {string} eventName - The name of the event in the eventListeners object
      * @param {function} eventFunc - The function to trigger when the event occurs
      */
-    on(eventName: string, eventFunc: Function): void;
+    on(eventName: string, eventFunc: GenericFunction): void;
     /**
      * Finds a function in a eventListener's event list, by functon or by function name
      * @param {string} eventName - The name of the event in the eventListeners object
      * @param {function|string} eventFuncOrName - Either the function to remove, or the name of the function to remove
      * @returns {function|undefined} The existing function, or nothing
      */
-    findFunction(eventName: string, eventFuncOrName: string | Function): Function | undefined;
+    findFunction(eventName: string, eventFuncOrName: string | GenericFunction): GenericFunction | undefined;
     /**
      * Raises an error if the existing function is not present, and if the client is configured to throw an error
      * @param {function|undefined} existingFunc
      * @param {object} opts - An optional object to pass that contains extra configuration options
      * @param {boolean} opts.doNotThrowError - A boolean flag that indicates whether to not throw an error if the function to remove is not found in the list
      */
-    raiseErrorIfFunctionIsMissing(existingFunc: Function | undefined, opts?: {
+    raiseErrorIfFunctionIsMissing(existingFunc: GenericFunction | undefined, opts?: {
         doNotThrowError: boolean;
     } | undefined): void;
     /**
@@ -144,7 +146,7 @@ export default class Sarus {
      * @param {object} opts - An optional object to pass that contains extra configuration options
      * @param {boolean} opts.doNotThrowError - A boolean flag that indicates whether to not throw an error if the function to remove is not found in the list
      */
-    off(eventName: string, eventFuncOrName: Function | string, opts?: {
+    off(eventName: string, eventFuncOrName: GenericFunction | string, opts?: {
         doNotThrowError: boolean;
     } | undefined): void;
     /**

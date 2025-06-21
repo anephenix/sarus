@@ -1,11 +1,13 @@
 // File Dependencies
-import { WS_EVENT_NAMES, DATA_STORAGE_TYPES } from "./lib/constants";
+import { DATA_STORAGE_TYPES } from "./lib/constants";
 import { serialize, deserialize } from "./lib/dataTransformer";
 import type {
   PartialEventListenersInterface,
   EventListenersInterface,
 } from "./lib/validators";
+import type { GenericFunction } from "./lib/types";
 import { validateWebSocketUrl } from "./lib/utils";
+import type { LocalStorage } from "node-localstorage";
 
 interface StorageParams {
   storageType: string;
@@ -37,8 +39,7 @@ const getStorage = (storageType: string) => {
 const getMessagesFromStore = ({ storageType, storageKey }: StorageParams) => {
   if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
     const storage = getStorage(storageType);
-    const rawData: null | string =
-      (storage && storage.getItem(storageKey)) || null;
+    const rawData: null | string = storage?.getItem(storageKey) || null;
     return deserialize(rawData) || [];
   }
 };
@@ -65,7 +66,7 @@ export function calculateRetryDelayFactor(
   failedConnectionAttempts: number,
 ): number {
   return Math.min(
-    initialDelay * Math.pow(params.backoffRate, failedConnectionAttempts),
+    initialDelay * params.backoffRate ** failedConnectionAttempts,
     params.backoffLimit,
   );
 }
@@ -113,8 +114,8 @@ export default class Sarus {
   storageKey: string;
 
   // Internally set
-  messageStore: any;
-  ws: WebSocket | undefined;
+  messageStore!: LocalStorage | unknown[];
+  ws!: WebSocket;
   /*
    * Track the current state of the Sarus object. See the diagram below.
    *
@@ -272,7 +273,7 @@ export default class Sarus {
    * @param {*} data - the data payload to set for the messages in the message queue
    * @returns {void} - set does not return
    */
-  set messages(data: any) {
+  set messages(data: unknown[]) {
     const { storageType, storageKey } = this;
     if (DATA_STORAGE_TYPES.indexOf(storageType) !== -1) {
       const storage = getStorage(storageType);
@@ -288,17 +289,18 @@ export default class Sarus {
    * @param {*} data - the message
    * @returns {array} the messages in the message queue
    */
-  addMessageToStore(data: any) {
+  addMessageToStore(data: unknown) {
     const { messages, storageType } = this;
     if (DATA_STORAGE_TYPES.indexOf(storageType) === -1) return null;
-    return (this.messages = [...messages, data]);
+    this.messages = [...messages, data];
+    return this.messages;
   }
 
   /**
    * Adds a messge to the message queue
    * @param {*} data - the data payload to put on the message queue
    */
-  addMessage(data: any) {
+  addMessage(data: unknown) {
     const { messages } = this;
     this.addMessageToStore(data) || messages.push(data);
   }
@@ -307,7 +309,7 @@ export default class Sarus {
    * Removes a message from the message queue that is in persistent storage
    * @param {*} messages - the messages in the message queue
    */
-  removeMessageFromStore(messages: any) {
+  removeMessageFromStore(messages: unknown[]) {
     const newArray = [...messages];
     newArray.shift();
     this.messages = newArray;
@@ -360,14 +362,13 @@ export default class Sarus {
    * ExponentialBackoffParam setting.
    */
   reconnect() {
-    const self = this;
-    const { retryConnectionDelay, exponentialBackoff } = self;
+    const { retryConnectionDelay, exponentialBackoff } = this;
     // If we are already in a "connecting" state, we need to refer to the
     // current amount of connection attemps to correctly calculate the
     // exponential delay -- if exponential backoff is enabled.
     const failedConnectionAttempts =
-      self.state.kind === "connecting"
-        ? self.state.failedConnectionAttempts
+      this.state.kind === "connecting"
+        ? this.state.failedConnectionAttempts
         : 0;
 
     // If no exponential backoff is enabled, retryConnectionDelay will
@@ -380,7 +381,7 @@ export default class Sarus {
         )
       : retryConnectionDelay;
 
-    setTimeout(self.connect, delay);
+    setTimeout(this.connect, delay);
   }
 
   /**
@@ -391,12 +392,11 @@ export default class Sarus {
    */
   disconnect(overrideDisableReconnect?: boolean) {
     this.state = { kind: "disconnected" };
-    const self = this;
     // We do this to prevent automatic reconnections;
     if (!overrideDisableReconnect) {
-      self.reconnectAutomatically = false;
+      this.reconnectAutomatically = false;
     }
-    if (self.ws) self.ws.close();
+    this.ws?.close();
   }
 
   /**
@@ -404,14 +404,14 @@ export default class Sarus {
    * @param {string} eventName - The name of the event in the eventListeners object
    * @param {function} eventFunc - The function to trigger when the event occurs
    */
-  on(eventName: string, eventFunc: Function) {
+  on(eventName: string, eventFunc: GenericFunction) {
     const eventFunctions = this.eventListeners[eventName];
     if (eventFunctions && eventFunctions.indexOf(eventFunc) !== -1) {
       throw new Error(
         `${eventFunc.name} has already been added to this event Listener`,
       );
     }
-    if (eventFunctions && eventFunctions instanceof Array) {
+    if (eventFunctions && Array.isArray(eventFunctions)) {
       this.eventListeners[eventName].push(eventFunc);
     }
   }
@@ -422,14 +422,13 @@ export default class Sarus {
    * @param {function|string} eventFuncOrName - Either the function to remove, or the name of the function to remove
    * @returns {function|undefined} The existing function, or nothing
    */
-  findFunction(eventName: string, eventFuncOrName: string | Function) {
+  findFunction(eventName: string, eventFuncOrName: string | GenericFunction) {
     if (typeof eventFuncOrName === "string") {
-      const byName = (f: Function) => f.name === eventFuncOrName;
+      const byName = (f: GenericFunction) => f.name === eventFuncOrName;
       return this.eventListeners[eventName].find(byName);
-    } else {
-      if (this.eventListeners[eventName].indexOf(eventFuncOrName) !== -1) {
-        return eventFuncOrName;
-      }
+    }
+    if (this.eventListeners[eventName].indexOf(eventFuncOrName) !== -1) {
+      return eventFuncOrName;
     }
   }
 
@@ -440,7 +439,7 @@ export default class Sarus {
    * @param {boolean} opts.doNotThrowError - A boolean flag that indicates whether to not throw an error if the function to remove is not found in the list
    */
   raiseErrorIfFunctionIsMissing(
-    existingFunc: Function | undefined,
+    existingFunc: GenericFunction | undefined,
     opts?:
       | {
           doNotThrowError: boolean;
@@ -448,7 +447,7 @@ export default class Sarus {
       | undefined,
   ) {
     if (!existingFunc) {
-      if (!(opts && opts.doNotThrowError)) {
+      if (!opts?.doNotThrowError) {
         throw new Error("Function does not exist in eventListener list");
       }
     }
@@ -463,7 +462,7 @@ export default class Sarus {
    */
   off(
     eventName: string,
-    eventFuncOrName: Function | string,
+    eventFuncOrName: GenericFunction | string,
     opts?: { doNotThrowError: boolean } | undefined,
   ) {
     const existingFunc = this.findFunction(eventName, eventFuncOrName);
@@ -491,8 +490,8 @@ export default class Sarus {
    * @param {string | ArrayBuffer | Uint8Array} data - The data payload to send over the WebSocket
    */
   processMessage(data: string | ArrayBuffer | Uint8Array) {
-    const self: any = this;
     // If the message is a base64-wrapped object (from legacy or manual insert), decode it
+    let dataToSend = data;
     if (
       data &&
       typeof data === "object" &&
@@ -500,13 +499,11 @@ export default class Sarus {
       typeof (data as any).data === "string"
     ) {
       // Reuse the deserializer for a single message
-      data = (require("./lib/dataTransformer") as any).deserialize(
-        JSON.stringify(data),
-      );
+      dataToSend = deserialize(JSON.stringify(data));
     }
-    self.ws.send(data);
-    self.removeMessage();
-    if (self.messages.length > 0) this.process();
+    this.ws?.send(dataToSend);
+    this.removeMessage();
+    if (this.messages.length > 0) this.process();
   }
 
   /**
@@ -515,7 +512,7 @@ export default class Sarus {
    */
   process() {
     const { messages } = this;
-    const data = messages[0];
+    const data = messages[0] as string | ArrayBuffer | Uint8Array;
     if (!data && messages.length === 0) return;
     if (this.ws && this.ws.readyState === 1) {
       this.processMessage(data);
@@ -530,34 +527,46 @@ export default class Sarus {
    * of the WebSocket, unless configured not to.
    */
   attachEventListeners() {
-    const self: any = this;
-    WS_EVENT_NAMES.forEach((eventName) => {
-      self.ws[`on${eventName}`] = (e: Event | CloseEvent | MessageEvent) => {
-        self.eventListeners[eventName].forEach((f: Function) => f(e));
-        if (eventName === "open") {
-          self.state = { kind: "connected" };
-        } else if (eventName === "close" && self.reconnectAutomatically) {
-          const { state } = self;
-          // If we have previously been "connecting", we carry over the amount
-          // of failed connection attempts and add 1, since the current
-          // connection attempt failed. We stay "connecting" instead of
-          // "closed", since we've never been fully "connected" in the first
-          // place.
-          if (state.kind === "connecting") {
-            self.state = {
-              kind: "connecting",
-              failedConnectionAttempts: state.failedConnectionAttempts + 1,
-            };
-          } else {
-            // If we were in a different state, we assume that our connection
-            // freshly closed and have not made any failed connection attempts.
-            self.state = { kind: "closed" };
-          }
-          self.removeEventListeners();
-          self.reconnect();
+    this.ws.onopen = (e: Event) => {
+      for (const f of this.eventListeners.open) {
+        f(e);
+      }
+      this.state = { kind: "connected" };
+    };
+    this.ws.onmessage = (e: MessageEvent) => {
+      for (const f of this.eventListeners.message) {
+        f(e);
+      }
+    };
+    this.ws.onerror = (e: Event) => {
+      for (const f of this.eventListeners.error) {
+        f(e);
+      }
+    };
+    this.ws.onclose = (e: CloseEvent) => {
+      for (const f of this.eventListeners.close) {
+        f(e);
+      }
+      if (this.reconnectAutomatically) {
+        // If we have previously been "connecting", we carry over the amount
+        // of failed connection attempts and add 1, since the current
+        // connection attempt failed. We stay "connecting" instead of
+        // "closed", since we've never been fully "connected" in the first
+        // place.
+        if (this.state.kind === "connecting") {
+          this.state = {
+            kind: "connecting",
+            failedConnectionAttempts: this.state.failedConnectionAttempts + 1,
+          };
+        } else {
+          // If we were in a different state, we assume that our connection
+          // freshly closed and have not made any failed connection attempts.
+          this.state = { kind: "closed" };
         }
-      };
-    });
+        this.removeEventListeners();
+        this.reconnect();
+      }
+    };
   }
 
   /**
@@ -565,14 +574,10 @@ export default class Sarus {
    * they are cleaned up
    */
   removeEventListeners() {
-    const self: any = this;
-    WS_EVENT_NAMES.forEach((eventName) => {
-      if (self.ws.listeners && self.ws.listeners[eventName]) {
-        self.ws.listeners[eventName].forEach((iel: Function) => {
-          self.ws.removeEventListener(eventName, iel);
-        });
-      }
-    });
+    this.ws.onopen = null;
+    this.ws.onclose = null;
+    this.ws.onmessage = null;
+    this.ws.onerror = null;
   }
 
   /**

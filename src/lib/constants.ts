@@ -1,5 +1,5 @@
 // Dependencies
-import { EventListenersInterface } from "./validators";
+import type { EventListenersInterface } from "./validators";
 
 export const ALLOWED_PROTOCOLS: Array<string> = ["ws:", "wss:"];
 
@@ -8,12 +8,8 @@ export const ALLOWED_PROTOCOLS: Array<string> = ["ws:", "wss:"];
  * @constant
  * @type {array}
  */
-export const WS_EVENT_NAMES: Array<string> = [
-  "open",
-  "close",
-  "message",
-  "error",
-];
+export const WS_EVENT_NAMES = ["open", "close", "message", "error"] as const;
+export type WsEventName = (typeof WS_EVENT_NAMES)[number];
 
 /**
  * Persistent data storage types

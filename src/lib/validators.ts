@@ -1,15 +1,17 @@
+import type { GenericFunction } from "./types";
+
 export interface EventListenersInterface {
-  open: Array<Function>;
-  message: Array<Function>;
-  error: Array<Function>;
-  close: Array<Function>;
-  [key: string]: Function[];
+  open: GenericFunction[];
+  message: GenericFunction[];
+  error: GenericFunction[];
+  close: GenericFunction[];
+  [key: string]: GenericFunction[];
 }
 
 export interface PartialEventListenersInterface {
-  open?: Array<Function>;
-  message?: Array<Function>;
-  error?: Array<Function>;
-  close?: Array<Function>;
-  [key: string]: Array<Function> | undefined;
+  open?: GenericFunction[];
+  message?: GenericFunction[];
+  error?: GenericFunction[];
+  close?: GenericFunction[];
+  [key: string]: GenericFunction[] | undefined;
 }

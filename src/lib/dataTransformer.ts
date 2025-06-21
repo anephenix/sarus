@@ -28,7 +28,7 @@ function base64ToBuffer(base64: string): ArrayBuffer {
 // Helper: Blob to base64 (async, but we use ArrayBuffer for storage)
 
 export const serialize = (
-  data: string | object | number | ArrayBuffer | Uint8Array,
+  data: string | object | number | ArrayBuffer | Uint8Array | null | boolean,
 ) => {
   // If it's an array, serialize each element
   if (Array.isArray(data)) {
@@ -37,8 +37,8 @@ export const serialize = (
   return JSON.stringify(serializeSingle(data));
 };
 
-function serializeSingle(
-  data: string | object | number | ArrayBuffer | Uint8Array,
+export function serializeSingle(
+  data: string | object | number | ArrayBuffer | Uint8Array | null | boolean,
 ): object | string | number | boolean | null {
   if (data instanceof ArrayBuffer) {
     return {
@@ -54,7 +54,7 @@ function serializeSingle(
       data: bufferToBase64(data.buffer),
     };
   }
-  if (typeof Blob !== "undefined" && (data as any) instanceof Blob) {
+  if (typeof Blob !== "undefined" && data instanceof Blob) {
     throw new Error(
       "Blob serialization is not supported synchronously. Convert Blob to ArrayBuffer or Uint8Array before sending.",
     );
@@ -76,7 +76,7 @@ export const deserialize = (data: string | null) => {
   return deserializeSingle(parsed);
 };
 
-function deserializeSingle(parsed: any): any {
+export function deserializeSingle(parsed: any): any {
   if (parsed && parsed.__sarus_type === "binary") {
     if (parsed.format === "arraybuffer") {
       return base64ToBuffer(parsed.data);
