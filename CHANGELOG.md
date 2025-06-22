@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.7.8 - Sunday 22nd June, 2025
+
+- Exported a type that wasn't accessible
+
 ### 0.7.7 - Sunday 22nd June, 2025
 
 - Resolved a warning about the order of the items in the exports section of the package.json file
