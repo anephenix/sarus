@@ -1,5 +1,6 @@
 import type { PartialEventListenersInterface, EventListenersInterface } from "./lib/validators.js";
 import type { GenericFunction } from "./lib/types.js";
+export type { GenericFunction } from "./lib/types.js";
 import type { LocalStorage } from "node-localstorage";
 export interface ExponentialBackoffParams {
     backoffRate: number;

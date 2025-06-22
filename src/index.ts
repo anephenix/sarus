@@ -6,6 +6,7 @@ import type {
   EventListenersInterface,
 } from "./lib/validators.js";
 import type { GenericFunction } from "./lib/types.js";
+export type { GenericFunction } from "./lib/types.js";
 import { validateWebSocketUrl } from "./lib/utils.js";
 import type { LocalStorage } from "node-localstorage";
 
