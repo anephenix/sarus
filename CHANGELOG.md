@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.7.7 - Sunday 22nd June, 2025
+
+- Resolved a warning about the order of the items in the exports section of the package.json file
+- Amended the package.json to include types in the exports section
+
 ### 0.7.6 - Sunday 22nd June, 2025
 
 - Fix for loading types correctly
