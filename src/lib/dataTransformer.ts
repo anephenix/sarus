@@ -51,7 +51,7 @@ export function serializeSingle(
     return {
       __sarus_type: "binary",
       format: "uint8array",
-      data: bufferToBase64(data.buffer),
+      data: bufferToBase64(data.buffer as ArrayBuffer),
     };
   }
   if (typeof Blob !== "undefined" && data instanceof Blob) {
