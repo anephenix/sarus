@@ -11,7 +11,7 @@
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
     "declaration": true,
     "moduleResolution": "node",
-    "declarationDir": "./dist/esm"    
+    "declarationDir": "./dist/esm"
   },
   "typeRoots": ["@types/window-or-global"],
   "include": ["src/index.ts", "src/**/*"],
