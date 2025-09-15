@@ -50,7 +50,7 @@
     "jest-environment-jsdom": "^30.0.0",
     "jest-websocket-mock": "^2.4.0",
     "jsdoc": "^4.0.2",
-    "jsdom": "^26.0.0",
+    "jsdom": "^27.0.0",
     "prettier": "^3.0.3",
     "size-limit": "^11.1.6",
     "ts-jest": "^29.1.0",
