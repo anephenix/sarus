@@ -1,5 +1,118 @@
 # CHANGELOG
 
+### 0.7.9 - Monday 6th October, 2025
+
+- Updated the package-lock.json file
+- Merge pull request #623 from anephenix/dependabot/npm_and_yarn/types/node-24.6.2
+- Bump @types/node from 24.6.1 to 24.6.2
+- Merge pull request #622 from anephenix/dependabot/npm_and_yarn/typescript-5.9.3
+- Merge pull request #621 from anephenix/dependabot/npm_and_yarn/types/node-24.6.1
+- Bump typescript from 5.9.2 to 5.9.3
+- Bump @types/node from 24.6.0 to 24.6.1
+- Merge pull request #620 from anephenix/dependabot/npm_and_yarn/types/node-24.6.0
+- Bump @types/node from 24.5.2 to 24.6.0
+- Merge pull request #619 from anephenix/dependabot/npm_and_yarn/jest-30.2.0
+- Merge pull request #618 from anephenix/dependabot/npm_and_yarn/jest-environment-jsdom-30.2.0
+- Bump jest from 30.1.3 to 30.2.0
+- Bump jest-environment-jsdom from 30.1.2 to 30.2.0
+- Merge pull request #617 from anephenix/dependabot/npm_and_yarn/ts-jest-29.4.4
+- Bump ts-jest from 29.4.3 to 29.4.4
+- Merge pull request #616 from anephenix/dependabot/npm_and_yarn/ts-jest-29.4.3
+- Bump ts-jest from 29.4.2 to 29.4.3
+- Merge pull request #615 from anephenix/dependabot/npm_and_yarn/types/node-24.5.2
+- Bump @types/node from 24.5.1 to 24.5.2
+- Merge pull request #614 from anephenix/dependabot/npm_and_yarn/types/node-24.5.1
+- Bump @types/node from 24.5.0 to 24.5.1
+- Merge pull request #613 from anephenix/dependabot/npm_and_yarn/types/node-24.5.0
+- Merge pull request #612 from anephenix/dependabot/npm_and_yarn/ts-jest-29.4.2
+- Bump @types/node from 24.4.0 to 24.5.0
+- Bump ts-jest from 29.4.1 to 29.4.2
+- Merge pull request #611 from anephenix/dependabot/npm_and_yarn/types/node-24.4.0
+- Merge pull request #610 from anephenix/dependabot/npm_and_yarn/jsdom-27.0.0
+- Bump @types/node from 24.3.1 to 24.4.0
+- Bump jsdom from 26.1.0 to 27.0.0
+- Merge pull request #608 from anephenix/dependabot/npm_and_yarn/babel/types-7.28.4
+- Bump @babel/types from 7.28.2 to 7.28.4
+- Merge pull request #607 from anephenix/dependabot/npm_and_yarn/types/node-24.3.1
+- Bump @types/node from 24.3.0 to 24.3.1
+- Merge pull request #606 from anephenix/dependabot/npm_and_yarn/jest-30.1.3
+- Bump jest from 30.1.2 to 30.1.3
+- Merge pull request #605 from anephenix/dependabot/npm_and_yarn/jest-30.1.2
+- Merge pull request #604 from anephenix/dependabot/npm_and_yarn/jest-environment-jsdom-30.1.2
+- Bump jest from 30.1.1 to 30.1.2
+- Bump jest-environment-jsdom from 30.1.1 to 30.1.2
+- Merge pull request #603 from anephenix/dependabot/npm_and_yarn/jest-environment-jsdom-30.1.1
+- Bump jest-environment-jsdom from 30.0.5 to 30.1.1
+- Merge pull request #602 from anephenix/dependabot/npm_and_yarn/jest-30.1.1
+- Bump jest from 30.0.5 to 30.1.1
+- Merge pull request #601 from anephenix/dependabot/npm_and_yarn/types/node-24.3.0
+- Bump @types/node from 24.2.1 to 24.3.0
+- Merge pull request #600 from anephenix/dependabot/npm_and_yarn/babel/parser-7.28.3
+- Bump @babel/parser from 7.28.0 to 7.28.3
+- Merge pull request #373 from jwpconsulting/ts-compilation-target
+- Fix trailing whitespace in tsconfig.json
+- Fix missing newline in jest.config.js
+- Add package.json to .editorconfig
+- Add jest.config.js to .editorconfig
+- Merge pull request #599 from anephenix/dependabot/npm_and_yarn/types/node-24.2.1
+- Bump @types/node from 24.2.0 to 24.2.1
+- Merge pull request #598 from anephenix/dependabot/npm_and_yarn/types/node-24.2.0
+- Bump @types/node from 24.1.0 to 24.2.0
+- Merge pull request #597 from anephenix/dependabot/npm_and_yarn/ts-jest-29.4.1
+- Bump ts-jest from 29.4.0 to 29.4.1
+- Merge pull request #596 from anephenix/dependabot/npm_and_yarn/typescript-5.9.2
+- TypeScript type fix
+- Merge branch 'dependabot/npm_and_yarn/typescript-5.9.2' of github.com:anephenix/sarus into dependabot/npm_and_yarn/typescript-5.9.2
+- Added jest-util devDependency
+- Bump typescript from 5.8.3 to 5.9.2
+- Merge pull request #595 from anephenix/dependabot/npm_and_yarn/babel/types-7.28.2
+- Bump @babel/types from 7.28.1 to 7.28.2
+- Merge pull request #594 from anephenix/dependabot/npm_and_yarn/types/node-24.1.0
+- Bump @types/node from 24.0.15 to 24.1.0
+- Merge pull request #593 from anephenix/dependabot/npm_and_yarn/jest-30.0.5
+- Merge pull request #592 from anephenix/dependabot/npm_and_yarn/jest-environment-jsdom-30.0.5
+- Bump jest from 30.0.4 to 30.0.5
+- Bump jest-environment-jsdom from 30.0.4 to 30.0.5
+- Merge pull request #591 from anephenix/dependabot/npm_and_yarn/types/node-24.0.15
+- Bump @types/node from 24.0.14 to 24.0.15
+- Merge pull request #590 from anephenix/dependabot/npm_and_yarn/types/node-24.0.14
+- Bump @types/node from 24.0.13 to 24.0.14
+- Merge pull request #589 from anephenix/dependabot/npm_and_yarn/babel/types-7.28.1
+- Bump @babel/types from 7.28.0 to 7.28.1
+- Merge pull request #588 from anephenix/dependabot/npm_and_yarn/types/node-24.0.13
+- Bump @types/node from 24.0.12 to 24.0.13
+- Merge pull request #587 from anephenix/dependabot/npm_and_yarn/types/node-24.0.12
+- Bump @types/node from 24.0.10 to 24.0.12
+- Updated dependencies
+- Merge pull request #585 from anephenix/dependabot/npm_and_yarn/babel/types-7.28.0
+- Merge pull request #584 from anephenix/dependabot/npm_and_yarn/babel/parser-7.28.0
+- Merge pull request #586 from anephenix/dependabot/npm_and_yarn/jest-environment-jsdom-30.0.4
+- Merge pull request #583 from anephenix/dependabot/npm_and_yarn/jest-30.0.4
+- Bump jest-environment-jsdom from 30.0.2 to 30.0.4
+- Bump @babel/types from 7.27.7 to 7.28.0
+- Bump @babel/parser from 7.27.7 to 7.28.0
+- Bump jest from 30.0.3 to 30.0.4
+- Merge pull request #582 from anephenix/dependabot/npm_and_yarn/types/node-24.0.10
+- Bump @types/node from 24.0.8 to 24.0.10
+- Merge pull request #581 from anephenix/dependabot/npm_and_yarn/types/node-24.0.8
+- Bump @types/node from 24.0.7 to 24.0.8
+- Merge pull request #580 from anephenix/dependabot/npm_and_yarn/types/node-24.0.7
+- Bump @types/node from 24.0.4 to 24.0.7
+- Merge pull request #578 from anephenix/dependabot/npm_and_yarn/babel/parser-7.27.7
+- Merge pull request #579 from anephenix/dependabot/npm_and_yarn/babel/types-7.27.7
+- Merge pull request #577 from anephenix/dependabot/npm_and_yarn/prettier-3.6.2
+- Bump @babel/types from 7.27.6 to 7.27.7
+- Bump @babel/parser from 7.27.5 to 7.27.7
+- Bump prettier from 3.6.1 to 3.6.2
+- Merge pull request #576 from anephenix/dependabot/npm_and_yarn/prettier-3.6.1
+- Bump prettier from 3.6.0 to 3.6.1
+- Merge pull request #575 from anephenix/dependabot/npm_and_yarn/types/node-24.0.4
+- Merge pull request #574 from anephenix/dependabot/npm_and_yarn/jest-30.0.3
+- Bump @types/node from 24.0.3 to 24.0.4
+- Bump jest from 30.0.2 to 30.0.3
+- Merge pull request #573 from anephenix/dependabot/npm_and_yarn/prettier-3.6.0
+- Bump prettier from 3.5.3 to 3.6.0
+
 ### 0.7.8 - Sunday 22nd June, 2025
 
 - Exported a type that wasn't accessible
