@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### 0.7.10 - Wednesday 8th October, 2025
+
+- Added Publint to the checks on publishing a package
+- Merge pull request #624 from anephenix/dependabot/npm_and_yarn/types/node-24.7.0
+- Bump @types/node from 24.6.2 to 24.7.0
+
 ### 0.7.9 - Monday 6th October, 2025
 
 - Updated the package-lock.json file
