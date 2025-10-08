@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.7.11 - Wednesday 8th October, 2025
+
+- Made changes as recommended by publint
+
 ### 0.7.10 - Wednesday 8th October, 2025
 
 - Added Publint to the checks on publishing a package
