@@ -8,8 +8,8 @@
   "exports": {
     ".": {
       "types": {
-        "import": "./dist/esm/lib/types.d.ts",
-        "require": "./dist/cjs/lib/types.js"
+        "import": "./dist/esm/index.d.ts",
+        "require": "./dist/cjs/index.js"
       },
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js",
