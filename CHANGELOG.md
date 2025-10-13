@@ -1,5 +1,19 @@
 # CHANGELOG
 
+### 0.7.12 - Monday 13th October, 2025
+
+- Resolved an issue with Hub trying to import types from Sarus
+- Merge branch 'master' of github.com:anephenix/sarus
+- Merge pull request #628 from anephenix/dependabot/npm_and_yarn/types/node-24.7.2
+- Merge pull request #627 from anephenix/dependabot/npm_and_yarn/ts-jest-29.4.5
+- Bump @types/node from 24.7.1 to 24.7.2
+- Bump ts-jest from 29.4.4 to 29.4.5
+- Merge pull request #626 from anephenix/dependabot/npm_and_yarn/types/node-24.7.1
+- Bump @types/node from 24.7.0 to 24.7.1
+- Updated package-lock.json with updates
+- Merge pull request #625 from anephenix/dependabot/npm_and_yarn/jsdoc-4.0.5
+- Bump jsdoc from 4.0.4 to 4.0.5
+
 ### 0.7.11 - Wednesday 8th October, 2025
 
 - Made changes as recommended by publint
