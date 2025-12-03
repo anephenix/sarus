@@ -1,5 +1,47 @@
 # CHANGELOG
 
+### 0.7.13 - Wednesday 3rd December, 2025
+
+- Update license
+- Merge pull request #646 from anephenix/dependabot/npm_and_yarn/ts-jest-29.4.6
+- Bump ts-jest from 29.4.5 to 29.4.6
+- Merge pull request #643 from anephenix/dependabot/npm_and_yarn/size-limit/preset-small-lib-12.0.0
+- Bump @size-limit/preset-small-lib from 11.2.0 to 12.0.0
+- Merge pull request #645 from anephenix/dependabot/npm_and_yarn/prettier-3.7.3
+- Bump prettier from 3.7.1 to 3.7.3
+- Merge pull request #644 from anephenix/dependabot/npm_and_yarn/size-limit-12.0.0
+- Bump size-limit from 11.2.0 to 12.0.0
+- Merge pull request #642 from anephenix/dependabot/npm_and_yarn/prettier-3.7.1
+- Bump prettier from 3.6.2 to 3.7.1
+- Merge pull request #641 from anephenix/dependabot/npm_and_yarn/glob-10.5.0
+- Bump glob from 10.4.5 to 10.5.0
+- Merge pull request #640 from anephenix/dependabot/npm_and_yarn/js-yaml-3.14.2
+- Bump js-yaml from 3.14.1 to 3.14.2
+- Merge pull request #639 from anephenix/dependabot/npm_and_yarn/jsdom-27.2.0
+- Bump jsdom from 27.1.0 to 27.2.0
+- Merge pull request #638 from anephenix/dependabot/npm_and_yarn/types/node-24.10.1
+- Bump @types/node from 24.10.0 to 24.10.1
+- Merge pull request #637 from anephenix/dependabot/npm_and_yarn/types/node-24.10.0
+- Merge pull request #636 from anephenix/dependabot/npm_and_yarn/jsdom-27.1.0
+- Bump @types/node from 24.9.2 to 24.10.0
+- Bump jsdom from 27.0.1 to 27.1.0
+- Merge pull request #635 from anephenix/dependabot/npm_and_yarn/types/node-24.9.2
+- Bump @types/node from 24.9.1 to 24.9.2
+- Merge pull request #634 from anephenix/dependabot/npm_and_yarn/babel/parser-7.28.5
+- Merge pull request #633 from anephenix/dependabot/npm_and_yarn/babel/types-7.28.5
+- Bump @babel/parser from 7.28.4 to 7.28.5
+- Bump @babel/types from 7.28.4 to 7.28.5
+- Merge pull request #632 from anephenix/dependabot/npm_and_yarn/types/node-24.9.1
+- Merge pull request #631 from anephenix/dependabot/npm_and_yarn/publint-0.3.15
+- Bump @types/node from 24.8.1 to 24.9.1
+- Bump publint from 0.3.14 to 0.3.15
+- Merge pull request #609 from anephenix/dependabot/npm_and_yarn/babel/parser-7.28.4
+- Merge pull request #630 from anephenix/dependabot/npm_and_yarn/jsdom-27.0.1
+- Bump jsdom from 27.0.0 to 27.0.1
+- Merge pull request #629 from anephenix/dependabot/npm_and_yarn/types/node-24.8.1
+- Bump @types/node from 24.7.2 to 24.8.1
+- Bump @babel/parser from 7.28.3 to 7.28.4
+
 ### 0.7.12 - Monday 13th October, 2025
 
 - Resolved an issue with Hub trying to import types from Sarus
