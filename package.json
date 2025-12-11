@@ -41,7 +41,7 @@
     "@babel/types": "^7.22.5",
     "@size-limit/preset-small-lib": "^12.0.0",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.0.0",
+    "@types/node": "^25.0.0",
     "@types/node-localstorage": "^1.3.3",
     "@types/websocket": "^1.0.5",
     "@types/window-or-global": "^1.0.6",
