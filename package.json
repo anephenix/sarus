@@ -101,7 +101,7 @@
   "bugs": {
     "url": "https://github.com/anephenix/sarus/issues"
   },
-  "homepage": "https://github.com/anephenix/sarus#readme",
+  "homepage": "https://github.com/anephenix/sarus",
   "dependencies": {
     "node-localstorage": "^3.0.5"
   }
