@@ -1,5 +1,30 @@
 # CHANGELOG
 
+### 0.7.14 - Sunday 4th January, 2026
+
+- Updated dependencies
+- Merge branch 'master' of github.com:anephenix/sarus
+- Tweaks for new publish workflow
+- Merge pull request #655 from anephenix/dependabot/npm_and_yarn/jsdom-27.4.0
+- Bump jsdom from 27.3.0 to 27.4.0
+- Added a missing dependency
+- Merge pull request #654 from anephenix/dependabot/npm_and_yarn/types/node-25.0.3
+- Bump @types/node from 25.0.2 to 25.0.3
+- Merge pull request #653 from anephenix/dependabot/npm_and_yarn/types/node-25.0.2
+- Bump @types/node from 25.0.1 to 25.0.2
+- Merge pull request #652 from anephenix/dependabot/npm_and_yarn/types/node-25.0.1
+- Bump @types/node from 25.0.0 to 25.0.1
+- Merge pull request #651 from anephenix/dependabot/npm_and_yarn/types/node-25.0.0
+- Bump @types/node from 24.10.2 to 25.0.0
+- Merge pull request #650 from anephenix/dependabot/npm_and_yarn/publint-0.3.16
+- Bump publint from 0.3.15 to 0.3.16
+- Merge pull request #649 from anephenix/dependabot/npm_and_yarn/types/node-24.10.2
+- Merge pull request #648 from anephenix/dependabot/npm_and_yarn/jsdom-27.3.0
+- Bump @types/node from 24.10.1 to 24.10.2
+- Bump jsdom from 27.2.0 to 27.3.0
+- Merge pull request #647 from anephenix/dependabot/npm_and_yarn/prettier-3.7.4
+- Bump prettier from 3.7.3 to 3.7.4
+
 ### 0.7.13 - Wednesday 3rd December, 2025
 
 - Update license
