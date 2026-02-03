@@ -54,7 +54,7 @@
     "jest-util": "^30.2.0",
     "jest-websocket-mock": "^2.4.0",
     "jsdoc": "^4.0.2",
-    "jsdom": "^27.0.0",
+    "jsdom": "^28.0.0",
     "prettier": "^3.0.3",
     "publint": "^0.3.14",
     "size-limit": "^12.0.0",
