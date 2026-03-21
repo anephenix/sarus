@@ -1,5 +1,81 @@
 # CHANGELOG
 
+### 0.7.15 - Saturday 21st March, 2026
+
+- Updated dependencies
+- Merge pull request #690 from anephenix/dependabot/npm_and_yarn/jsdom-29.0.1
+- Bump jsdom from 29.0.0 to 29.0.1
+- Merge pull request #689 from anephenix/dependabot/npm_and_yarn/babel/parser-7.29.2
+- Bump @babel/parser from 7.29.0 to 7.29.2
+- Merge pull request #688 from anephenix/dependabot/npm_and_yarn/jsdom-29.0.0
+- Bump jsdom from 28.1.0 to 29.0.0
+- Merge pull request #687 from anephenix/dependabot/npm_and_yarn/undici-7.24.1
+- Bump undici from 7.22.0 to 7.24.1
+- Merge pull request #686 from anephenix/dependabot/npm_and_yarn/types/node-25.5.0
+- Bump @types/node from 25.4.0 to 25.5.0
+- Merge pull request #685 from anephenix/dependabot/npm_and_yarn/jest-util-30.3.0
+- Bump jest-util from 30.2.0 to 30.3.0
+- Merge pull request #684 from anephenix/dependabot/npm_and_yarn/jest-environment-jsdom-30.3.0
+- Merge pull request #683 from anephenix/dependabot/npm_and_yarn/jest-30.3.0
+- Merge pull request #682 from anephenix/dependabot/npm_and_yarn/types/node-25.4.0
+- Bump jest-environment-jsdom from 30.2.0 to 30.3.0
+- Bump jest from 30.2.0 to 30.3.0
+- Bump @types/node from 25.3.5 to 25.4.0
+- Updated dependencies
+- Merge pull request #681 from anephenix/dependabot/npm_and_yarn/types/node-25.3.5
+- Bump @types/node from 25.3.3 to 25.3.5
+- Merge pull request #679 from anephenix/dependabot/npm_and_yarn/types/node-25.3.3
+- Merge pull request #680 from anephenix/dependabot/npm_and_yarn/publint-0.3.18
+- Bump publint from 0.3.17 to 0.3.18
+- Bump @types/node from 25.3.2 to 25.3.3
+- Merge pull request #678 from anephenix/dependabot/npm_and_yarn/multi-770cfcd984
+- Bump minimatch
+- Merge pull request #677 from anephenix/dependabot/npm_and_yarn/types/node-25.3.2
+- Bump @types/node from 25.3.1 to 25.3.2
+- Merge pull request #676 from anephenix/dependabot/npm_and_yarn/types/node-25.3.1
+- Bump @types/node from 25.3.0 to 25.3.1
+- Merge pull request #674 from anephenix/dependabot/npm_and_yarn/jsdom-28.1.0
+- Merge pull request #675 from anephenix/dependabot/npm_and_yarn/types/node-25.3.0
+- Bump @types/node from 25.2.3 to 25.3.0
+- Bump jsdom from 28.0.0 to 28.1.0
+- Merge pull request #673 from anephenix/dependabot/npm_and_yarn/types/node-25.2.3
+- Bump @types/node from 25.2.2 to 25.2.3
+- Merge pull request #672 from anephenix/dependabot/npm_and_yarn/types/node-25.2.2
+- Bump @types/node from 25.2.1 to 25.2.2
+- Merge pull request #671 from anephenix/dependabot/npm_and_yarn/types/node-25.2.1
+- Bump @types/node from 25.2.0 to 25.2.1
+- Merge pull request #670 from anephenix/dependabot/npm_and_yarn/jsdom-28.0.0
+- Bump jsdom from 27.4.0 to 28.0.0
+- Merge pull request #667 from anephenix/dependabot/npm_and_yarn/babel/parser-7.29.0
+- Merge pull request #668 from anephenix/dependabot/npm_and_yarn/babel/types-7.29.0
+- Merge pull request #669 from anephenix/dependabot/npm_and_yarn/types/node-25.2.0
+- Bump @types/node from 25.1.0 to 25.2.0
+- Bump @babel/types from 7.28.6 to 7.29.0
+- Bump @babel/parser from 7.28.6 to 7.29.0
+- Merge pull request #666 from anephenix/dependabot/npm_and_yarn/types/node-25.1.0
+- Bump @types/node from 25.0.10 to 25.1.0
+- Merge pull request #665 from anephenix/dependabot/npm_and_yarn/publint-0.3.17
+- Merge pull request #664 from anephenix/dependabot/npm_and_yarn/prettier-3.8.1
+- Merge pull request #663 from anephenix/dependabot/npm_and_yarn/types/node-25.0.10
+- Merge pull request #662 from anephenix/dependabot/npm_and_yarn/lodash-4.17.23
+- Bump publint from 0.3.16 to 0.3.17
+- Bump prettier from 3.8.0 to 3.8.1
+- Bump @types/node from 25.0.9 to 25.0.10
+- Bump lodash from 4.17.21 to 4.17.23
+- Merge pull request #661 from anephenix/dependabot/npm_and_yarn/types/node-25.0.9
+- Bump @types/node from 25.0.8 to 25.0.9
+- Merge pull request #660 from anephenix/dependabot/npm_and_yarn/prettier-3.8.0
+- Bump prettier from 3.7.4 to 3.8.0
+- Merge pull request #659 from anephenix/dependabot/npm_and_yarn/types/node-25.0.8
+- Merge pull request #656 from anephenix/dependabot/npm_and_yarn/babel/parser-7.28.6
+- Bump @types/node from 25.0.7 to 25.0.8
+- Merge pull request #658 from anephenix/dependabot/npm_and_yarn/babel/types-7.28.6
+- Merge pull request #657 from anephenix/dependabot/npm_and_yarn/types/node-25.0.7
+- Bump @babel/types from 7.28.5 to 7.28.6
+- Bump @types/node from 25.0.6 to 25.0.7
+- Bump @babel/parser from 7.28.5 to 7.28.6
+- Updated dependencies
+
 ### 0.7.14 - Sunday 4th January, 2026
 
 - Updated dependencies
