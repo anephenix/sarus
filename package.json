@@ -59,7 +59,7 @@
     "publint": "^0.3.14",
     "size-limit": "^12.0.0",
     "ts-jest": "^29.1.0",
-    "typescript": "^5.7.3"
+    "typescript": "^6.0.2"
   },
   "scripts": {
     "build:esm": "tsc --project tsconfig.json",
