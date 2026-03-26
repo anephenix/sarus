@@ -11,7 +11,7 @@ describe("validateWebsocketUrl", () => {
   describe("when the url is invalid", () => {
     it("should throw an error", () => {
       const scenarios = [
-        { url: "invalid-url", message: "Invalid URL: invalid-url" },
+        { url: "invalid-url", message: "Invalid URL" },
         {
           url: "http://websocket.com",
           message:

@@ -3,24 +3,24 @@
 
 name: Node.js CI
 permissions:
-    contents: read
+  contents: read
 
 on:
-    push:
-        branches: [master]
-    pull_request:
-        branches: [master]
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
 
 jobs:
-    build:
-        env:
-            CC_TEST_REPORTER_ID: 3a5853627354f7cd705f3d9dc81fb83028c8a901a950a3d0d38a090776f8c5ce
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: Use Node.js 22
-              uses: actions/setup-node@v4
-              with:
-                node-version: 22
-            - run: npm i
-            - run: npm t
+  build:
+    env:
+      CC_TEST_REPORTER_ID: 3a5853627354f7cd705f3d9dc81fb83028c8a901a950a3d0d38a090776f8c5ce
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm i
+      - run: npm t

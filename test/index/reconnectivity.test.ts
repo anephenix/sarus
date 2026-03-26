@@ -8,20 +8,20 @@ const url: string = "ws://localhost:1234";
 describe("automatic reconnectivity", () => {
   it("should reconnect the WebSocket connection when it is severed", async () => {
     const server: WS = new WS(url);
-    const mockConnect = jest.fn();
+    const mockConnect = vi.fn();
     const sarus: Sarus = new Sarus({ url });
     await server.connected;
     sarus.connect = mockConnect;
-    const setTimeout = jest.spyOn(window, "setTimeout");
+    const setTimeoutSpy = vi.spyOn(window, "setTimeout");
     server.close();
     await delay(1000);
     expect(sarus.connect).toHaveBeenCalled();
-    expect(setTimeout).toHaveBeenCalledTimes(2);
+    expect(setTimeoutSpy).toHaveBeenCalledTimes(2);
   });
 
   it("should not reconnect if automatic reconnection is disabled", async () => {
     const server: WS = new WS(url);
-    const mockConnect = jest.fn();
+    const mockConnect = vi.fn();
     const sarus: Sarus = new Sarus({
       url,
       reconnectAutomatically: false,
@@ -35,7 +35,7 @@ describe("automatic reconnectivity", () => {
   describe("if a websocket is closed and meant to reconnect automatically", () => {
     it("should remove all eventListeners on the closed websocket before reconnecting", async () => {
       const server: WS = new WS(url);
-      const mockReconnect = jest.fn();
+      const mockReconnect = vi.fn();
       const sarus: Sarus = new Sarus({
         url,
       });

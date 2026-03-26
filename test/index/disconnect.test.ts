@@ -8,7 +8,7 @@ describe("disconnecting the WebSocket connection", () => {
   it("should disconnect from the WebSocket server, and disable automatic reconnections", async () => {
     const server: WS = new WS(url);
     const sarus: Sarus = new Sarus({ url, reconnectAutomatically: true });
-    const mockReconnect = jest.fn();
+    const mockReconnect = vi.fn();
     sarus.reconnect = mockReconnect;
     await server.connected;
     sarus.disconnect();
@@ -22,7 +22,7 @@ describe("disconnecting the WebSocket connection", () => {
   it("should allow the developer to override disabling automatica reconnections", async () => {
     const server: WS = new WS(url);
     const sarus: Sarus = new Sarus({ url, reconnectAutomatically: true });
-    const mockReconnect = jest.fn();
+    const mockReconnect = vi.fn();
     sarus.reconnect = mockReconnect;
     await server.connected;
     sarus.disconnect(true);
