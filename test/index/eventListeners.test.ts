@@ -7,10 +7,10 @@ const url = "ws://localhost:1234";
 describe("eventListeners", () => {
   it("should bind eventListeners that are passed during initialization", async () => {
     const server: WS = new WS("ws://localhost:1234");
-    const mockOpen = jest.fn();
-    const mockParseMessage = jest.fn();
-    const mockClose = jest.fn();
-    const mockError = jest.fn();
+    const mockOpen = vi.fn();
+    const mockParseMessage = vi.fn();
+    const mockClose = vi.fn();
+    const mockError = vi.fn();
     new Sarus({
       url,
       eventListeners: {
@@ -98,8 +98,8 @@ describe("eventListeners", () => {
 
   it("should bind any added event listeners after initialization to the WebSocket", async () => {
     const server: WS = new WS(url);
-    const myFunc = jest.fn();
-    const anotherFunc = jest.fn();
+    const myFunc = vi.fn();
+    const anotherFunc = vi.fn();
     const sarus: Sarus = new Sarus({
       url,
       eventListeners: {

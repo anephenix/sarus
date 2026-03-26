@@ -70,6 +70,7 @@ describe("message queue", () => {
     expect(messageOne).toBe("Hello again");
     expect(messageTwo).toBe("Here is another message");
     await newServer.close();
+    sarus.disconnect();
   };
 
   it("should allow the developer to use sessionStorage for storing messages", async () => {
@@ -87,6 +88,7 @@ describe("message queue", () => {
       storageKey: "sarusWS",
     });
     expect(sarus.storageKey).toBe("sarusWS");
+    sarus.disconnect();
   });
 
   const retrieveMessagesFromStorage = (sarusConfig: SarusClassParams) => {
@@ -111,15 +113,21 @@ describe("message queue", () => {
     expect(messageOne).toBe("Hello world");
     expect(messageTwo).toBe("Hello again");
     await server.close();
+    sarusTwo.disconnect();
   };
 
   it("should load any existing messages from previous sessionStorage on initialization", () => {
-    retrieveMessagesFromStorage({ url, storageType: "session" });
+    const sarusTwo = retrieveMessagesFromStorage({
+      url,
+      storageType: "session",
+    });
+    sarusTwo.disconnect();
     sessionStorage.clear();
   });
 
   it("should load any existing messages from previous localStorage on initialization", () => {
-    retrieveMessagesFromStorage({ url, storageType: "local" });
+    const sarusTwo = retrieveMessagesFromStorage({ url, storageType: "local" });
+    sarusTwo.disconnect();
     localStorage.clear();
   });
 

@@ -4,6 +4,11 @@ import { WS } from "jest-websocket-mock";
 import { calculateRetryDelayFactor } from "../../src/index";
 import type { ExponentialBackoffParams } from "../../src/index";
 
+afterEach(() => {
+  WS.clean();
+  vi.restoreAllMocks();
+});
+
 const url = "ws://localhost:1234";
 
 const condition = (func: () => boolean) => {
@@ -64,6 +69,12 @@ describe("retry connection delay", () => {
 });
 
 describe("Exponential backoff delay", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
   describe("with rate 2, backoffLimit 8000 ms", () => {
     // The initial delay shall be 1 s
     const initialDelay = 1000;
@@ -95,8 +106,8 @@ describe("Exponential backoff delay", () => {
       // Somehow we need to convince typescript here that "WebSocket" is
       // totally valid. Could be because it doesn't assume WebSocket is part of
       // global / the index key is missing
-      const webSocketSpy = jest.spyOn(global, "WebSocket");
-      const setTimeoutSpy = jest.spyOn(global, "setTimeout");
+      const webSocketSpy = vi.spyOn(global, "WebSocket");
+      const setTimeoutSpy = vi.spyOn(global, "setTimeout");
       const sarus = new Sarus({ url, exponentialBackoff });
       expect(sarus.state).toStrictEqual({
         kind: "connecting",

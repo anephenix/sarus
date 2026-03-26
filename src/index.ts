@@ -484,7 +484,7 @@ export default class Sarus {
    * Puts data on a message queue, and then processes the message queue to get the data sent to the WebSocket server
    * @param {*} data - The data payload to put the on message queue
    */
-  send(data: string | ArrayBufferLike | Blob | ArrayBufferView) {
+  send(data: string | ArrayBuffer | Blob | ArrayBufferView<ArrayBuffer>) {
     const callProcessAfterwards = this.messages.length === 0;
     this.addMessage(data);
     if (callProcessAfterwards) this.process();
@@ -495,7 +495,9 @@ export default class Sarus {
    * and calls proces again if there is another message to process.
    * @param {string | ArrayBuffer | Uint8Array} data - The data payload to send over the WebSocket
    */
-  processMessage(data: string | ArrayBufferLike | Blob | ArrayBufferView) {
+  processMessage(
+    data: string | ArrayBuffer | Blob | ArrayBufferView<ArrayBuffer>,
+  ) {
     // If the message is a base64-wrapped object (from legacy or manual insert), decode it
     this.ws?.send(data);
     this.removeMessage();
@@ -510,9 +512,9 @@ export default class Sarus {
     const { messages } = this;
     const data = messages[0] as
       | string
-      | ArrayBufferLike
+      | ArrayBuffer
       | Blob
-      | ArrayBufferView;
+      | ArrayBufferView<ArrayBuffer>;
     if (!data && messages.length === 0) return;
     if (this.ws && this.ws.readyState === 1) {
       this.processMessage(data);

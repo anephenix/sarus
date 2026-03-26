@@ -24,7 +24,7 @@ describe("connection options", () => {
     // see that a TypeError is handled correctly.
     expect(() => {
       new Sarus({ url: "invalid-url" });
-    }).toThrow("invalid");
+    }).toThrow(/invalid/i);
 
     expect(() => {
       new Sarus({ url: "http://wrong-protocol" });

@@ -10,10 +10,10 @@
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
     "declaration": true,
-    "moduleResolution": "node",
-    "declarationDir": "./dist/esm"
+    // "moduleResolution": "node",
+    "declarationDir": "./dist/esm",
   },
   "typeRoots": ["@types/window-or-global"],
   "include": ["src/index.ts", "src/**/*"],
-  "exclude": ["node_modules", "__tests__"]
+  "exclude": ["node_modules", "__tests__"],
 }
