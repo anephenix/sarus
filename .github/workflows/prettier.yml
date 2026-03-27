@@ -26,5 +26,5 @@ jobs:
 
       - name: Clean NPM install
         run: npm clean-install
-      - name: Check with prettier
-        run: npm run check-prettier
+      - name: Lint
+        run: npm run lint

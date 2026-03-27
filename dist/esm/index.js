@@ -1,6 +1,6 @@
 // File Dependencies
 import { DATA_STORAGE_TYPES } from "./lib/constants.js";
-import { serialize, deserialize } from "./lib/dataTransformer.js";
+import { deserialize, serialize } from "./lib/dataTransformer.js";
 import { validateWebSocketUrl } from "./lib/utils.js";
 /**
  * Retrieves the storage API for the browser
@@ -113,22 +113,22 @@ export default class Sarus {
         // Sets an optional protocols value, which can be either a string or an array of strings
         this.protocols = protocols;
         /*
-          When attempting to re-send a message when the WebSocket connection is
-          not open, there is a retry process time period of 50ms. It can be set
-          to another value by the developer.
-        */
+      When attempting to re-send a message when the WebSocket connection is
+      not open, there is a retry process time period of 50ms. It can be set
+      to another value by the developer.
+    */
         this.retryProcessTimePeriod = retryProcessTimePeriod || 50;
         /*
-          If a WebSocket connection is severed, Sarus is configured to reconnect to
-          the WebSocket server url automatically, unless specified otherwise by the
-          developer at initialization
-        */
+      If a WebSocket connection is severed, Sarus is configured to reconnect to
+      the WebSocket server url automatically, unless specified otherwise by the
+      developer at initialization
+    */
         this.reconnectAutomatically = !(reconnectAutomatically === false);
         /*
-          This handles whether to add a time delay to reconnecting the WebSocket
-          client. If true, a 1000ms delay is added. If a number, that number (as
-          miliseconds) is used as the delay. Default is true.
-        */
+      This handles whether to add a time delay to reconnecting the WebSocket
+      client. If true, a 1000ms delay is added. If a number, that number (as
+      miliseconds) is used as the delay. Default is true.
+    */
         // Either retryConnectionDelay is
         // undefined => default to 1000
         // true => default to 1000
@@ -139,35 +139,35 @@ export default class Sarus {
                 ? undefined
                 : retryConnectionDelay)) !== null && _a !== void 0 ? _a : 1000;
         /*
-          When a exponential backoff parameter object is provided, reconnection
-          attemptions will be increasingly delayed by an exponential factor.
-          This feature is disabled by default.
-        */
+      When a exponential backoff parameter object is provided, reconnection
+      attemptions will be increasingly delayed by an exponential factor.
+      This feature is disabled by default.
+    */
         this.exponentialBackoff = exponentialBackoff;
         /*
-          Sets the storage type for the messages in the message queue. By default
-          it is an in-memory option, but can also be set as 'session' for
-          sessionStorage or 'local' for localStorage data persistence.
-        */
+      Sets the storage type for the messages in the message queue. By default
+      it is an in-memory option, but can also be set as 'session' for
+      sessionStorage or 'local' for localStorage data persistence.
+    */
         this.storageType = storageType;
         /*
-          When using 'session' or 'local' as the storageType, the storage key is
-          used as the key for calls to sessionStorage/localStorage getItem/setItem.
-    
-          It can also be configured by the developer during initialization.
-        */
+      When using 'session' or 'local' as the storageType, the storage key is
+      used as the key for calls to sessionStorage/localStorage getItem/setItem.
+
+      It can also be configured by the developer during initialization.
+    */
         this.storageKey = storageKey;
         /*
-          When initializing the client, if we are using sessionStorage/localStorage
-          for storing messages in the messageQueue, then we want to retrieve any
-          that might have been persisted there.
-    
-          Say the user has done a page refresh, we want to make sure that messages
-          that were meant to be sent to the server make their way there.
-    
-          If no messages were persisted, or we are using in-memory message storage,
-          then we simply set the messages property to an empty array;
-        */
+      When initializing the client, if we are using sessionStorage/localStorage
+      for storing messages in the messageQueue, then we want to retrieve any
+      that might have been persisted there.
+
+      Say the user has done a page refresh, we want to make sure that messages
+      that were meant to be sent to the server make their way there.
+
+      If no messages were persisted, or we are using in-memory message storage,
+      then we simply set the messages property to an empty array;
+    */
         this.messages = this.messages || [];
         // This binds the process function call.
         this.reconnect = this.reconnect.bind(this);
@@ -176,8 +176,8 @@ export default class Sarus {
         this.connect();
     }
     /*
-      Gets the messages from the message queue.
-    */
+    Gets the messages from the message queue.
+  */
     /**
      * Fetches the messages from the message queue
      * @returns {array} the messages in the message queue, as an array

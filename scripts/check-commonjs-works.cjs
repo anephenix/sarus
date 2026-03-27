@@ -1,1 +1,1 @@
-const Sarus = require('../dist/cjs/index.js');
+const _Sarus = require("../dist/cjs/index.js");

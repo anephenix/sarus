@@ -29,8 +29,8 @@ export const DATA_STORAGE_TYPES: Array<string> = ["session", "local"];
  * @property {array} [key] - An array of functions to be called when the WebSocket emits an event with the name of the key
  */
 export const DEFAULT_EVENT_LISTENERS_OBJECT: EventListenersInterface = {
-  open: [],
-  message: [],
-  error: [],
-  close: [],
+	open: [],
+	message: [],
+	error: [],
+	close: [],
 };

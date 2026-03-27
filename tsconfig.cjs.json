@@ -1,12 +1,12 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "module": "CommonJS",
-    "outDir": "./dist/cjs",
-    "declaration": true,
-    "allowJs": false,
-    "emitDeclarationOnly": false,
-    "noEmit": false,
-    "sourceMap": true,
-  }
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"module": "CommonJS",
+		"outDir": "./dist/cjs",
+		"declaration": true,
+		"allowJs": false,
+		"emitDeclarationOnly": false,
+		"noEmit": false,
+		"sourceMap": true
+	}
 }
