@@ -1,5 +1,16 @@
 # CHANGELOG
 
+### 0.7.16 - Saturday 28th March, 2026
+
+- Updated dependencies
+- Replaced prettier with Biome
+- Merge pull request #691 from anephenix/dependabot/npm_and_yarn/typescript-6.0.2
+- Merge branch 'master' into dependabot/npm_and_yarn/typescript-6.0.2
+- Replaced jest with vitest
+- Merge pull request #692 from anephenix/dependabot/npm_and_yarn/picomatch-2.3.2
+- Bump picomatch from 2.3.1 to 2.3.2
+- Bump typescript from 5.9.3 to 6.0.2
+
 ### 0.7.15 - Saturday 21st March, 2026
 
 - Updated dependencies
