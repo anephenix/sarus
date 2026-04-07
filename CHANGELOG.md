@@ -1,5 +1,19 @@
 # CHANGELOG
 
+### 0.7.17 - Tuesday 7th April, 2026
+
+- Updated dependencies
+- Merge pull request #697 from anephenix/dependabot/npm_and_yarn/jsdom-29.0.2
+- Merge pull request #696 from anephenix/dependabot/npm_and_yarn/vite-8.0.5
+- Bump jsdom from 29.0.1 to 29.0.2
+- Bump vite from 8.0.3 to 8.0.5
+- Updated dependencies and resolved a security issue
+- Updated biome schema and dependencies
+- Merge pull request #694 from anephenix/dependabot/npm_and_yarn/types/node-25.5.2
+- Bump @types/node from 25.5.0 to 25.5.2
+- Merge pull request #693 from anephenix/dependabot/npm_and_yarn/biomejs/biome-2.4.10
+- Bump @biomejs/biome from 2.4.9 to 2.4.10
+
 ### 0.7.16 - Saturday 28th March, 2026
 
 - Updated dependencies
