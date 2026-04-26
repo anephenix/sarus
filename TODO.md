@@ -25,7 +25,3 @@
 - [x] Work out how to support sending binary data instead of string data
 - [x] Think about how to support higher-level use cases of WebSockets (rpc, pubsub) via a plugin architecture.
 - [x] TypeScript definitions
-
-## This is a feature for Hub rather than for Sarus
-
-- [ ] Implement a way to retrieve messages from a server, based on a key indicator
