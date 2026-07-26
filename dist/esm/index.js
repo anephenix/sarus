@@ -134,10 +134,9 @@ export default class Sarus {
         // true => default to 1000
         // false => default to 1000
         // a number => set it to that number
-        this.retryConnectionDelay =
-            (_a = (typeof retryConnectionDelay === "boolean"
-                ? undefined
-                : retryConnectionDelay)) !== null && _a !== void 0 ? _a : 1000;
+        this.retryConnectionDelay = (_a = (typeof retryConnectionDelay === "boolean"
+            ? undefined
+            : retryConnectionDelay)) !== null && _a !== void 0 ? _a : 1000;
         /*
       When a exponential backoff parameter object is provided, reconnection
       attemptions will be increasingly delayed by an exponential factor.
