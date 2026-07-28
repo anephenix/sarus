@@ -52,7 +52,7 @@
 		"ip-regex": "^5.0.0",
 		"jest-websocket-mock": "^2.4.0",
 		"jsdoc": "^4.0.2",
-		"jsdom": "^29.0.0",
+		"jsdom": "^30.0.0",
 		"publint": "^0.3.14",
 		"size-limit": "^13.0.1",
 		"typescript": "^7.0.2",
