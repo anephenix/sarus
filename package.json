@@ -39,7 +39,7 @@
 	"devDependencies": {
 		"@babel/parser": "^8.0.0",
 		"@babel/types": "^8.0.0",
-		"@biomejs/biome": "2.5.7",
+		"@biomejs/biome": "2.5.8",
 		"@size-limit/preset-small-lib": "^13.0.1",
 		"@types/node": "^26.0.0",
 		"@types/node-localstorage": "^1.3.3",
