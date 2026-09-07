@@ -56,7 +56,7 @@
 		"publint": "^0.3.14",
 		"size-limit": "^13.0.1",
 		"typescript": "^7.0.2",
-		"vitest": "^4.1.2"
+		"vitest": "^5.0.0"
 	},
 	"scripts": {
 		"build:esm": "tsc --project tsconfig.json",
