@@ -46,7 +46,7 @@
 		"@types/websocket": "^1.0.5",
 		"@types/window-or-global": "^1.0.6",
 		"@types/ws": "^8.18.1",
-		"@vitest/coverage-v8": "^4.1.2",
+		"@vitest/coverage-v8": "^5.0.0",
 		"dom-storage": "^2.1.0",
 		"husky": "^9.1.7",
 		"ip-regex": "^5.0.0",
