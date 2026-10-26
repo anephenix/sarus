@@ -25,16 +25,15 @@ After installing Sarus, you can use the client library with your frontend
 codebase:
 
 ```javascript
-import Sarus from '@anephenix/sarus';
+import Sarus from "@anephenix/sarus";
 
 const sarus = new Sarus({
-	url: 'wss://ws.anephenix.com',
+	url: "wss://ws.anephenix.com",
 });
 ```
 
 Sarus creates a WebSocket connection to the url. You can then attach event
 listener functions to that WebSocket client via `sarus` for events like:
-
 -   When the socket receives a message
 -   When an error occurs on the socket
 -   When the socket is closed
@@ -74,7 +73,6 @@ const sarus = new Sarus({
 You can specify all of the event listeners at initialisation, or just one of them:
 
 ```javascript
-
 // Assuming that the WebSocket server is sending JSON data,
 // you can use this to parse the data payload;
 const parseMessage = (event) => {
@@ -82,10 +80,9 @@ const parseMessage = (event) => {
 	// Then do what you like with the message
 };
 
-
 // Create the Sarus instance with the event listeners
 const sarus = new Sarus({
-	url: 'wss://ws.anephenix.com',
+	url: "wss://ws.anephenix.com",
 	eventListeners: {
 		message: [parseMessage],
 	},
@@ -101,25 +98,25 @@ You can also add eventListeners after client initialization:
 */
 const storeMessage = (event) => {
 	const store = window.localStorage;
-	let record = store.getItem('messages');
+	let record = store.getItem("messages");
 	if (!record) {
 		record = [];
 	} else {
 		record = JSON.parse(record);
 	}
 	record.push(event.data);
-	store.setItem('messages', JSON.stringify(record));
+	store.setItem("messages", JSON.stringify(record));
 };
 
 // Attach the storeMessage function to Sarus when it receives a message from
 // the WebSocket server
-sarus.on('message', storeMessage);
+sarus.on("message", storeMessage);
 ```
 
 You can also use it to send messages to the WebSocket server:
 
 ```javascript
-sarus.send('Hello world');
+sarus.send("Hello world");
 ```
 
 #### Automatic WebSocket reconnection
@@ -148,7 +145,7 @@ initializing the client, like the example below.
 
 ```javascript
 const sarus = new Sarus({
-	url: 'wss://ws.anephenix.com',
+	url: "wss://ws.anephenix.com",
 	reconnectAutomatically: false,
 });
 ```
@@ -163,7 +160,6 @@ sarus.disconnect();
 ```
 
 Calling that function on the sarus client will do 2 things:
-
 1. Set the `reconnectAutomatically` flag to false.
 2. Close the WebSocket connection.
 
@@ -188,7 +184,7 @@ If you pass a number, then it will delay the reconnection attempt by that time
 
 ```javascript
 const sarus = new Sarus({
-	url: 'wss://ws.anephenix.com',
+	url: "wss://ws.anephenix.com",
 	retryConnectionDelay: 500, // equivalent to 500ms or 1/2 second
 });
 ```
@@ -256,19 +252,19 @@ Sarus instance, like this:
 */
 const storeMessage = (event) => {
 	const store = window.localStorage;
-	let record = store.getItem('messages');
+	let record = store.getItem("messages");
 	if (!record) {
 		record = [];
 	} else {
 		record = JSON.parse(record);
 	}
 	record.push(event.data);
-	store.setItem('messages', JSON.stringify(record));
+	store.setItem("messages", JSON.stringify(record));
 };
 
 // Attach the storeMessage function to Sarus when it receives a message from
 // the WebSocket server
-sarus.on('message', storeMessage);
+sarus.on("message", storeMessage);
 ```
 
 If you want to remove a function from a WebSocket event listener, you can do
@@ -276,10 +272,10 @@ that by calling the `off` function on Sarus like this:
 
 ```javascript
 // Pass the function variable
-sarus.off('message', storeMessage);
+sarus.off("message", storeMessage);
 
 // You can also pass the name of the function as well
-sarus.off('message', 'storeMessage');
+sarus.off("message", "storeMessage");
 ```
 
 If you attempt to remove an event listener function which is not in the list of
@@ -293,7 +289,7 @@ If the developer is happy for an event listener removal to fail without
 throwing an error, they can pass this to the `off` function:
 
 ```javascript
-sarus.off('message', 'myNonExistentFunction', { doNotThrowError: true });
+sarus.off("message", "myNonExistentFunction", { doNotThrowError: true });
 ```
 
 #### Queuing messages for delivery when the WebSocket connection is severed
@@ -314,8 +310,8 @@ messages stored using the [sessionStorage protocol](https://developer.mozilla.or
 
 ```javascript
 const sarus = new Sarus({
-	url: 'wss://ws.anephenix.com',
-	storageType: 'session',
+	url: "wss://ws.anephenix.com",
+	storageType: "session",
 });
 ```
 
@@ -329,8 +325,8 @@ then you can use the [localStorage protocol](https://developer.mozilla.org/en-US
 
 ```javascript
 const sarus = new Sarus({
-	url: 'wss://ws.anephenix.com',
-	storageType: 'local',
+	url: "wss://ws.anephenix.com",
+	storageType: "local",
 });
 ```
 
@@ -357,17 +353,17 @@ those messages, should they occur.
 Configure exponential backoff like so:
 
 ```typescript
-import Sarus from '@anephenix/sarus';
+import Sarus from "@anephenix/sarus";
 
 const sarus = new Sarus({
-    url: 'wss://ws.anephenix.com',
-    exponentialBackoff: {
-        // Exponential factor, here 2 will result in
-        // 1 s, 2 s, 4 s, and so on increasing delays
-        backoffRate: 2,
-        // Never wait more than 2000 seconds
-        backoffLimit: 2000,
-    },
+	url: "wss://ws.anephenix.com",
+	exponentialBackoff: {
+		// Exponential factor, here 2 will result in
+		// 1 s, 2 s, 4 s, and so on increasing delays
+		backoffRate: 2,
+		// Never wait more than 2000 seconds
+		backoffLimit: 2000,
+	},
 });
 ```
 
@@ -404,13 +400,13 @@ const backoffLimit = 400;
 let notConnected = false;
 let connectionAttempts = 1;
 while (notConnected) {
-    const delay = Math.min(
-        Math.pow(connectionAttempts, backoffRate),
-        backoffLimit,
-    );
-    await delay(delay);
-    notConnected = tryToConnect();
-    connectionAttempts += 1;
+	const delay = Math.min(
+		Math.pow(connectionAttempts, backoffRate),
+		backoffLimit,
+	);
+	await delay(delay);
+	notConnected = tryToConnect();
+	connectionAttempts += 1;
 }
 ```
 
@@ -421,10 +417,10 @@ initialization. They are listed in the example below:
 
 ```javascript
 const sarus = new Sarus({
-	url: 'wss.anephenix.com',
-	protocols: 'hybi-00',
+	url: "wss.anephenix.com",
+	protocols: "hybi-00",
 	retryProcessTimePeriod: 25,
-	storageKey: 'messageQueue',
+	storageKey: "messageQueue",
 });
 ```
 
