@@ -1,4 +1,5 @@
 There are a number of ways to contribute to the project:
+
 - Making feature requests
 - Submitting new features
 - Reporting bugs
