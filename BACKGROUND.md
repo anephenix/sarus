@@ -2,6 +2,7 @@
 
 WebSockets are great, but using them in real-world applications requires
 handling cases where:
+
 - The WebSocket connection can close unexpectedly, such as when losing
   Internet access for a brief period of time.
 
@@ -15,6 +16,7 @@ To handle these cases, you will have to write some JavaScript that essentially
 wraps access to the WebSocket protocol and handles those cases.
 
 Sarus is a library designed to do exactly that. It has the following features:
+
 - Handle reconnecting a WebSocket connection if it closes unexpectedly.
 
 - Make sure event listeners that were attached to the origin WebSocket instance

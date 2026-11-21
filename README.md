@@ -34,6 +34,7 @@ const sarus = new Sarus({
 
 Sarus creates a WebSocket connection to the url. You can then attach event
 listener functions to that WebSocket client via `sarus` for events like:
+
 -   When the socket receives a message
 -   When an error occurs on the socket
 -   When the socket is closed
@@ -160,6 +161,7 @@ sarus.disconnect();
 ```
 
 Calling that function on the sarus client will do 2 things:
+
 1. Set the `reconnectAutomatically` flag to false.
 2. Close the WebSocket connection.
 
